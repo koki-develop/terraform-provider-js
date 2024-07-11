@@ -31,8 +31,8 @@ func (d *dataFunction) Schema(_ context.Context, _ datasource.SchemaRequest, res
 			},
 
 			"id": schema.StringAttribute{
-				Computed:   true,
 				CustomType: ID{},
+				Computed:   true,
 			},
 		},
 	}
@@ -56,4 +56,7 @@ func (d *dataFunction) Read(ctx context.Context, req datasource.ReadRequest, res
 	}
 	diags = resp.State.Set(ctx, &attrs)
 	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 }
