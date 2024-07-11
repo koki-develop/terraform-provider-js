@@ -44,5 +44,7 @@ func (p *jsProvider) DataSources(_ context.Context) []func() datasource.DataSour
 }
 
 func (p *jsProvider) Resources(_ context.Context) []func() resource.Resource {
-	return nil
+	return []func() resource.Resource{
+		NewResourceFunctionCall,
+	}
 }
