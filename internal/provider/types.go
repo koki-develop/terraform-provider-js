@@ -6,6 +6,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
@@ -30,7 +31,7 @@ func (i ID) String() string {
 }
 
 func (i ID) ValueFromString(ctx context.Context, in basetypes.StringValue) (basetypes.StringValuable, diag.Diagnostics) {
-	return IDValue{StringValue: in}, nil
+	return NewIDValue(in), nil
 }
 
 func (i ID) ValueFromTerraform(ctx context.Context, in tftypes.Value) (attr.Value, error) {
@@ -60,6 +61,10 @@ var _ basetypes.StringValuable = IDValue{}
 
 type IDValue struct {
 	basetypes.StringValue
+}
+
+func NewIDValue(s basetypes.StringValue) IDValue {
+	return IDValue{StringValue: types.StringValue(s.ValueString())}
 }
 
 func (v IDValue) Equal(o attr.Value) bool {
