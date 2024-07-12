@@ -6,7 +6,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
@@ -64,7 +63,7 @@ type IDValue struct {
 }
 
 func NewIDValue(s basetypes.StringValue) IDValue {
-	return IDValue{StringValue: types.StringValue(s.ValueString())}
+	return IDValue{StringValue: s}
 }
 
 func (v IDValue) Equal(o attr.Value) bool {
