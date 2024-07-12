@@ -3,9 +3,11 @@ package types
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
@@ -58,12 +60,25 @@ func (i ID) ValueType(ctx context.Context) attr.Value {
 
 var _ basetypes.StringValuable = IDValue{}
 
+const IDPrefix = "@js:id:"
+
 type IDValue struct {
 	basetypes.StringValue
 }
 
 func NewIDValue(s basetypes.StringValue) IDValue {
-	return IDValue{StringValue: s}
+	if s.IsNull() || s.IsUnknown() {
+		return IDValue{StringValue: s}
+	}
+	if strings.HasPrefix(s.ValueString(), IDPrefix) {
+		return IDValue{StringValue: s}
+	}
+
+	return IDValue{StringValue: types.StringValue(fmt.Sprintf("%s%s", IDPrefix, s.ValueString()))}
+}
+
+func (v IDValue) ValueString() string {
+	return strings.TrimPrefix(v.StringValue.ValueString(), IDPrefix)
 }
 
 func (v IDValue) Equal(o attr.Value) bool {
@@ -77,4 +92,23 @@ func (v IDValue) Equal(o attr.Value) bool {
 
 func (v IDValue) Type(ctx context.Context) attr.Type {
 	return ID{}
+}
+
+func (v IDValue) StringSemanticEquals(_ context.Context, newValuable basetypes.StringValuable) (bool, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	newValue, ok := newValuable.(IDValue)
+	if !ok {
+		diags.AddError(
+			"Semantic Equality Check Error",
+			"An unexpected value type was received while performing semantic equality checks. "+
+				"Please report this to the provider developers.\n\n"+
+				"Expected Value Type: "+fmt.Sprintf("%T", v)+"\n"+
+				"Got Value Type: "+fmt.Sprintf("%T", newValuable),
+		)
+
+		return false, diags
+	}
+
+	return strings.TrimPrefix(v.ValueString(), IDPrefix) == strings.TrimPrefix(newValue.ValueString(), IDPrefix), diags
 }

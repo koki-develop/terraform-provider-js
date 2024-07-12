@@ -69,7 +69,8 @@ func (m resourceFunctionModel) ContentString(ctx context.Context) (string, error
 	if !m.Params.IsNull() {
 		ps := make([]string, len(m.Params.Elements()))
 		for i, p := range m.Params.Elements() {
-			ps[i] = p.(types.String).ValueString()
+			id := jstypes.NewIDValue(p.(types.String))
+			ps[i] = id.ValueString()
 		}
 		s.WriteString(strings.Join(ps, ","))
 	}

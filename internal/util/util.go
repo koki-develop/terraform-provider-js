@@ -2,9 +2,11 @@ package util
 
 import (
 	"context"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	jstypes "github.com/koki-develop/terraform-provider-js/internal/types"
 )
 
@@ -14,8 +16,12 @@ func StringifyValue(v attr.Value) string {
 	}
 
 	switch v := v.(type) {
-	case jstypes.IDValue:
-		return v.ValueString()
+	case basetypes.StringValue:
+		if strings.HasPrefix(v.ValueString(), jstypes.IDPrefix) {
+			return strings.TrimPrefix(v.ValueString(), jstypes.IDPrefix)
+		}
+	case basetypes.DynamicValue:
+		return StringifyValue(v.UnderlyingValue())
 	}
 
 	return v.String()

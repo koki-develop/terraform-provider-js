@@ -7,7 +7,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	jstypes "github.com/koki-develop/terraform-provider-js/internal/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,7 +17,7 @@ func Test_StringifyValue(t *testing.T) {
 		want string
 	}{
 		// id
-		{v: jstypes.NewIDValue(types.StringValue("id")), want: "id"},
+		{v: types.StringValue("@js:id:foo"), want: "foo"},
 
 		// string
 		{v: types.StringValue("foo"), want: `"foo"`},
