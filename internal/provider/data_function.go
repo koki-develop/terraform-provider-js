@@ -51,9 +51,7 @@ func (d *dataFunction) Read(ctx context.Context, req datasource.ReadRequest, res
 		return
 	}
 
-	attrs.ID = IDValue{
-		StringValue: types.StringValue(attrs.Name.ValueString()),
-	}
+	attrs.ID = NewIDValue(attrs.Name)
 	diags = resp.State.Set(ctx, &attrs)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
