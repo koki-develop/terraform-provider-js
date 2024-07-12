@@ -1,24 +1,24 @@
-package provider
+package util
 
 import (
-	"context"
 	"fmt"
 	"math/big"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	jstypes "github.com/koki-develop/terraform-provider-js/internal/types"
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_stringifyValue(t *testing.T) {
+func Test_StringifyValue(t *testing.T) {
 	tests := []struct {
 		v    attr.Value
 		json bool
 		want string
 	}{
 		// id
-		{v: NewIDValue(types.StringValue("id")), want: "id"},
+		{v: jstypes.NewIDValue(types.StringValue("id")), want: "id"},
 
 		// string
 		{v: types.StringValue("foo"), want: `"foo"`},
@@ -121,7 +121,7 @@ func Test_stringifyValue(t *testing.T) {
 
 	for i, tt := range tests {
 		t.Run(fmt.Sprint(i), func(t *testing.T) {
-			got := stringifyValue(context.Background(), tt.v)
+			got := StringifyValue(tt.v)
 			if tt.json {
 				assert.JSONEq(t, tt.want, got)
 			} else {

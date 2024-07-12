@@ -7,6 +7,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/koki-develop/terraform-provider-js/internal/datasources"
+	"github.com/koki-develop/terraform-provider-js/internal/resources"
 )
 
 var (
@@ -39,14 +41,14 @@ func (p *jsProvider) Configure(_ context.Context, _ provider.ConfigureRequest, _
 
 func (p *jsProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		NewDataFunction,
+		datasources.NewDataFunction,
 	}
 }
 
 func (p *jsProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewResourceFunction,
-		NewResourceFunctionCall,
-		NewResourceFunctionParam,
+		resources.NewResourceFunction,
+		resources.NewResourceFunctionCall,
+		resources.NewResourceFunctionParam,
 	}
 }

@@ -1,4 +1,4 @@
-package provider
+package resources
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	jstypes "github.com/koki-develop/terraform-provider-js/internal/types"
 )
 
 var (
@@ -30,7 +31,7 @@ func (r *resourceFunctionParam) Schema(_ context.Context, _ resource.SchemaReque
 			},
 
 			"id": schema.StringAttribute{
-				CustomType: ID{},
+				CustomType: jstypes.ID{},
 				Computed:   true,
 			},
 		},
@@ -38,8 +39,8 @@ func (r *resourceFunctionParam) Schema(_ context.Context, _ resource.SchemaReque
 }
 
 type resourceFunctionParamModel struct {
-	Name types.String `tfsdk:"name"`
-	ID   IDValue      `tfsdk:"id"`
+	Name types.String    `tfsdk:"name"`
+	ID   jstypes.IDValue `tfsdk:"id"`
 }
 
 func (r *resourceFunctionParam) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -50,7 +51,7 @@ func (r *resourceFunctionParam) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
-	plan.ID = NewIDValue(plan.Name)
+	plan.ID = jstypes.NewIDValue(plan.Name)
 	diags = resp.State.Set(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -69,7 +70,7 @@ func (r *resourceFunctionParam) Update(ctx context.Context, req resource.UpdateR
 		return
 	}
 
-	plan.ID = NewIDValue(plan.Name)
+	plan.ID = jstypes.NewIDValue(plan.Name)
 	diags = resp.State.Set(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {

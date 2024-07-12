@@ -1,4 +1,4 @@
-package provider
+package resources
 
 import (
 	"context"
@@ -9,6 +9,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	jstypes "github.com/koki-develop/terraform-provider-js/internal/types"
+	"github.com/koki-develop/terraform-provider-js/internal/util"
 )
 
 var (
@@ -29,7 +31,7 @@ func (r *resourceFunctionCall) Schema(_ context.Context, _ resource.SchemaReques
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"function": schema.StringAttribute{
-				CustomType: ID{},
+				CustomType: jstypes.ID{},
 				Required:   true,
 			},
 			"args": schema.DynamicAttribute{
@@ -44,9 +46,9 @@ func (r *resourceFunctionCall) Schema(_ context.Context, _ resource.SchemaReques
 }
 
 type resourceFunctionCallModel struct {
-	Function IDValue       `tfsdk:"function"`
-	Args     types.Dynamic `tfsdk:"args"`
-	Content  types.String  `tfsdk:"content"`
+	Function jstypes.IDValue `tfsdk:"function"`
+	Args     types.Dynamic   `tfsdk:"args"`
+	Content  types.String    `tfsdk:"content"`
 }
 
 func (m resourceFunctionCallModel) ContentString(ctx context.Context) (string, error) {
@@ -59,7 +61,7 @@ func (m resourceFunctionCallModel) ContentString(ctx context.Context) (string, e
 		return "", fmt.Errorf("args must be a tuple")
 	}
 
-	args := stringifyValues(v.Elements())
+	args := util.StringifyValues(v.Elements())
 	return fmt.Sprintf("%s(%s)", m.Function.ValueString(), strings.Join(args, ",")), nil
 }
 
