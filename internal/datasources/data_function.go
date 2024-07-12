@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	jstypes "github.com/koki-develop/terraform-provider-js/internal/types"
+	"github.com/koki-develop/terraform-provider-js/internal/util"
 )
 
 var (
@@ -44,17 +45,15 @@ type dataFunctionModel struct {
 }
 
 func (d *dataFunction) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var attrs dataFunctionModel
-	diags := req.Config.Get(ctx, &attrs)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	attrs.ID = jstypes.NewIDValue(attrs.Name)
-	diags = resp.State.Set(ctx, &attrs)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	util.HandleRequest(
+		ctx,
+		&dataFunctionModel{},
+		&req.Config,
+		&resp.State,
+		resp.Diagnostics,
+		func(m *dataFunctionModel) error {
+			m.ID = jstypes.NewIDValue(m.Name)
+			return nil
+		},
+	)
 }

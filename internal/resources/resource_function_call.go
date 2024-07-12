@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -66,51 +67,35 @@ func (m resourceFunctionCallModel) ContentString(ctx context.Context) (string, e
 }
 
 func (r *resourceFunctionCall) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan resourceFunctionCallModel
-	diags := req.Plan.Get(ctx, &plan)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	c, err := plan.ContentString(ctx)
-	if err != nil {
-		resp.Diagnostics.AddError("failed to generate content", err.Error())
-		return
-	}
-
-	plan.Content = types.StringValue(c)
-	diags = resp.State.Set(ctx, &plan)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	r.handleRequest(ctx, &req.Plan, &resp.State, resp.Diagnostics)
 }
 
 func (r *resourceFunctionCall) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	r.handleRequest(ctx, &req.State, &resp.State, resp.Diagnostics)
 }
 
 func (r *resourceFunctionCall) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan resourceFunctionCallModel
-	diags := req.Plan.Get(ctx, &plan)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	c, err := plan.ContentString(ctx)
-	if err != nil {
-		resp.Diagnostics.AddError("failed to generate content", err.Error())
-		return
-	}
-
-	plan.Content = types.StringValue(c)
-	diags = resp.State.Set(ctx, &plan)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
+	r.handleRequest(ctx, &req.Plan, &resp.State, resp.Diagnostics)
 }
 
 func (r *resourceFunctionCall) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+}
+
+func (r *resourceFunctionCall) handleRequest(ctx context.Context, g util.ModelGetter, s util.ModelSetter, diags diag.Diagnostics) {
+	util.HandleRequest(
+		ctx,
+		&resourceFunctionCallModel{},
+		g,
+		s,
+		diags,
+		func(m *resourceFunctionCallModel) error {
+			c, err := m.ContentString(ctx)
+			if err != nil {
+				return err
+			}
+
+			m.Content = types.StringValue(c)
+			return nil
+		},
+	)
 }
