@@ -3,10 +3,12 @@ package provider
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 var (
@@ -30,7 +32,9 @@ func (r *resourceFunctionCall) Schema(_ context.Context, _ resource.SchemaReques
 				CustomType: ID{},
 				Required:   true,
 			},
-			// TODO: args
+			"args": schema.DynamicAttribute{
+				Optional: true,
+			},
 
 			"content": schema.StringAttribute{
 				Computed: true,
@@ -39,20 +43,41 @@ func (r *resourceFunctionCall) Schema(_ context.Context, _ resource.SchemaReques
 	}
 }
 
-type resourceFunctionModel struct {
-	Function IDValue      `tfsdk:"function"`
-	Content  types.String `tfsdk:"content"`
+type resourceFunctionCallModel struct {
+	Function IDValue       `tfsdk:"function"`
+	Args     types.Dynamic `tfsdk:"args"`
+	Content  types.String  `tfsdk:"content"`
+}
+
+func (m resourceFunctionCallModel) ContentString(ctx context.Context) (string, error) {
+	if m.Args.IsNull() {
+		return fmt.Sprintf("%s()", m.Function.ValueString()), nil
+	}
+
+	v, ok := m.Args.UnderlyingValue().(basetypes.TupleValue)
+	if !ok {
+		return "", fmt.Errorf("args must be a tuple")
+	}
+
+	args := stringifyValues(v.Elements())
+	return fmt.Sprintf("%s(%s)", m.Function.ValueString(), strings.Join(args, ",")), nil
 }
 
 func (r *resourceFunctionCall) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan resourceFunctionModel
+	var plan resourceFunctionCallModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	plan.Content = types.StringValue(fmt.Sprintf("%s()", plan.Function.ValueString()))
+	c, err := plan.ContentString(ctx)
+	if err != nil {
+		resp.Diagnostics.AddError("failed to generate content", err.Error())
+		return
+	}
+
+	plan.Content = types.StringValue(c)
 	diags = resp.State.Set(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
@@ -64,14 +89,20 @@ func (r *resourceFunctionCall) Read(ctx context.Context, req resource.ReadReques
 }
 
 func (r *resourceFunctionCall) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan resourceFunctionModel
+	var plan resourceFunctionCallModel
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	plan.Content = types.StringValue(fmt.Sprintf("%s()", plan.Function.ValueString()))
+	c, err := plan.ContentString(ctx)
+	if err != nil {
+		resp.Diagnostics.AddError("failed to generate content", err.Error())
+		return
+	}
+
+	plan.Content = types.StringValue(c)
 	diags = resp.State.Set(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
