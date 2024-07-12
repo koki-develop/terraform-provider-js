@@ -40,8 +40,9 @@ func (d *dataFunction) Schema(_ context.Context, _ datasource.SchemaRequest, res
 }
 
 type dataFunctionModel struct {
-	ID   jstypes.IDValue `tfsdk:"id"`
-	Name types.String    `tfsdk:"name"`
+	Name types.String `tfsdk:"name"`
+
+	ID jstypes.IDValue `tfsdk:"id"`
 }
 
 func (d *dataFunction) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
