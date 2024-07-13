@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -68,11 +69,19 @@ func (m resourceFunctionCallModel) ContentString(ctx context.Context) (string, e
 	s.WriteString("(")
 
 	if !m.Args.IsNull() {
-		v, ok := m.Args.UnderlyingValue().(basetypes.TupleValue)
-		if !ok {
+		var elms []attr.Value
+		switch v := m.Args.UnderlyingValue().(type) {
+		case basetypes.ListValue:
+			elms = v.Elements()
+		case basetypes.TupleValue:
+			elms = v.Elements()
+		case basetypes.SetValue:
+			elms = v.Elements()
+		default:
 			return "", fmt.Errorf("args must be a tuple")
 		}
-		args := util.StringifyValues(v.Elements())
+
+		args := util.StringifyValues(elms)
 		s.WriteString(strings.Join(args, ","))
 	}
 
@@ -81,21 +90,21 @@ func (m resourceFunctionCallModel) ContentString(ctx context.Context) (string, e
 }
 
 func (r *resourceFunctionCall) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	r.handleRequest(ctx, &req.Plan, &resp.State, resp.Diagnostics)
+	r.handleRequest(ctx, &req.Plan, &resp.State, &resp.Diagnostics)
 }
 
 func (r *resourceFunctionCall) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	r.handleRequest(ctx, &req.State, &resp.State, resp.Diagnostics)
+	r.handleRequest(ctx, &req.State, &resp.State, &resp.Diagnostics)
 }
 
 func (r *resourceFunctionCall) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	r.handleRequest(ctx, &req.Plan, &resp.State, resp.Diagnostics)
+	r.handleRequest(ctx, &req.Plan, &resp.State, &resp.Diagnostics)
 }
 
 func (r *resourceFunctionCall) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 }
 
-func (r *resourceFunctionCall) handleRequest(ctx context.Context, g util.ModelGetter, s util.ModelSetter, diags diag.Diagnostics) {
+func (r *resourceFunctionCall) handleRequest(ctx context.Context, g util.ModelGetter, s util.ModelSetter, diags *diag.Diagnostics) {
 	util.HandleRequest(
 		ctx,
 		&resourceFunctionCallModel{},

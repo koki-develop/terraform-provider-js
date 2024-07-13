@@ -51,7 +51,7 @@ func (d *dataRaw) Read(ctx context.Context, req datasource.ReadRequest, resp *da
 		&dataFunctionModel{},
 		&req.Config,
 		&resp.State,
-		resp.Diagnostics,
+		&resp.Diagnostics,
 		func(m *dataFunctionModel) error {
 			m.Content = util.Raw(m.Value)
 			return nil

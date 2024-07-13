@@ -56,21 +56,21 @@ type resourceConstModel struct {
 }
 
 func (r *resourceConst) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	r.handleRequest(ctx, &req.Plan, &resp.State, resp.Diagnostics)
+	r.handleRequest(ctx, &req.Plan, &resp.State, &resp.Diagnostics)
 }
 
 func (r *resourceConst) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	r.handleRequest(ctx, &req.State, &resp.State, resp.Diagnostics)
+	r.handleRequest(ctx, &req.State, &resp.State, &resp.Diagnostics)
 }
 
 func (r *resourceConst) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	r.handleRequest(ctx, &req.Plan, &resp.State, resp.Diagnostics)
+	r.handleRequest(ctx, &req.Plan, &resp.State, &resp.Diagnostics)
 }
 
 func (r *resourceConst) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 }
 
-func (r *resourceConst) handleRequest(ctx context.Context, g util.ModelGetter, s util.ModelSetter, diags diag.Diagnostics) {
+func (r *resourceConst) handleRequest(ctx context.Context, g util.ModelGetter, s util.ModelSetter, diags *diag.Diagnostics) {
 	util.HandleRequest(
 		ctx,
 		&resourceConstModel{},

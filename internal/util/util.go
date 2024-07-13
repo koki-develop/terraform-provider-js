@@ -66,7 +66,7 @@ type ModelSetter interface {
 	Set(ctx context.Context, val any) diag.Diagnostics
 }
 
-func HandleRequest[T any](ctx context.Context, model T, g ModelGetter, s ModelSetter, diags diag.Diagnostics, h func(m T) error) {
+func HandleRequest[T any](ctx context.Context, model T, g ModelGetter, s ModelSetter, diags *diag.Diagnostics, h func(m T) error) {
 	diags.Append(g.Get(ctx, model)...)
 	if diags.HasError() {
 		return
