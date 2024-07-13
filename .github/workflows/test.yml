@@ -63,7 +63,7 @@ jobs:
           cat <<EOF > ~/.terraformrc
           provider_installation {
             dev_overrides {
-              "registry.terraform.io/koki-develop/js" = "$(go env GOBIN)"
+              "registry.terraform.io/koki-develop/js" = "$HOME/go/bin"
             }
 
             direct {}
