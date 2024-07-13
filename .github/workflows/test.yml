@@ -47,6 +47,7 @@ jobs:
           - const
           - hello
           - hello_function
+          - atcoder_beginners_selection/00
     steps:
       - uses: actions/checkout@v4
         with:
