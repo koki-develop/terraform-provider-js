@@ -54,6 +54,17 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.9.2
+      - name: create terraformrc
+        run: |
+          cat <<EOF > ~/.terraformrc
+          provider_installation {
+            dev_overrides {
+              "registry.terraform.io/koki-develop/js" = "$(go env GOBIN)"
+            }
+
+            direct {}
+          }
+          EOF
       - name: test
         working-directory: examples/${{ matrix.examples }}
         run: |
