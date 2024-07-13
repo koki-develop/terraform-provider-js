@@ -3,7 +3,7 @@ name: Test
 on: push
 
 jobs:
-  go:
+  go-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,7 +15,19 @@ jobs:
           cache: true
       - run: go test -v ./...
 
-  terraform:
+  go-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: "go.mod"
+          cache: true
+      - uses: golangci/golangci-lint-action@v6
+
+  tf-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
