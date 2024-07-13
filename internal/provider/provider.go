@@ -41,7 +41,7 @@ func (p *jsProvider) Configure(_ context.Context, _ provider.ConfigureRequest, _
 
 func (p *jsProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		datasources.NewDataFunction(),
+		datasources.NewDataRaw(),
 	}
 }
 
