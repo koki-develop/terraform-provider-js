@@ -1,7 +1,8 @@
 # goreleaser
 /dist/
 
-# terraform
+# examples
 /examples/**/*.tfstate*
 /examples/**/.terraform/
 /examples/**/.terraform.lock.hcl
+/examples/**/index.js
