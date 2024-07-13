@@ -56,7 +56,7 @@ type resourceFunctionCallModel struct {
 
 func (m resourceFunctionCallModel) ContentString(ctx context.Context) (string, error) {
 	if m.Args.IsNull() {
-		return fmt.Sprintf("%s()", m.Function.ValueString()), nil
+		return fmt.Sprintf("%s%s()", jstypes.ContentPrefix, m.Function.ValueString()), nil
 	}
 
 	v, ok := m.Args.UnderlyingValue().(basetypes.TupleValue)
@@ -65,7 +65,7 @@ func (m resourceFunctionCallModel) ContentString(ctx context.Context) (string, e
 	}
 
 	args := util.StringifyValues(v.Elements())
-	return fmt.Sprintf("%s(%s)", m.Function.ValueString(), strings.Join(args, ",")), nil
+	return fmt.Sprintf("%s%s(%s)", jstypes.ContentPrefix, m.Function.ValueString(), strings.Join(args, ",")), nil
 }
 
 func (r *resourceFunctionCall) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {

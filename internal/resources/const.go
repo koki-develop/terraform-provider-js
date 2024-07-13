@@ -81,7 +81,7 @@ func (r *resourceConst) handleRequest(ctx context.Context, g util.ModelGetter, s
 		diags,
 		func(m *resourceConstModel) error {
 			m.ID = jstypes.NewIDValue(m.Name)
-			m.Content = types.StringValue(fmt.Sprintf("const %s=%s", m.ID.ValueString(), util.StringifyValue(m.Value)))
+			m.Content = types.StringValue(fmt.Sprintf("%sconst %s=%s", jstypes.ContentPrefix, m.ID.ValueString(), util.StringifyValue(m.Value)))
 			return nil
 		},
 	)

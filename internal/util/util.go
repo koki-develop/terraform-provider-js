@@ -17,8 +17,12 @@ func StringifyValue(v attr.Value) string {
 
 	switch v := v.(type) {
 	case basetypes.StringValue:
-		if strings.HasPrefix(v.ValueString(), jstypes.IDPrefix) {
-			return strings.TrimPrefix(v.ValueString(), jstypes.IDPrefix)
+		vs := v.ValueString()
+		if strings.HasPrefix(vs, jstypes.IDPrefix) {
+			return strings.TrimPrefix(vs, jstypes.IDPrefix)
+		}
+		if strings.HasPrefix(vs, jstypes.ContentPrefix) {
+			return strings.TrimPrefix(vs, jstypes.ContentPrefix)
 		}
 	case basetypes.DynamicValue:
 		return StringifyValue(v.UnderlyingValue())

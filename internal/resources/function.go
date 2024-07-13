@@ -65,6 +65,7 @@ type resourceFunctionModel struct {
 
 func (m resourceFunctionModel) ContentString(ctx context.Context) (string, error) {
 	s := new(strings.Builder)
+	s.WriteString(jstypes.ContentPrefix)
 	s.WriteString("function")
 	if !m.Name.IsNull() {
 		s.WriteString(" ")
@@ -82,10 +83,7 @@ func (m resourceFunctionModel) ContentString(ctx context.Context) (string, error
 	}
 	s.WriteString("){")
 
-	lines := make([]string, len(m.Body.Elements()))
-	for i, b := range m.Body.Elements() {
-		lines[i] = b.(types.String).ValueString()
-	}
+	lines := util.StringifyValues(m.Body.Elements())
 	s.WriteString(strings.Join(lines, ";"))
 
 	s.WriteString("}")
