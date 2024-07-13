@@ -128,12 +128,19 @@ data "js_index" "lines2" {
 
 resource "js_function_call" "log" {
   function = "console.log"
-  args     = [data.js_raw.a_b_c.content, js_const.s.id]
+  args     = [js_operation.a_b_c.content, js_const.s.id]
 }
 
-# TODO: use js_operation
-data "js_raw" "a_b_c" {
-  value = "a + b + c"
+resource "js_operation" "a_b" {
+  left     = js_const.a.id
+  operator = "+"
+  right    = js_const.b.id
+}
+
+resource "js_operation" "a_b_c" {
+  left     = js_operation.a_b.content
+  operator = "+"
+  right    = js_const.c.id
 }
 
 #
