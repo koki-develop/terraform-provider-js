@@ -63,6 +63,7 @@ func (d *dataIndex) Read(ctx context.Context, req datasource.ReadRequest, resp *
 			c.WriteRune('[')
 			c.WriteString(util.StringifyValue(m.Value))
 			c.WriteRune(']')
+			m.Content = util.Raw(types.StringValue(c.String()))
 
 			return true
 		},
