@@ -5,8 +5,12 @@ data "js_function" "console_log" {
 resource "js_function_call" "hello_world" {
   function = data.js_function.console_log.id
   args     = ["hello world"]
-} # => console.log("hello world")
+}
 
-output "content" {
-  value = js_function_call.hello_world.content
+resource "js_program" "main" {
+  contents = [js_function_call.hello_world.content]
+}
+
+output "result" {
+  value = js_program.main.content
 }
