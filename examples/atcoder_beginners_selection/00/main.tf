@@ -127,7 +127,8 @@ data "js_index" "lines2" {
 #
 
 resource "js_function_call" "log" {
-  function = "console.log"
+  caller   = "console"
+  function = "log"
   args     = [js_operation.a_b_c.content, js_const.s.id]
 }
 
@@ -149,18 +150,18 @@ resource "js_operation" "a_b_c" {
 
 resource "js_function_call" "main" {
   function = js_function.main.id
-  args     = [js_function_call.read_input.content]
+  args     = [js_function_call.read_stdin.content]
 }
 
-resource "js_function_call" "read_input" {
-  function = "require('fs').readFileSync"
-  args     = ["/dev/stdin", "utf8"]
+resource "js_function_call" "require_fs" {
+  function = "require"
+  args     = ["fs"]
+}
 
-  # TODO: implement chain block
-  # chain {
-  #   function = "readFileSync"
-  #   args     = ["/dev/stdin", "utf8"]
-  # }
+resource "js_function_call" "read_stdin" {
+  caller   = js_function_call.require_fs.content
+  function = "readFileSync"
+  args     = ["/dev/stdin", "utf8"]
 }
 
 resource "js_program" "main" {
