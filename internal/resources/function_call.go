@@ -32,6 +32,9 @@ func (r *resourceFunctionCall) Metadata(_ context.Context, req resource.Metadata
 func (r *resourceFunctionCall) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
+			"caller": schema.StringAttribute{
+				Optional: true,
+			},
 			"function": schema.StringAttribute{
 				Required: true,
 			},
@@ -47,23 +50,34 @@ func (r *resourceFunctionCall) Schema(_ context.Context, _ resource.SchemaReques
 }
 
 type resourceFunctionCallModel struct {
+	Caller   types.String  `tfsdk:"caller"`
 	Function types.String  `tfsdk:"function"`
 	Args     types.Dynamic `tfsdk:"args"`
-	Content  types.String  `tfsdk:"content"`
+
+	Content types.String `tfsdk:"content"`
 }
 
 func (m resourceFunctionCallModel) ContentString(ctx context.Context) (string, error) {
-	if m.Args.IsNull() {
-		return fmt.Sprintf("%s()", util.RawString(m.Function)), nil
+	s := new(strings.Builder)
+
+	if !m.Caller.IsNull() {
+		s.WriteString(fmt.Sprintf("%s.", util.RawString(m.Caller)))
 	}
 
-	v, ok := m.Args.UnderlyingValue().(basetypes.TupleValue)
-	if !ok {
-		return "", fmt.Errorf("args must be a tuple")
+	s.WriteString(util.RawString(m.Function))
+	s.WriteString("(")
+
+	if !m.Args.IsNull() {
+		v, ok := m.Args.UnderlyingValue().(basetypes.TupleValue)
+		if !ok {
+			return "", fmt.Errorf("args must be a tuple")
+		}
+		args := util.StringifyValues(v.Elements())
+		s.WriteString(strings.Join(args, ","))
 	}
 
-	args := util.StringifyValues(v.Elements())
-	return fmt.Sprintf("%s(%s)", util.RawString(m.Function), strings.Join(args, ",")), nil
+	s.WriteString(")")
+	return s.String(), nil
 }
 
 func (r *resourceFunctionCall) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
