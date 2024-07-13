@@ -11,7 +11,7 @@ JavaScript × Terraform
 </p>
 
 <p align="center">
-The Next Generation of Awesome AltJS.
+The Next Generation AltJS.
 </p>
 
 <p align="center">
