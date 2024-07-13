@@ -16,8 +16,13 @@ func Test_StringifyValue(t *testing.T) {
 		json bool
 		want string
 	}{
-		// id
-		{v: types.StringValue("@js/id:foo"), want: "foo"},
+		// raw
+		{v: types.StringValue("@js/raw:foo"), want: "foo"},
+		{v: types.StringValue("@js/raw:1"), want: "1"},
+		{v: types.StringValue("@js/raw:true"), want: "true"},
+		{v: types.StringValue("@js/raw:[1,2,3]"), want: "[1,2,3]"},
+		{v: types.StringValue(`@js/raw:{"a":1}`), want: `{"a":1}`},
+		{v: types.StringValue("@js/raw:null"), want: "null"},
 
 		// string
 		{v: types.StringValue("foo"), want: `"foo"`},

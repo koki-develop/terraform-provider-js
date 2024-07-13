@@ -6,9 +6,28 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	jstypes "github.com/koki-develop/terraform-provider-js/internal/types"
 )
+
+const prefix = "@js/"
+const RawPrefix = prefix + "raw:"
+
+func Raw(v basetypes.StringValue) basetypes.StringValue {
+	if v.IsNull() || v.IsUnknown() {
+		return v
+	}
+
+	return types.StringValue(RawPrefix + v.ValueString())
+}
+
+func RawString(s string) string {
+	return strings.TrimPrefix(s, RawPrefix)
+}
+
+func hasRawPrefix(v basetypes.StringValue) bool {
+	return strings.HasPrefix(v.ValueString(), RawPrefix)
+}
 
 func StringifyValue(v attr.Value) string {
 	if v.IsNull() {
@@ -17,12 +36,8 @@ func StringifyValue(v attr.Value) string {
 
 	switch v := v.(type) {
 	case basetypes.StringValue:
-		vs := v.ValueString()
-		if strings.HasPrefix(vs, jstypes.IDPrefix) {
-			return strings.TrimPrefix(vs, jstypes.IDPrefix)
-		}
-		if strings.HasPrefix(vs, jstypes.ContentPrefix) {
-			return strings.TrimPrefix(vs, jstypes.ContentPrefix)
+		if hasRawPrefix(v) {
+			return RawString(v.ValueString())
 		}
 	case basetypes.DynamicValue:
 		return StringifyValue(v.UnderlyingValue())
