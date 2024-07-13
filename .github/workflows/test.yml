@@ -36,7 +36,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.9.2
-      - run: terraform fmt -check
+      - run: terraform fmt -recursive -check
 
   tf-test:
     runs-on: ubuntu-latest
