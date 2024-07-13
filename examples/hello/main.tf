@@ -1,5 +1,6 @@
 resource "js_function_call" "hello_world" {
-  function = "console.log"
+  caller   = "console"
+  function = "log"
   args     = ["hello world"]
 }
 

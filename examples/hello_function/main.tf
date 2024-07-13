@@ -9,7 +9,8 @@ resource "js_function_param" "hello_name" {
 }
 
 resource "js_function_call" "log_message" {
-  function = "console.log"
+  caller   = "console"
+  function = "log"
   args     = ["hello", js_function_param.hello_name.id]
 }
 

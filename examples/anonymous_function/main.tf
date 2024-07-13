@@ -13,7 +13,8 @@ resource "js_function_param" "anonymous_message" {
 }
 
 resource "js_function_call" "log_message" {
-  function = "console.log"
+  caller   = "console"
+  function = "log"
   args     = [js_function_param.anonymous_message.id]
 }
 
