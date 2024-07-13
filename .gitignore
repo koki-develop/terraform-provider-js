@@ -1,2 +1,7 @@
-*.tfstate*
+# goreleaser
 /dist/
+
+# terraform
+/examples/**/*.tfstate*
+/examples/**/.terraform/
+/examples/**/.terraform.lock.hcl
