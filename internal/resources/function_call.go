@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	jstypes "github.com/koki-develop/terraform-provider-js/internal/types"
 	"github.com/koki-develop/terraform-provider-js/internal/util"
 )
 
@@ -34,8 +33,7 @@ func (r *resourceFunctionCall) Schema(_ context.Context, _ resource.SchemaReques
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"function": schema.StringAttribute{
-				CustomType: jstypes.ID{},
-				Required:   true,
+				Required: true,
 			},
 			"args": schema.DynamicAttribute{
 				Optional: true,
@@ -49,14 +47,14 @@ func (r *resourceFunctionCall) Schema(_ context.Context, _ resource.SchemaReques
 }
 
 type resourceFunctionCallModel struct {
-	Function jstypes.IDValue `tfsdk:"function"`
-	Args     types.Dynamic   `tfsdk:"args"`
-	Content  types.String    `tfsdk:"content"`
+	Function types.String  `tfsdk:"function"`
+	Args     types.Dynamic `tfsdk:"args"`
+	Content  types.String  `tfsdk:"content"`
 }
 
 func (m resourceFunctionCallModel) ContentString(ctx context.Context) (string, error) {
 	if m.Args.IsNull() {
-		return fmt.Sprintf("%s%s()", jstypes.ContentPrefix, m.Function.ValueString()), nil
+		return fmt.Sprintf("%s()", util.RawString(m.Function)), nil
 	}
 
 	v, ok := m.Args.UnderlyingValue().(basetypes.TupleValue)
@@ -65,7 +63,7 @@ func (m resourceFunctionCallModel) ContentString(ctx context.Context) (string, e
 	}
 
 	args := util.StringifyValues(v.Elements())
-	return fmt.Sprintf("%s%s(%s)", jstypes.ContentPrefix, m.Function.ValueString(), strings.Join(args, ",")), nil
+	return fmt.Sprintf("%s(%s)", util.RawString(m.Function), strings.Join(args, ",")), nil
 }
 
 func (r *resourceFunctionCall) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -96,7 +94,7 @@ func (r *resourceFunctionCall) handleRequest(ctx context.Context, g util.ModelGe
 				return err
 			}
 
-			m.Content = types.StringValue(c)
+			m.Content = util.Raw(types.StringValue(c))
 			return nil
 		},
 	)

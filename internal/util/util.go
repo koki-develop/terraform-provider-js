@@ -21,8 +21,8 @@ func Raw(v basetypes.StringValue) basetypes.StringValue {
 	return types.StringValue(RawPrefix + v.ValueString())
 }
 
-func RawString(s string) string {
-	return strings.TrimPrefix(s, RawPrefix)
+func RawString(v basetypes.StringValue) string {
+	return strings.TrimPrefix(v.ValueString(), RawPrefix)
 }
 
 func hasRawPrefix(v basetypes.StringValue) bool {
@@ -37,7 +37,7 @@ func StringifyValue(v attr.Value) string {
 	switch v := v.(type) {
 	case basetypes.StringValue:
 		if hasRawPrefix(v) {
-			return RawString(v.ValueString())
+			return RawString(v)
 		}
 	case basetypes.DynamicValue:
 		return StringifyValue(v.UnderlyingValue())
