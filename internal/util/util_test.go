@@ -17,7 +17,7 @@ func Test_StringifyValue(t *testing.T) {
 		want string
 	}{
 		// id
-		{v: types.StringValue("@js:id:foo"), want: "foo"},
+		{v: types.StringValue("@js/id:foo"), want: "foo"},
 
 		// string
 		{v: types.StringValue("foo"), want: `"foo"`},

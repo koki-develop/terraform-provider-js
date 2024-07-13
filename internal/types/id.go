@@ -61,7 +61,7 @@ func (i ID) ValueType(ctx context.Context) attr.Value {
 var _ basetypes.StringValuable = IDValue{}
 var _ basetypes.StringValuableWithSemanticEquals = IDValue{}
 
-const IDPrefix = "@js:id:"
+const IDPrefix = Prefix + "id:"
 
 type IDValue struct {
 	basetypes.StringValue
