@@ -66,14 +66,14 @@ func (m resourceFunctionModel) ContentString(ctx context.Context) (string, error
 	s.WriteString("function")
 	if !m.Name.IsNull() {
 		s.WriteString(" ")
-		s.WriteString(m.Name.ValueString())
+		s.WriteString(util.RawString(m.Name))
 	}
 	s.WriteString("(")
 
 	if !m.Params.IsNull() {
 		ps := make([]string, len(m.Params.Elements()))
 		for i, p := range m.Params.Elements() {
-			ps[i] = p.(types.String).ValueString()
+			ps[i] = util.RawString(p.(types.String))
 		}
 		s.WriteString(strings.Join(ps, ","))
 	}
