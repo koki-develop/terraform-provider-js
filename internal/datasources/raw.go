@@ -52,9 +52,9 @@ func (d *dataRaw) Read(ctx context.Context, req datasource.ReadRequest, resp *da
 		&req.Config,
 		&resp.State,
 		&resp.Diagnostics,
-		func(m *dataFunctionModel) error {
+		func(m *dataFunctionModel) bool {
 			m.Content = util.Raw(m.Value)
-			return nil
+			return true
 		},
 	)
 }

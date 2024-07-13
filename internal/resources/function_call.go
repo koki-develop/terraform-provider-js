@@ -58,37 +58,6 @@ type resourceFunctionCallModel struct {
 	Content types.String `tfsdk:"content"`
 }
 
-func (m resourceFunctionCallModel) ContentString(ctx context.Context) (string, error) {
-	s := new(strings.Builder)
-
-	if !m.Caller.IsNull() {
-		s.WriteString(fmt.Sprintf("%s.", util.RawString(m.Caller)))
-	}
-
-	s.WriteString(util.RawString(m.Function))
-	s.WriteString("(")
-
-	if !m.Args.IsNull() {
-		var elms []attr.Value
-		switch v := m.Args.UnderlyingValue().(type) {
-		case basetypes.ListValue:
-			elms = v.Elements()
-		case basetypes.TupleValue:
-			elms = v.Elements()
-		case basetypes.SetValue:
-			elms = v.Elements()
-		default:
-			return "", fmt.Errorf("args must be a tuple")
-		}
-
-		args := util.StringifyValues(elms)
-		s.WriteString(strings.Join(args, ","))
-	}
-
-	s.WriteString(")")
-	return s.String(), nil
-}
-
 func (r *resourceFunctionCall) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	r.handleRequest(ctx, &req.Plan, &resp.State, &resp.Diagnostics)
 }
@@ -111,14 +80,38 @@ func (r *resourceFunctionCall) handleRequest(ctx context.Context, g util.ModelGe
 		g,
 		s,
 		diags,
-		func(m *resourceFunctionCallModel) error {
-			c, err := m.ContentString(ctx)
-			if err != nil {
-				return err
+		func(m *resourceFunctionCallModel) bool {
+			c := new(strings.Builder)
+
+			if !m.Caller.IsNull() {
+				c.WriteString(fmt.Sprintf("%s.", util.RawString(m.Caller)))
 			}
 
-			m.Content = util.Raw(types.StringValue(c))
-			return nil
+			c.WriteString(util.RawString(m.Function))
+			c.WriteString("(")
+
+			if !m.Args.IsNull() {
+				var elms []attr.Value
+				switch v := m.Args.UnderlyingValue().(type) {
+				case basetypes.ListValue:
+					elms = v.Elements()
+				case basetypes.TupleValue:
+					elms = v.Elements()
+				case basetypes.SetValue:
+					elms = v.Elements()
+				default:
+					diags.AddError("Invalid type of args", "args must be a list, tuple or set")
+					return false
+				}
+
+				args := util.StringifyValues(elms)
+				c.WriteString(strings.Join(args, ","))
+			}
+
+			c.WriteString(")")
+
+			m.Content = util.Raw(types.StringValue(c.String()))
+			return true
 		},
 	)
 }

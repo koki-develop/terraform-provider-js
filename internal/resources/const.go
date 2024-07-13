@@ -77,10 +77,10 @@ func (r *resourceConst) handleRequest(ctx context.Context, g util.ModelGetter, s
 		g,
 		s,
 		diags,
-		func(m *resourceConstModel) error {
+		func(m *resourceConstModel) bool {
 			m.ID = util.Raw(m.Name)
 			m.Content = util.Raw(types.StringValue(fmt.Sprintf("const %s=%s", util.RawString(m.Name), util.StringifyValue(m.Value))))
-			return nil
+			return true
 		},
 	)
 }

@@ -61,31 +61,6 @@ type resourceFunctionModel struct {
 	Content types.String `tfsdk:"content"`
 }
 
-func (m resourceFunctionModel) ContentString(ctx context.Context) (string, error) {
-	s := new(strings.Builder)
-	s.WriteString("function")
-	if !m.Name.IsNull() {
-		s.WriteString(" ")
-		s.WriteString(util.RawString(m.Name))
-	}
-	s.WriteString("(")
-
-	if !m.Params.IsNull() {
-		ps := make([]string, len(m.Params.Elements()))
-		for i, p := range m.Params.Elements() {
-			ps[i] = util.RawString(p.(types.String))
-		}
-		s.WriteString(strings.Join(ps, ","))
-	}
-	s.WriteString("){")
-
-	lines := util.StringifyValues(m.Body.Elements())
-	s.WriteString(strings.Join(lines, ";"))
-
-	s.WriteString("}")
-	return s.String(), nil
-}
-
 func (r *resourceFunction) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	r.handleRequest(ctx, &req.Plan, &resp.State, &resp.Diagnostics)
 }
@@ -108,15 +83,33 @@ func (r *resourceFunction) handleRequest(ctx context.Context, g util.ModelGetter
 		g,
 		s,
 		diags,
-		func(m *resourceFunctionModel) error {
-			c, err := m.ContentString(ctx)
-			if err != nil {
-				return err
+		func(m *resourceFunctionModel) bool {
+			c := new(strings.Builder)
+			c.WriteString("function")
+			if !m.Name.IsNull() {
+				c.WriteString(" ")
+				c.WriteString(util.RawString(m.Name))
 			}
+			c.WriteString("(")
+
+			if !m.Params.IsNull() {
+				ps := make([]string, len(m.Params.Elements()))
+				for i, p := range m.Params.Elements() {
+					ps[i] = util.RawString(p.(types.String))
+				}
+				c.WriteString(strings.Join(ps, ","))
+			}
+			c.WriteString("){")
+
+			lines := util.StringifyValues(m.Body.Elements())
+			c.WriteString(strings.Join(lines, ";"))
+
+			c.WriteString("}")
 
 			m.ID = util.Raw(m.Name)
-			m.Content = util.Raw(types.StringValue(c))
-			return nil
+			m.Content = util.Raw(types.StringValue(c.String()))
+
+			return true
 		},
 	)
 }

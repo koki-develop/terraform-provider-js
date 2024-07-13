@@ -67,9 +67,9 @@ func (r *resourceFunctionParam) handleRequest(ctx context.Context, g util.ModelG
 		g,
 		s,
 		diags,
-		func(m *resourceFunctionParamModel) error {
+		func(m *resourceFunctionParamModel) bool {
 			m.ID = util.Raw(m.Name)
-			return nil
+			return true
 		},
 	)
 }
