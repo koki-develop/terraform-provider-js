@@ -16,8 +16,10 @@ var (
 
 type dataFunction struct{}
 
-func NewDataFunction() datasource.DataSource {
-	return &dataFunction{}
+func NewDataFunction() func() datasource.DataSource {
+	return func() datasource.DataSource {
+		return &dataFunction{}
+	}
 }
 
 func (d *dataFunction) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {

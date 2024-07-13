@@ -41,15 +41,15 @@ func (p *jsProvider) Configure(_ context.Context, _ provider.ConfigureRequest, _
 
 func (p *jsProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		datasources.NewDataFunction,
+		datasources.NewDataFunction(),
 	}
 }
 
 func (p *jsProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		resources.NewResourceProgram,
-		resources.NewResourceFunction,
-		resources.NewResourceFunctionCall,
-		resources.NewResourceFunctionParam,
+		resources.NewResourceProgram(p.version),
+		resources.NewResourceFunction(),
+		resources.NewResourceFunctionCall(),
+		resources.NewResourceFunctionParam(),
 	}
 }

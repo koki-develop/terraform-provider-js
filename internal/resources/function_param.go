@@ -15,8 +15,10 @@ var (
 	_ resource.Resource = &resourceFunctionParam{}
 )
 
-func NewResourceFunctionParam() resource.Resource {
-	return &resourceFunctionParam{}
+func NewResourceFunctionParam() func() resource.Resource {
+	return func() resource.Resource {
+		return &resourceFunctionParam{}
+	}
 }
 
 type resourceFunctionParam struct{}

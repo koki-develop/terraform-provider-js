@@ -18,8 +18,10 @@ var (
 	_ resource.Resource = &resourceFunctionCall{}
 )
 
-func NewResourceFunctionCall() resource.Resource {
-	return &resourceFunctionCall{}
+func NewResourceFunctionCall() func() resource.Resource {
+	return func() resource.Resource {
+		return &resourceFunctionCall{}
+	}
 }
 
 type resourceFunctionCall struct{}
