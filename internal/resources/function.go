@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	jstypes "github.com/koki-develop/terraform-provider-js/internal/types"
 	"github.com/koki-develop/terraform-provider-js/internal/util"
 )
 
@@ -44,8 +43,7 @@ func (r *resourceFunction) Schema(_ context.Context, _ resource.SchemaRequest, r
 			},
 
 			"id": schema.StringAttribute{
-				CustomType: jstypes.ID{},
-				Computed:   true,
+				Computed: true,
 			},
 			"content": schema.StringAttribute{
 				Computed: true,
@@ -59,13 +57,12 @@ type resourceFunctionModel struct {
 	Params types.List   `tfsdk:"params"`
 	Body   types.List   `tfsdk:"body"`
 
-	ID      jstypes.IDValue `tfsdk:"id"`
-	Content types.String    `tfsdk:"content"`
+	ID      types.String `tfsdk:"id"`
+	Content types.String `tfsdk:"content"`
 }
 
 func (m resourceFunctionModel) ContentString(ctx context.Context) (string, error) {
 	s := new(strings.Builder)
-	s.WriteString(jstypes.ContentPrefix)
 	s.WriteString("function")
 	if !m.Name.IsNull() {
 		s.WriteString(" ")
@@ -76,8 +73,7 @@ func (m resourceFunctionModel) ContentString(ctx context.Context) (string, error
 	if !m.Params.IsNull() {
 		ps := make([]string, len(m.Params.Elements()))
 		for i, p := range m.Params.Elements() {
-			id := jstypes.NewIDValue(p.(types.String))
-			ps[i] = id.ValueString()
+			ps[i] = p.(types.String).ValueString()
 		}
 		s.WriteString(strings.Join(ps, ","))
 	}
@@ -118,8 +114,8 @@ func (r *resourceFunction) handleRequest(ctx context.Context, g util.ModelGetter
 				return err
 			}
 
-			m.ID = jstypes.NewIDValue(m.Name)
-			m.Content = types.StringValue(c)
+			m.ID = util.Raw(m.Name)
+			m.Content = util.Raw(types.StringValue(c))
 			return nil
 		},
 	)
