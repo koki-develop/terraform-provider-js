@@ -7,7 +7,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	jstypes "github.com/koki-develop/terraform-provider-js/internal/types"
 	"github.com/koki-develop/terraform-provider-js/internal/util"
 )
 
@@ -35,16 +34,15 @@ func (r *resourceFunctionParam) Schema(_ context.Context, _ resource.SchemaReque
 			},
 
 			"id": schema.StringAttribute{
-				CustomType: jstypes.ID{},
-				Computed:   true,
+				Computed: true,
 			},
 		},
 	}
 }
 
 type resourceFunctionParamModel struct {
-	Name types.String    `tfsdk:"name"`
-	ID   jstypes.IDValue `tfsdk:"id"`
+	Name types.String `tfsdk:"name"`
+	ID   types.String `tfsdk:"id"`
 }
 
 func (r *resourceFunctionParam) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -70,7 +68,7 @@ func (r *resourceFunctionParam) handleRequest(ctx context.Context, g util.ModelG
 		s,
 		diags,
 		func(m *resourceFunctionParamModel) error {
-			m.ID = jstypes.NewIDValue(m.Name)
+			m.ID = util.Raw(m.Name)
 			return nil
 		},
 	)
