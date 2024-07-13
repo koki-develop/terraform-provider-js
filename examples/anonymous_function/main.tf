@@ -1,7 +1,3 @@
-data "js_function" "console_log" {
-  name = "console.log"
-}
-
 resource "js_const" "anonymous" {
   name  = "anonymous"
   value = js_function.anonymous.content
@@ -17,7 +13,7 @@ resource "js_function_param" "anonymous_message" {
 }
 
 resource "js_function_call" "log_message" {
-  function = data.js_function.console_log.id
+  function = "console.log"
   args     = [js_function_param.anonymous_message.id]
 }
 

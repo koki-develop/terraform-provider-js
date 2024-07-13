@@ -1,9 +1,5 @@
-data "js_function" "console_log" {
-  name = "console.log"
-}
-
 resource "js_function_call" "hello_world" {
-  function = data.js_function.console_log.id
+  function = "console.log"
   args     = ["hello world"]
 }
 

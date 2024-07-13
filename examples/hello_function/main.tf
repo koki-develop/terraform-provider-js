@@ -1,7 +1,3 @@
-data "js_function" "console_log" {
-  name = "console.log"
-}
-
 resource "js_function" "hello" {
   name   = "hello"
   params = [js_function_param.hello_name.id]
@@ -13,7 +9,7 @@ resource "js_function_param" "hello_name" {
 }
 
 resource "js_function_call" "log_message" {
-  function = data.js_function.console_log.id
+  function = "console.log"
   args     = ["hello", js_function_param.hello_name.id]
 }
 
