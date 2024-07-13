@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	jstypes "github.com/koki-develop/terraform-provider-js/internal/types"
 	"github.com/koki-develop/terraform-provider-js/internal/util"
 )
 
@@ -39,8 +38,7 @@ func (r *resourceConst) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			},
 
 			"id": schema.StringAttribute{
-				CustomType: jstypes.ID{},
-				Computed:   true,
+				Computed: true,
 			},
 			"content": schema.StringAttribute{
 				Computed: true,
@@ -53,8 +51,8 @@ type resourceConstModel struct {
 	Name  types.String  `tfsdk:"name"`
 	Value types.Dynamic `tfsdk:"value"`
 
-	ID      jstypes.IDValue `tfsdk:"id"`
-	Content types.String    `tfsdk:"content"`
+	ID      types.String `tfsdk:"id"`
+	Content types.String `tfsdk:"content"`
 }
 
 func (r *resourceConst) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -80,8 +78,8 @@ func (r *resourceConst) handleRequest(ctx context.Context, g util.ModelGetter, s
 		s,
 		diags,
 		func(m *resourceConstModel) error {
-			m.ID = jstypes.NewIDValue(m.Name)
-			m.Content = types.StringValue(fmt.Sprintf("%sconst %s=%s", jstypes.ContentPrefix, m.ID.ValueString(), util.StringifyValue(m.Value)))
+			m.ID = util.Raw(m.Name)
+			m.Content = util.Raw(types.StringValue(fmt.Sprintf("const %s=%s", m.Name.ValueString(), util.StringifyValue(m.Value))))
 			return nil
 		},
 	)
