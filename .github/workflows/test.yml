@@ -17,6 +17,13 @@ jobs:
 
   terraform:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        examples:
+          - anonymous_function
+          - const
+          - hello
+          - hello_function
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,10 +32,7 @@ jobs:
         with:
           terraform_version: 1.9.2
       - name: test
-        working-directory: examples
+        working-directory: examples/${{ matrix.examples }}
         run: |
-          for wd in $(ls -d */); do
-            cd $wd
-            terraform init
-            terraform test
-          done
+          terraform init
+          terraform test
