@@ -17,6 +17,9 @@ func Raw(v basetypes.StringValue) basetypes.StringValue {
 	if v.IsNull() || v.IsUnknown() {
 		return v
 	}
+	if hasRawPrefix(v) {
+		return v
+	}
 
 	return types.StringValue(RawPrefix + v.ValueString())
 }
