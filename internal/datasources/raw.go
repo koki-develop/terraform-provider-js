@@ -39,7 +39,7 @@ func (d *dataRaw) Schema(_ context.Context, _ datasource.SchemaRequest, resp *da
 	}
 }
 
-type dataFunctionModel struct {
+type dataRawModel struct {
 	Value types.String `tfsdk:"value"`
 
 	Content types.String `tfsdk:"content"`
@@ -48,11 +48,11 @@ type dataFunctionModel struct {
 func (d *dataRaw) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	util.HandleRequest(
 		ctx,
-		&dataFunctionModel{},
+		&dataRawModel{},
 		&req.Config,
 		&resp.State,
 		&resp.Diagnostics,
-		func(m *dataFunctionModel) bool {
+		func(m *dataRawModel) bool {
 			m.Content = util.Raw(m.Value)
 			return true
 		},
