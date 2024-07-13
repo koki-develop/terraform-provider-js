@@ -6,7 +6,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	jstypes "github.com/koki-develop/terraform-provider-js/internal/types"
 	"github.com/koki-develop/terraform-provider-js/internal/util"
 )
 
@@ -34,8 +33,7 @@ func (d *dataFunction) Schema(_ context.Context, _ datasource.SchemaRequest, res
 			},
 
 			"id": schema.StringAttribute{
-				CustomType: jstypes.ID{},
-				Computed:   true,
+				Computed: true,
 			},
 		},
 	}
@@ -44,7 +42,7 @@ func (d *dataFunction) Schema(_ context.Context, _ datasource.SchemaRequest, res
 type dataFunctionModel struct {
 	Name types.String `tfsdk:"name"`
 
-	ID jstypes.IDValue `tfsdk:"id"`
+	ID types.String `tfsdk:"id"`
 }
 
 func (d *dataFunction) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -55,7 +53,7 @@ func (d *dataFunction) Read(ctx context.Context, req datasource.ReadRequest, res
 		&resp.State,
 		resp.Diagnostics,
 		func(m *dataFunctionModel) error {
-			m.ID = jstypes.NewIDValue(m.Name)
+			m.ID = util.Raw(m.Name)
 			return nil
 		},
 	)
