@@ -2,7 +2,6 @@ package resources
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -33,7 +32,7 @@ func (r *resourceFunction) Schema(_ context.Context, _ resource.SchemaRequest, r
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Required: true,
+				Optional: true,
 			},
 			"params": schema.ListAttribute{
 				ElementType: types.StringType,
@@ -66,7 +65,12 @@ type resourceFunctionModel struct {
 
 func (m resourceFunctionModel) ContentString(ctx context.Context) (string, error) {
 	s := new(strings.Builder)
-	s.WriteString(fmt.Sprintf("function %s(", m.Name.ValueString()))
+	s.WriteString("function")
+	if !m.Name.IsNull() {
+		s.WriteString(" ")
+		s.WriteString(m.Name.ValueString())
+	}
+	s.WriteString("(")
 
 	if !m.Params.IsNull() {
 		ps := make([]string, len(m.Params.Elements()))
