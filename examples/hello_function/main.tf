@@ -29,6 +29,7 @@ resource "js_program" "main" {
   ]
 }
 
-output "content" {
-  value = js_program.main.content
+resource "local_file" "main" {
+  filename = "index.js"
+  content  = js_program.main.content
 }

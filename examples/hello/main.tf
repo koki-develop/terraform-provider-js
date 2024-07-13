@@ -11,6 +11,7 @@ resource "js_program" "main" {
   contents = [js_function_call.hello_world.content]
 }
 
-output "result" {
-  value = js_program.main.content
+resource "local_file" "main" {
+  filename = "index.js"
+  content  = js_program.main.content
 }
