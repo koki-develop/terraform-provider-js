@@ -111,17 +111,17 @@ data "js_index" "lines2" {
 resource "js_function_call" "log" {
   caller   = "console"
   function = "log"
-  args     = [js_operation.a_b_c.content, js_const.s.id]
+  args     = [js_operation.a_plus_b_plus_c.content, js_const.s.id]
 }
 
-resource "js_operation" "a_b" {
+resource "js_operation" "a_plus_b" {
   left     = js_const.a.id
   operator = "+"
   right    = js_const.b.id
 }
 
-resource "js_operation" "a_b_c" {
-  left     = js_operation.a_b.content
+resource "js_operation" "a_plus_b_plus_c" {
+  left     = js_operation.a_plus_b.content
   operator = "+"
   right    = js_const.c.id
 }
