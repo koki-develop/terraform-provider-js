@@ -39,6 +39,9 @@ func (d *dataIndex) Schema(_ context.Context, _ datasource.SchemaRequest, resp *
 			"id": schema.StringAttribute{
 				Computed: true,
 			},
+			"content": schema.StringAttribute{
+				Computed: true,
+			},
 		},
 	}
 }
@@ -47,7 +50,8 @@ type dataIndexModel struct {
 	Ref   types.String  `tfsdk:"ref"`
 	Value types.Dynamic `tfsdk:"value"`
 
-	ID types.String `tfsdk:"id"`
+	ID      types.String `tfsdk:"id"`
+	Content types.String `tfsdk:"content"`
 }
 
 func (d *dataIndex) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -64,6 +68,7 @@ func (d *dataIndex) Read(ctx context.Context, req datasource.ReadRequest, resp *
 			c.WriteString(util.StringifyValue(m.Value))
 			c.WriteRune(']')
 			m.ID = util.Raw(types.StringValue(c.String()))
+			m.Content = m.ID
 
 			return true
 		},
