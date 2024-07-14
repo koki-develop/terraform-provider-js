@@ -50,6 +50,7 @@ func (p *jsProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		resources.NewResourceConst(),
 		resources.NewResourceIf(),
+		resources.NewResourceLet(),
 		resources.NewResourceOperation(),
 		resources.NewResourceProgram(p.version),
 		resources.NewResourceFunction(),
