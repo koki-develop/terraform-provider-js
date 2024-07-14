@@ -49,12 +49,13 @@ func (p *jsProvider) DataSources(_ context.Context) []func() datasource.DataSour
 func (p *jsProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		resources.NewResourceConst(),
+		resources.NewResourceFunction(),
+		resources.NewResourceFunctionCall(),
+		resources.NewResourceFunctionParam(),
 		resources.NewResourceIf(),
 		resources.NewResourceLet(),
 		resources.NewResourceOperation(),
 		resources.NewResourceProgram(p.version),
-		resources.NewResourceFunction(),
-		resources.NewResourceFunctionCall(),
-		resources.NewResourceFunctionParam(),
+		resources.NewResourceReturn(),
 	}
 }
