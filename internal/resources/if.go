@@ -85,26 +85,12 @@ func (r *resourceIf) handleRequest(ctx context.Context, g util.ModelGetter, s ut
 			c.WriteString(util.StringifyValue(m.Condition))
 			c.WriteString("){")
 			if !m.Then.IsNull() {
-				b := new(strings.Builder)
-				for i, e := range m.Then.Elements() {
-					if i > 0 && b.String()[b.Len()-1:] != "}" {
-						b.WriteString(";")
-					}
-					b.WriteString(util.StringifyValue(e))
-				}
-				c.WriteString(b.String())
+				c.WriteString(util.StringifyStatements(m.Then.Elements()))
 			}
 			c.WriteString("}")
 			if !m.Else.IsNull() {
 				c.WriteString("else{")
-				b := new(strings.Builder)
-				for i, e := range m.Else.Elements() {
-					if i > 0 && b.String()[b.Len()-1:] != "}" {
-						b.WriteString(";")
-					}
-					b.WriteString(util.StringifyValue(e))
-				}
-				c.WriteString(b.String())
+				c.WriteString(util.StringifyStatements(m.Else.Elements()))
 				c.WriteString("}")
 			}
 

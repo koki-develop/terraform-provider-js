@@ -58,6 +58,19 @@ func StringifyValues(vs []attr.Value) []string {
 	return strs
 }
 
+func StringifyStatements(vs []attr.Value) string {
+	c := new(strings.Builder)
+
+	for i, v := range vs {
+		if i > 0 && c.String()[c.Len()-1:] != "}" {
+			c.WriteString(";")
+		}
+		c.WriteString(StringifyValue(v))
+	}
+
+	return c.String()
+}
+
 type ModelGetter interface {
 	Get(ctx context.Context, target any) diag.Diagnostics
 }

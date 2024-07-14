@@ -100,10 +100,7 @@ func (r *resourceFunction) handleRequest(ctx context.Context, g util.ModelGetter
 				c.WriteString(strings.Join(ps, ","))
 			}
 			c.WriteString("){")
-
-			lines := util.StringifyValues(m.Body.Elements())
-			c.WriteString(strings.Join(lines, ";"))
-
+			c.WriteString(util.StringifyStatements(m.Body.Elements()))
 			c.WriteString("}")
 
 			m.ID = util.Raw(m.Name)
