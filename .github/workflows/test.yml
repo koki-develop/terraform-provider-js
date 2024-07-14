@@ -48,6 +48,8 @@ jobs:
           - hello
           - hello_function
           - atcoder_beginners_selection/00
+          - atcoder_beginners_selection/01
+          - atcoder_beginners_selection/02
     steps:
       - uses: actions/checkout@v4
         with:
