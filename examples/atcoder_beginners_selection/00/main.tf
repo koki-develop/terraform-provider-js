@@ -1,21 +1,3 @@
-resource "js_function" "main" {
-  name   = "main"
-  params = [js_function_param.input.id]
-  body = [
-    js_const.lines.content,
-    js_const.a.content,
-    js_const.bc.content,
-    js_const.b.content,
-    js_const.c.content,
-    js_const.s.content,
-    js_function_call.log.content,
-  ]
-}
-
-resource "js_function_param" "input" {
-  name = "input"
-}
-
 #
 # const lines
 #
@@ -142,6 +124,28 @@ resource "js_operation" "a_b_c" {
   left     = js_operation.a_b.content
   operator = "+"
   right    = js_const.c.id
+}
+
+#
+# main
+#
+
+resource "js_function" "main" {
+  name   = "main"
+  params = [js_function_param.input.id]
+  body = [
+    js_const.lines.content,
+    js_const.a.content,
+    js_const.bc.content,
+    js_const.b.content,
+    js_const.c.content,
+    js_const.s.content,
+    js_function_call.log.content,
+  ]
+}
+
+resource "js_function_param" "input" {
+  name = "input"
 }
 
 #
