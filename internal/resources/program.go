@@ -32,14 +32,17 @@ func (r *resourceProgram) Metadata(_ context.Context, req resource.MetadataReque
 
 func (r *resourceProgram) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The `js_program` resource creates a program.",
 		Attributes: map[string]schema.Attribute{
 			"contents": schema.ListAttribute{
+				Description: "The contents of the program.",
 				ElementType: types.StringType,
 				Required:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Computed: true,
+				Description: "The content of the program.",
+				Computed:    true,
 			},
 		},
 	}
