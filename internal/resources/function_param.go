@@ -28,13 +28,16 @@ func (r *resourceFunctionParam) Metadata(_ context.Context, req resource.Metadat
 
 func (r *resourceFunctionParam) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The `js_function_param` resource defines a function parameter.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Required: true,
+				Description: "The name of the function parameter.",
+				Required:    true,
 			},
 
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The id of the function parameter.",
+				Computed:    true,
 			},
 		},
 	}

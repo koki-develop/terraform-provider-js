@@ -3,12 +3,12 @@
 page_title: "js_function_param Resource - terraform-provider-js"
 subcategory: ""
 description: |-
-  
+  The js_function_param resource defines a function parameter.
 ---
 
 # js_function_param (Resource)
 
-
+The `js_function_param` resource defines a function parameter.
 
 
 
@@ -17,8 +17,8 @@ description: |-
 
 ### Required
 
-- `name` (String)
+- `name` (String) The name of the function parameter.
 
 ### Read-Only
 
-- `id` (String) The ID of this resource.
+- `id` (String) The id of the function parameter.
