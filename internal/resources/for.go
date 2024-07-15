@@ -29,23 +29,29 @@ func (r *resourceFor) Metadata(_ context.Context, req resource.MetadataRequest, 
 
 func (r *resourceFor) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The `js_for` resource creates a for loop.",
 		Attributes: map[string]schema.Attribute{
 			"init": schema.StringAttribute{
-				Optional: true,
+				Description: "The initialization expression.",
+				Optional:    true,
 			},
 			"condition": schema.StringAttribute{
-				Optional: true,
+				Description: "The condition expression.",
+				Optional:    true,
 			},
 			"update": schema.StringAttribute{
-				Optional: true,
+				Description: "The update expression.",
+				Optional:    true,
 			},
 			"body": schema.ListAttribute{
+				Description: "The body of the for loop.",
 				ElementType: types.StringType,
 				Optional:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Computed: true,
+				Description: "The content of the for loop.",
+				Computed:    true,
 			},
 		},
 	}
