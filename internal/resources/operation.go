@@ -29,19 +29,24 @@ func (r *resourceOperation) Metadata(_ context.Context, req resource.MetadataReq
 
 func (r *resourceOperation) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Description: "The `js_operation` resource create an operation.",
 		Attributes: map[string]schema.Attribute{
 			"operator": schema.StringAttribute{
-				Required: true,
+				Description: "The operator of the operation.",
+				Required:    true,
 			},
 			"left": schema.DynamicAttribute{
-				Required: true,
+				Description: "The left operand of the operation.",
+				Required:    true,
 			},
 			"right": schema.DynamicAttribute{
-				Required: true,
+				Description: "The right operand of the operation.",
+				Required:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Computed: true,
+				Description: "The content of the operation.",
+				Computed:    true,
 			},
 		},
 	}
