@@ -29,13 +29,16 @@ func (r *resourceReturn) Metadata(_ context.Context, req resource.MetadataReques
 
 func (r *resourceReturn) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The `js_return` resource creates a return.",
 		Attributes: map[string]schema.Attribute{
 			"value": schema.DynamicAttribute{
-				Required: true,
+				Description: "The value of the return.",
+				Required:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Computed: true,
+				Description: "The content of the return.",
+				Computed:    true,
 			},
 		},
 	}
