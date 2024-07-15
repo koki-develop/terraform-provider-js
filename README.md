@@ -17,7 +17,6 @@ The Next Generation AltJS.
 <p align="center">
 <a href="https://github.com/koki-develop/terraform-provider-js/releases/latest"><img src="https://img.shields.io/github/v/release/koki-develop/terraform-provider-js" alt="GitHub release (latest by date)"></a>
 <a href="https://github.com/koki-develop/terraform-provider-js/actions/workflows/test.yml"><img src="https://img.shields.io/github/actions/workflow/status/koki-develop/terraform-provider-js/test.yml?logo=github" alt="GitHub Workflow Status"></a>
-<a href="https://codeclimate.com/github/koki-develop/terraform-provider-js/maintainability"><img src="https://img.shields.io/codeclimate/maintainability/koki-develop/terraform-provider-js?style=flat&amp;logo=codeclimate" alt="Maintainability"></a>
 <a href="https://goreportcard.com/report/github.com/koki-develop/terraform-provider-js"><img src="https://goreportcard.com/badge/github.com/koki-develop/terraform-provider-js" alt="Go Report Card"></a>
 <a href="./LICENSE"><img src="https://img.shields.io/github/license/koki-develop/terraform-provider-js" alt="LICENSE"></a>
 </p>
