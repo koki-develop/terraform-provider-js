@@ -29,19 +29,24 @@ func (r *resourceLet) Metadata(_ context.Context, req resource.MetadataRequest, 
 
 func (r *resourceLet) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The `js_let` resource defines a let statement.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Required: true,
+				Description: "The name of the let statement.",
+				Required:    true,
 			},
 			"value": schema.DynamicAttribute{
-				Required: true,
+				Description: "The value of the let statement.",
+				Required:    true,
 			},
 
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The id of the let statement.",
+				Computed:    true,
 			},
 			"content": schema.StringAttribute{
-				Computed: true,
+				Description: "The content of the let statement.",
+				Computed:    true,
 			},
 		},
 	}
