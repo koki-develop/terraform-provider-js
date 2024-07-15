@@ -45,6 +45,27 @@ $ node index.js
 hello world
 ```
 
+# Getting Started
+
+WIP
+
+```hcl
+terraform {
+  required_providers {
+    js = {
+      source = "koki-develop/js"
+      version = "0.0.7"
+    }
+  }
+}
+
+provider "js" {}
+```
+
+# Documentation
+
+- [Terraform Registry](https://registry.terraform.io/providers/koki-develop/js/latest/docs)
+
 # LICENSE
 
 [MIT](./LICENSE)
