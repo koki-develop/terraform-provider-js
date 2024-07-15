@@ -28,19 +28,24 @@ func (d *dataIndex) Metadata(_ context.Context, req datasource.MetadataRequest, 
 
 func (d *dataIndex) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The `js_index` data source allows you to reference a JavaScript object and access its properties or array elements.",
 		Attributes: map[string]schema.Attribute{
 			"ref": schema.StringAttribute{
-				Required: true,
+				Required:    true,
+				Description: "The referenced JavaScript object.",
 			},
 			"value": schema.DynamicAttribute{
-				Required: true,
+				Required:    true,
+				Description: "The index or property name within the referenced object.",
 			},
 
 			"id": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The id of the indexed value.",
 			},
 			"content": schema.StringAttribute{
-				Computed: true,
+				Computed:    true,
+				Description: "The content of the indexed value.",
 			},
 		},
 	}
