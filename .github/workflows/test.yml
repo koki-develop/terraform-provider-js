@@ -51,6 +51,8 @@ jobs:
           - atcoder_beginners_selection/01
           - atcoder_beginners_selection/02
           - atcoder_beginners_selection/03
+          - atcoder_beginners_selection/04
+          - atcoder_beginners_selection/05
     steps:
       - uses: actions/checkout@v4
         with:
