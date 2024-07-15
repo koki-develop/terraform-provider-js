@@ -43,16 +43,8 @@ jobs:
     strategy:
       matrix:
         examples:
-          - anonymous_function
-          - const
-          - hello
-          - hello_function
-          - atcoder_beginners_selection/00
-          - atcoder_beginners_selection/01
-          - atcoder_beginners_selection/02
-          - atcoder_beginners_selection/03
-          - atcoder_beginners_selection/04
-          - atcoder_beginners_selection/05
+          - resources
+          - data-sources
     steps:
       - uses: actions/checkout@v4
         with:
@@ -79,5 +71,11 @@ jobs:
       - name: test
         working-directory: examples/${{ matrix.examples }}
         run: |
-          terraform init
-          terraform test
+          for wd in $(ls -d */); do
+            echo "::group::${wd}"
+            cd $wd
+            terraform init
+            terraform test
+            cd ..
+            echo "::endgroup::"
+          done
