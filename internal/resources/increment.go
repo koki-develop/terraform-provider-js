@@ -31,19 +31,23 @@ func (r *resourceIncrement) Metadata(_ context.Context, req resource.MetadataReq
 
 func (r *resourceIncrement) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The `js_increment` resource increments a reference.",
 		Attributes: map[string]schema.Attribute{
 			"ref": schema.StringAttribute{
-				Required: true,
+				Description: "The reference to increment.",
+				Required:    true,
 			},
 			"type": schema.StringAttribute{
-				Optional: true,
+				Description: "The type of increment to perform. (Valid values: `prefix`, `postfix`)",
+				Optional:    true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("prefix", "postfix"),
 				},
 			},
 
 			"content": schema.StringAttribute{
-				Computed: true,
+				Description: "The content of the increment.",
+				Computed:    true,
 			},
 		},
 	}
