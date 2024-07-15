@@ -3,12 +3,12 @@
 page_title: "js_decrement Resource - terraform-provider-js"
 subcategory: ""
 description: |-
-  
+  The js_decrement resource decrements a value.
 ---
 
 # js_decrement (Resource)
 
-
+The `js_decrement` resource decrements a value.
 
 
 
@@ -17,11 +17,11 @@ description: |-
 
 ### Required
 
-- `ref` (String)
+- `ref` (String) The reference to decrement.
 
 ### Optional
 
-- `type` (String)
+- `type` (String) The type of decrement to perform. (Valid values: `prefix`, `postfix`)
 
 ### Read-Only
 

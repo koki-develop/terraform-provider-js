@@ -31,12 +31,15 @@ func (r *resourceDecrement) Metadata(_ context.Context, req resource.MetadataReq
 
 func (r *resourceDecrement) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The `js_decrement` resource decrements a value.",
 		Attributes: map[string]schema.Attribute{
 			"ref": schema.StringAttribute{
-				Required: true,
+				Description: "The reference to decrement.",
+				Required:    true,
 			},
 			"type": schema.StringAttribute{
-				Optional: true,
+				Description: "The type of decrement to perform. (Valid values: `prefix`, `postfix`)",
+				Optional:    true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("prefix", "postfix"),
 				},
