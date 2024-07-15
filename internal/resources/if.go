@@ -29,21 +29,26 @@ func (r *resourceIf) Metadata(_ context.Context, req resource.MetadataRequest, r
 
 func (r *resourceIf) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The `js_if` resource creates an if statement.",
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
-				Required: true,
+				Description: "The condition expression.",
+				Required:    true,
 			},
 			"then": schema.ListAttribute{
+				Description: "The body of the if statement.",
 				ElementType: types.StringType,
 				Optional:    true,
 			},
 			"else": schema.ListAttribute{
+				Description: "The body of the else statement.",
 				ElementType: types.StringType,
 				Optional:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Computed: true,
+				Description: "The content of the if statement.",
+				Computed:    true,
 			},
 		},
 	}
