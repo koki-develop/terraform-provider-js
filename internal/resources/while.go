@@ -29,17 +29,21 @@ func (r *resourceWhile) Metadata(_ context.Context, req resource.MetadataRequest
 
 func (r *resourceWhile) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The `js_while` resource creates a while loop.",
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
-				Required: true,
+				Description: "The condition expression.",
+				Required:    true,
 			},
 			"body": schema.ListAttribute{
+				Description: "The body of the while loop.",
 				ElementType: types.StringType,
 				Optional:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Computed: true,
+				Description: "The content of the while loop.",
+				Computed:    true,
 			},
 		},
 	}
