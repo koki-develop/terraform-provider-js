@@ -43,6 +43,7 @@ jobs:
     strategy:
       matrix:
         examples:
+          - atcoder_beginners_selection
           - resources
           - data-sources
     steps:
