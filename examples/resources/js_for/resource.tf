@@ -25,3 +25,6 @@ resource "js_for" "main" {
   update    = js_increment.i.content
   body      = [js_function_call.log_i.content]
 }
+# => for (let i = 0; i < 10; i++) {
+#      console.log(i);
+#    }
