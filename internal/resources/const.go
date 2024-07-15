@@ -29,19 +29,24 @@ func (r *resourceConst) Metadata(_ context.Context, req resource.MetadataRequest
 
 func (r *resourceConst) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The `js_const` resource defines a constant value.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Required: true,
+				Description: "The name of the constant.",
+				Required:    true,
 			},
 			"value": schema.DynamicAttribute{
-				Required: true,
+				Description: "The value of the constant.",
+				Required:    true,
 			},
 
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The id of the constant.",
+				Computed:    true,
 			},
 			"content": schema.StringAttribute{
-				Computed: true,
+				Description: "The content of the constant.",
+				Computed:    true,
 			},
 		},
 	}
