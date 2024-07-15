@@ -32,19 +32,24 @@ func (r *resourceFunctionCall) Metadata(_ context.Context, req resource.Metadata
 
 func (r *resourceFunctionCall) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The `js_function_call` resource calls a function.",
 		Attributes: map[string]schema.Attribute{
 			"caller": schema.StringAttribute{
-				Optional: true,
+				Description: "The caller of the function.",
+				Optional:    true,
 			},
 			"function": schema.StringAttribute{
-				Required: true,
+				Description: "The function to call.",
+				Required:    true,
 			},
 			"args": schema.DynamicAttribute{
-				Optional: true,
+				Description: "The arguments of the function.",
+				Optional:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Computed: true,
+				Description: "The content of the function call.",
+				Computed:    true,
 			},
 		},
 	}
