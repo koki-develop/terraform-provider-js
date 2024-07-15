@@ -33,7 +33,9 @@ func (p *jsProvider) Metadata(_ context.Context, _ provider.MetadataRequest, res
 }
 
 func (p *jsProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp *provider.SchemaResponse) {
-	resp.Schema = schema.Schema{}
+	resp.Schema = schema.Schema{
+		Description: "The Next Generation AltJS.",
+	}
 }
 
 func (p *jsProvider) Configure(_ context.Context, _ provider.ConfigureRequest, _ *provider.ConfigureResponse) {
