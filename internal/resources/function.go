@@ -29,24 +29,30 @@ func (r *resourceFunction) Metadata(_ context.Context, req resource.MetadataRequ
 
 func (r *resourceFunction) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		MarkdownDescription: "The `js_function` resource defines a function.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Optional: true,
+				Description: "The name of the function.",
+				Optional:    true,
 			},
 			"params": schema.ListAttribute{
+				Description: "The parameters of the function.",
 				ElementType: types.StringType,
 				Optional:    true,
 			},
 			"body": schema.ListAttribute{
+				Description: "The body of the function.",
 				ElementType: types.StringType,
 				Optional:    true,
 			},
 
 			"id": schema.StringAttribute{
-				Computed: true,
+				Description: "The id of the function.",
+				Computed:    true,
 			},
 			"content": schema.StringAttribute{
-				Computed: true,
+				Description: "The content of the function.",
+				Computed:    true,
 			},
 		},
 	}
