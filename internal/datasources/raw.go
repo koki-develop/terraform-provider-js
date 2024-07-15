@@ -27,13 +27,16 @@ func (d *dataRaw) Metadata(_ context.Context, req datasource.MetadataRequest, re
 
 func (d *dataRaw) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
+		Description: "The `js_raw` data source allows you to write raw JavaScript code.",
 		Attributes: map[string]schema.Attribute{
 			"value": schema.StringAttribute{
-				Required: true,
+				Description: "The raw JavaScript code.",
+				Required:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Computed: true,
+				Description: "The content of the raw JavaScript code.",
+				Computed:    true,
 			},
 		},
 	}
