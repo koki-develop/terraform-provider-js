@@ -2,7 +2,7 @@ package resources
 
 import (
 	"context"
-	"fmt"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -37,7 +37,7 @@ func (r *resourceLet) Schema(_ context.Context, _ resource.SchemaRequest, resp *
 			},
 			"value": schema.DynamicAttribute{
 				Description: "The value of the let statement.",
-				Required:    true,
+				Optional:    true,
 			},
 
 			"id": schema.StringAttribute{
@@ -84,7 +84,16 @@ func (r *resourceLet) handleRequest(ctx context.Context, g util.ModelGetter, s u
 		diags,
 		func(m *resourceLetModel) bool {
 			m.ID = util.Raw(m.Name)
-			m.Content = util.Raw(types.StringValue(fmt.Sprintf("let %s=%s", util.RawString(m.Name), util.StringifyValue(m.Value))))
+
+			c := new(strings.Builder)
+			c.WriteString("let ")
+			c.WriteString(util.RawString(m.Name))
+			if !m.Value.IsNull() {
+				c.WriteString("=")
+				c.WriteString(util.StringifyValue(m.Value))
+			}
+
+			m.Content = util.Raw(types.StringValue(c.String()))
 			return true
 		},
 	)
