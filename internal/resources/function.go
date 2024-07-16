@@ -45,6 +45,10 @@ func (r *resourceFunction) Schema(_ context.Context, _ resource.SchemaRequest, r
 				ElementType: types.StringType,
 				Optional:    true,
 			},
+			"async": schema.BoolAttribute{
+				Description: "Whether the function is async.",
+				Optional:    true,
+			},
 
 			"id": schema.StringAttribute{
 				Description: "The id of the function.",
@@ -62,6 +66,7 @@ type resourceFunctionModel struct {
 	Name   types.String `tfsdk:"name"`
 	Params types.List   `tfsdk:"params"`
 	Body   types.List   `tfsdk:"body"`
+	Async  types.Bool   `tfsdk:"async"`
 
 	ID      types.String `tfsdk:"id"`
 	Content types.String `tfsdk:"content"`
@@ -91,6 +96,10 @@ func (r *resourceFunction) handleRequest(ctx context.Context, g util.ModelGetter
 		diags,
 		func(m *resourceFunctionModel) bool {
 			c := new(strings.Builder)
+			if !m.Async.IsNull() && m.Async.ValueBool() {
+				c.WriteString("async ")
+			}
+
 			c.WriteString("function")
 			if !m.Name.IsNull() {
 				c.WriteString(" ")

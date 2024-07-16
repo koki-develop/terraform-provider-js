@@ -29,3 +29,13 @@ resource "js_const" "anonymous" {
 # => const anonymous = function(name) {
 #      console.log("hello", name);
 #    };
+
+resource "js_function" "async" {
+  name   = "hello"
+  async  = true
+  params = [js_function_param.name.id]
+  body   = [js_function_call.log_name.content]
+}
+# => async function hello(name) {
+#      console.log("hello", name);
+#    }

@@ -11,3 +11,10 @@ run "anonymous" {
     error_message = ""
   }
 }
+
+run "async" {
+  assert {
+    condition     = js_function.async.content == "@js/raw:async function hello(name){console.log(\"hello\",name)}"
+    error_message = ""
+  }
+}
