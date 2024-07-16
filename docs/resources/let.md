@@ -53,6 +53,9 @@ resource "js_let" "obj" {
 ### Required
 
 - `name` (String) The name of the let statement.
+
+### Optional
+
 - `value` (Dynamic) The value of the let statement.
 
 ### Read-Only
