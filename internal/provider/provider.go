@@ -63,6 +63,7 @@ func (p *jsProvider) Resources(_ context.Context) []func() resource.Resource {
 		resources.NewResourceOperation(),
 		resources.NewResourceProgram(p.version),
 		resources.NewResourceReturn(),
+		resources.NewResourceThrow(),
 		resources.NewResourceWhile(),
 	}
 }
