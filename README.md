@@ -47,20 +47,32 @@ hello world
 
 # Getting Started
 
-WIP
+JS.tf is a Terraform provider that allows you to write JavaScript code in Terraform configuration files.
+To use it, add the following provider configuration.
 
 ```hcl
 terraform {
   required_providers {
     js = {
       source = "koki-develop/js"
-      version = "0.0.7"
     }
   }
 }
 
 provider "js" {}
 ```
+
+Next, run `terraform init`.
+
+```console
+$ terraform init
+```
+
+That's it. You are ready to use JS.tf.
+
+# Examples
+
+- [`examples/`](./examples)
 
 # Documentation
 
