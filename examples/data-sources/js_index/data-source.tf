@@ -1,11 +1,23 @@
-data "js_index" "example_index" {
-  ref   = "example"
+resource "js_const" "arr" {
+  name  = "arr"
+  value = [1, 2, 3]
+}
+
+data "js_index" "arr_1" {
+  ref   = js_const.arr.id
   value = 1
 }
-# => example[1]
+# => arr[1]
 
-data "js_index" "example_property" {
-  ref   = "example"
-  value = "name"
+resource "js_const" "obj" {
+  name = "obj"
+  value = {
+    foo = "bar"
+  }
 }
-# => example["name"]
+
+data "js_index" "obj_foo" {
+  ref   = js_const.obj.id
+  value = "foo"
+}
+# => obj["foo"]
