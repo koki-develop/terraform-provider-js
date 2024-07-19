@@ -13,6 +13,11 @@ The `js_function_call` resource calls a function.
 ## Example Usage
 
 ```terraform
+resource "js_function_call" "alert" {
+  function = "alert"
+  args     = ["hello world"]
+}
+
 resource "js_function_call" "console_log" {
   caller   = "console"
   function = "log"
