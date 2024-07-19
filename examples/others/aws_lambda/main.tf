@@ -37,16 +37,6 @@ resource "js_program" "main" {
   contents = [js_operation.exports_handler.content]
 }
 
-data "js_raw" "exports_handler" {
-  value = "exports.handler"
-}
-
-resource "js_operation" "exports_handler" {
-  left     = data.js_raw.exports_handler.content
-  operator = "="
-  right    = js_function.handler.content
-}
-
 resource "js_function" "handler" {
   async  = true
   params = [js_function_param.event.id]
@@ -70,4 +60,14 @@ resource "js_return" "handler" {
   value = {
     message = "Hello JS.tf!"
   }
+}
+
+data "js_raw" "exports_handler" {
+  value = "exports.handler"
+}
+
+resource "js_operation" "exports_handler" {
+  left     = data.js_raw.exports_handler.content
+  operator = "="
+  right    = js_function.handler.content
 }
