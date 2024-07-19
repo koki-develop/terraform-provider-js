@@ -1,16 +1,10 @@
 #
-# const ab
+# const ab = input.split(" ").map(Number);
 #
 
 resource "js_const" "ab" {
   name  = "ab"
   value = js_function_call.input_map_number.content
-}
-
-resource "js_function_call" "input_split" {
-  caller   = js_function_param.input.id
-  function = "split"
-  args     = [" "]
 }
 
 resource "js_function_call" "input_map_number" {
@@ -23,55 +17,64 @@ data "js_raw" "number" {
   value = "Number"
 }
 
+resource "js_function_call" "input_split" {
+  caller   = js_function_param.input.id
+  function = "split"
+  args     = [" "]
+}
+
+# ab[0]
 data "js_index" "a" {
   ref   = js_const.ab.id
   value = 0
 }
 
+# ab[1]
 data "js_index" "b" {
   ref   = js_const.ab.id
   value = 1
 }
 
 #
-# a * b % 2 === 0
+# if (a * b % 2 === 0)
 #
 
-resource "js_operation" "a_times_b" {
-  left     = data.js_index.a.id
-  right    = data.js_index.b.id
-  operator = "*"
+resource "js_if" "even_or_odd" {
+  condition = js_operation.a_times_b_mod_2_eq_0.content
+  then      = [js_function_call.log_even.content]
+  else      = [js_function_call.log_odd.content]
 }
 
-resource "js_operation" "a_times_b_mod_2" {
-  left     = js_operation.a_times_b.content
-  right    = 2
-  operator = "%"
-}
-
+# a * b % 2 === 0
 resource "js_operation" "a_times_b_mod_2_eq_0" {
   left     = js_operation.a_times_b_mod_2.content
   right    = 0
   operator = "==="
 }
 
-#
-# even or odd
-#
-
-resource "js_if" "even_or_odd" {
-  condition = js_operation.a_times_b_mod_2_eq_0.content
-  then      = [js_function_call.even.content]
-  else      = [js_function_call.odd.content]
+# a * b % 2
+resource "js_operation" "a_times_b_mod_2" {
+  left     = js_operation.a_times_b.content
+  right    = 2
+  operator = "%"
 }
 
-resource "js_function_call" "even" {
+# a * b
+resource "js_operation" "a_times_b" {
+  left     = data.js_index.a.id
+  right    = data.js_index.b.id
+  operator = "*"
+}
+
+# console.log("Even")
+resource "js_function_call" "log_even" {
   caller   = "console"
   function = "log"
   args     = ["Even"]
 }
 
-resource "js_function_call" "odd" {
+# console.log("Odd")
+resource "js_function_call" "log_odd" {
   caller   = "console"
   function = "log"
   args     = ["Odd"]
@@ -95,7 +98,7 @@ resource "js_function_param" "input" {
 }
 
 #
-# call main
+# main(require("fs").readFileSync("/dev/stdin", "utf8"))
 #
 
 resource "js_function_call" "main" {
@@ -114,16 +117,16 @@ resource "js_function_call" "read_stdin" {
   args     = ["/dev/stdin", "utf8"]
 }
 
+#
+# write to file
+#
+
 resource "js_program" "main" {
   contents = [
     js_function.main.content,
     js_function_call.main.content,
   ]
 }
-
-#
-# write to file
-#
 
 resource "local_file" "main" {
   filename = "index.js"

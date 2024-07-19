@@ -1,6 +1,11 @@
 #
-# input.split
+# const ss = input.split("")
 #
+
+resource "js_const" "ss" {
+  name  = "ss"
+  value = js_function_call.input_split.content
+}
 
 resource "js_function_call" "input_split" {
   caller   = js_function_param.input.id
@@ -9,16 +14,11 @@ resource "js_function_call" "input_split" {
 }
 
 #
-# input.filter
+# function filter(s) { return s === "1" }
 #
 
-resource "js_function_call" "input_filter" {
-  caller   = js_function_call.input_split.content
-  function = "filter"
-  args     = [js_function.filter.content]
-}
-
 resource "js_function" "filter" {
+  name   = "filter"
   params = [js_function_param.filter_s.id]
   body   = [js_return.s_eq_1.content]
 }
@@ -26,10 +26,6 @@ resource "js_function" "filter" {
 resource "js_function_param" "filter_s" {
   name = "s"
 }
-
-#
-# return s === "1"
-#
 
 resource "js_return" "s_eq_1" {
   value = js_operation.s_eq_1.content
@@ -42,22 +38,33 @@ resource "js_operation" "s_eq_1" {
 }
 
 #
-# length
+# const count = ss.filter(filter).length
 #
+
+resource "js_const" "count" {
+  name  = "count"
+  value = data.js_index.length.id
+}
 
 data "js_index" "length" {
   ref   = js_function_call.input_filter.content
   value = "length"
 }
 
+resource "js_function_call" "input_filter" {
+  caller   = js_function_call.input_split.content
+  function = "filter"
+  args     = [js_function.filter.id]
+}
+
 #
-# print
+# console.log(count)
 #
 
 resource "js_function_call" "log_count" {
   caller   = "console"
   function = "log"
-  args     = [data.js_index.length.id]
+  args     = [js_const.count.id]
 }
 
 #
@@ -67,7 +74,12 @@ resource "js_function_call" "log_count" {
 resource "js_function" "main" {
   name   = "main"
   params = [js_function_param.input.id]
-  body   = [js_function_call.log_count.content]
+  body = [
+    js_const.ss.content,
+    js_function.filter.content,
+    js_const.count.content,
+    js_function_call.log_count.content,
+  ]
 }
 
 resource "js_function_param" "input" {
@@ -75,7 +87,7 @@ resource "js_function_param" "input" {
 }
 
 #
-# call main
+# main(require("fs").readFileSync("/dev/stdin", "utf8"))
 #
 
 resource "js_function_call" "main" {
@@ -94,16 +106,16 @@ resource "js_function_call" "read_stdin" {
   args     = ["/dev/stdin", "utf8"]
 }
 
+#
+# write to file
+#
+
 resource "js_program" "main" {
   contents = [
     js_function.main.content,
     js_function_call.main.content,
   ]
 }
-
-#
-# write to file
-#
 
 resource "local_file" "main" {
   filename = "index.js"

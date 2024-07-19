@@ -1,5 +1,5 @@
 #
-# const lines
+# const lines = input.split("\n")
 #
 
 resource "js_const" "lines" {
@@ -14,7 +14,7 @@ resource "js_function_call" "input_split" {
 }
 
 #
-# const a
+# const a = Number(lines[0])
 #
 
 resource "js_const" "a" {
@@ -33,7 +33,7 @@ data "js_index" "lines0" {
 }
 
 #
-# const bc
+# const bc = lines[1].split(" ")
 #
 
 resource "js_const" "bc" {
@@ -53,7 +53,7 @@ data "js_index" "lines1" {
 }
 
 #
-# const b
+# const b = Number(bc[0])
 #
 
 resource "js_const" "b" {
@@ -72,7 +72,7 @@ data "js_index" "bc0" {
 }
 
 #
-# const c
+# const c = Number(bc[1])
 #
 
 resource "js_const" "c" {
@@ -91,7 +91,7 @@ data "js_index" "bc1" {
 }
 
 #
-# const s
+# const s = lines[2]
 #
 
 resource "js_const" "s" {
@@ -105,7 +105,7 @@ data "js_index" "lines2" {
 }
 
 #
-# print
+# console.log(a + b + c, s)
 #
 
 resource "js_function_call" "log" {
@@ -114,16 +114,16 @@ resource "js_function_call" "log" {
   args     = [js_operation.a_plus_b_plus_c.content, js_const.s.id]
 }
 
-resource "js_operation" "a_plus_b" {
-  left     = js_const.a.id
-  operator = "+"
-  right    = js_const.b.id
-}
-
 resource "js_operation" "a_plus_b_plus_c" {
   left     = js_operation.a_plus_b.content
   operator = "+"
   right    = js_const.c.id
+}
+
+resource "js_operation" "a_plus_b" {
+  left     = js_const.a.id
+  operator = "+"
+  right    = js_const.b.id
 }
 
 #
@@ -149,7 +149,7 @@ resource "js_function_param" "input" {
 }
 
 #
-# call main
+# main(require("fs").readFileSync("/dev/stdin", "utf8"))
 #
 
 resource "js_function_call" "main" {
@@ -168,16 +168,16 @@ resource "js_function_call" "read_stdin" {
   args     = ["/dev/stdin", "utf8"]
 }
 
+#
+# write to file
+#
+
 resource "js_program" "main" {
   contents = [
     js_function.main.content,
     js_function_call.main.content,
   ]
 }
-
-#
-# write to file
-#
 
 resource "local_file" "main" {
   filename = "index.js"
