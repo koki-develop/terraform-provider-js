@@ -1,24 +1,9 @@
 #
-# const ss = input.split("")
+# function isOne(s) { return s === "1" }
 #
 
-resource "js_const" "ss" {
-  name  = "ss"
-  value = js_function_call.input_split.content
-}
-
-resource "js_function_call" "input_split" {
-  caller   = js_function_param.input.id
-  function = "split"
-  args     = [""]
-}
-
-#
-# function filter(s) { return s === "1" }
-#
-
-resource "js_function" "filter" {
-  name   = "filter"
+resource "js_function" "is_one" {
+  name   = "isOne"
   params = [js_function_param.filter_s.id]
   body   = [js_return.s_eq_1.content]
 }
@@ -38,7 +23,22 @@ resource "js_operation" "s_eq_1" {
 }
 
 #
-# const count = ss.filter(filter).length
+# const ss = input.split("")
+#
+
+resource "js_const" "ss" {
+  name  = "ss"
+  value = js_function_call.input_split.content
+}
+
+resource "js_function_call" "input_split" {
+  caller   = js_function_param.input.id
+  function = "split"
+  args     = [""]
+}
+
+#
+# const count = ss.filter(filterOne).length
 #
 
 resource "js_const" "count" {
@@ -54,7 +54,7 @@ data "js_index" "length" {
 resource "js_function_call" "input_filter" {
   caller   = js_function_call.input_split.content
   function = "filter"
-  args     = [js_function.filter.id]
+  args     = [js_function.is_one.id]
 }
 
 #
@@ -75,8 +75,8 @@ resource "js_function" "main" {
   name   = "main"
   params = [js_function_param.input.id]
   body = [
+    js_function.is_one.content,
     js_const.ss.content,
-    js_function.filter.content,
     js_const.count.content,
     js_function_call.log_count.content,
   ]
