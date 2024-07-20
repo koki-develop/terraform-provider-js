@@ -118,24 +118,29 @@ resource "js_function_call" "digits_num" {
 }
 
 #
-# const nab = input.split(" ").map(Number)
+# const nab = input.trim().split(" ").map(Number)
 #
 
 resource "js_const" "nab" {
   name  = "nab"
-  value = js_function_call.input_split_map.content
+  value = js_function_call.input_trim_split_map.content
 }
 
-resource "js_function_call" "input_split_map" {
-  caller   = js_function_call.input_split.content
+resource "js_function_call" "input_trim_split_map" {
+  caller   = js_function_call.input_trim_split.content
   function = "map"
   args     = [data.js_raw.number.content]
 }
 
-resource "js_function_call" "input_split" {
-  caller   = js_function_param.input.id
+resource "js_function_call" "input_trim_split" {
+  caller   = js_function_call.input_trim.content
   function = "split"
   args     = [" "]
+}
+
+resource "js_function_call" "input_trim" {
+  caller   = js_function_param.input.id
+  function = "trim"
 }
 
 # nab[0]

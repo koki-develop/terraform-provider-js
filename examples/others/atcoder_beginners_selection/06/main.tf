@@ -50,29 +50,34 @@ resource "js_operation" "b_minus_a" {
 }
 
 #
-# const aa = input.split("\n")[1].split(" ")
+# const aa = input.trim().split("\n")[1].split(" ")
 #
 
 resource "js_const" "aa" {
   name  = "aa"
-  value = js_function_call.input_split1_split.content
+  value = js_function_call.input_trim_split1_split.content
 }
 
-resource "js_function_call" "input_split1_split" {
-  caller   = data.js_index.input_split1.id
+resource "js_function_call" "input_trim_split1_split" {
+  caller   = data.js_index.input_trim_split1.id
   function = "split"
   args     = [" "]
 }
 
-data "js_index" "input_split1" {
-  ref   = js_function_call.input_split.content
+data "js_index" "input_trim_split1" {
+  ref   = js_function_call.input_trim_split.content
   value = 1
 }
 
-resource "js_function_call" "input_split" {
-  caller   = js_function_param.input.id
+resource "js_function_call" "input_trim_split" {
+  caller   = js_function_call.input_trim.content
   function = "split"
   args     = ["\n"]
+}
+
+resource "js_function_call" "input_trim" {
+  caller   = js_function_param.input.id
+  function = "trim"
 }
 
 #

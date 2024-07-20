@@ -1,22 +1,27 @@
 #
-# const abcx = input.split("\n").map(Number)
+# const abcx = input.trim().split("\n").map(Number)
 #
 
 resource "js_const" "abcx" {
   name  = "abcx"
-  value = js_function_call.input_split_map.content
+  value = js_function_call.input_trim_split_map.content
 }
 
-resource "js_function_call" "input_split_map" {
-  caller   = js_function_call.input_split.content
+resource "js_function_call" "input_trim_split_map" {
+  caller   = js_function_call.input_trim_split.content
   function = "map"
   args     = [data.js_raw.number.content]
 }
 
-resource "js_function_call" "input_split" {
-  caller   = js_function_param.input.id
+resource "js_function_call" "input_trim_split" {
+  caller   = js_function_call.input_trim.content
   function = "split"
   args     = ["\n"]
+}
+
+resource "js_function_call" "input_trim" {
+  caller   = js_function_param.input.id
+  function = "trim"
 }
 
 data "js_raw" "number" {

@@ -1,14 +1,14 @@
 #
-# const ab = input.split(" ").map(Number);
+# const ab = input.trim().split(" ").map(Number);
 #
 
 resource "js_const" "ab" {
   name  = "ab"
-  value = js_function_call.input_map_number.content
+  value = js_function_call.input_trim_split_map_number.content
 }
 
-resource "js_function_call" "input_map_number" {
-  caller   = js_function_call.input_split.content
+resource "js_function_call" "input_trim_split_map_number" {
+  caller   = js_function_call.input_trim_split.content
   function = "map"
   args     = [data.js_raw.number.content]
 }
@@ -17,10 +17,15 @@ data "js_raw" "number" {
   value = "Number"
 }
 
-resource "js_function_call" "input_split" {
-  caller   = js_function_param.input.id
+resource "js_function_call" "input_trim_split" {
+  caller   = js_function_call.input_trim.content
   function = "split"
   args     = [" "]
+}
+
+resource "js_function_call" "input_trim" {
+  caller   = js_function_param.input.id
+  function = "trim"
 }
 
 # ab[0]

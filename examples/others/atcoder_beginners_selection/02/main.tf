@@ -23,18 +23,23 @@ resource "js_operation" "s_eq_1" {
 }
 
 #
-# const ss = input.split("")
+# const ss = input.trim().split("")
 #
 
 resource "js_const" "ss" {
   name  = "ss"
-  value = js_function_call.input_split.content
+  value = js_function_call.input_trim_split.content
 }
 
-resource "js_function_call" "input_split" {
-  caller   = js_function_param.input.id
+resource "js_function_call" "input_trim_split" {
+  caller   = js_function_call.input_trim.content
   function = "split"
   args     = [""]
+}
+
+resource "js_function_call" "input_trim" {
+  caller   = js_function_param.input.id
+  function = "trim"
 }
 
 #
@@ -52,7 +57,7 @@ data "js_index" "length" {
 }
 
 resource "js_function_call" "input_filter" {
-  caller   = js_function_call.input_split.content
+  caller   = js_const.ss.id
   function = "filter"
   args     = [js_function.is_one.id]
 }
