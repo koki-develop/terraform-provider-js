@@ -4,11 +4,11 @@
 
 resource "js_function" "is_one" {
   name   = "isOne"
-  params = [js_function_param.filter_s.id]
+  params = [js_function_param.is_one_s.id]
   body   = [js_return.s_eq_1.content]
 }
 
-resource "js_function_param" "filter_s" {
+resource "js_function_param" "is_one_s" {
   name = "s"
 }
 
@@ -17,7 +17,7 @@ resource "js_return" "s_eq_1" {
 }
 
 resource "js_operation" "s_eq_1" {
-  left     = js_function_param.filter_s.id
+  left     = js_function_param.is_one_s.id
   right    = "1"
   operator = "==="
 }
