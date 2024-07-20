@@ -4,11 +4,11 @@
 
 resource "js_function" "is_even" {
   name   = "isEven"
-  params = [js_function_param.num.id]
+  params = [js_function_param.is_even_num.id]
   body   = [js_return.num_mod_2_eq_0.content]
 }
 
-resource "js_function_param" "num" {
+resource "js_function_param" "is_even_num" {
   name = "num"
 }
 
@@ -24,7 +24,7 @@ resource "js_operation" "num_mod_2_eq_0" {
 }
 
 resource "js_operation" "num_mod_2" {
-  left     = js_function_param.num.id
+  left     = js_function_param.is_even_num.id
   operator = "%"
   right    = 2
 }
@@ -35,8 +35,12 @@ resource "js_operation" "num_mod_2" {
 
 resource "js_function" "half" {
   name   = "half"
-  params = [js_function_param.num.id]
+  params = [js_function_param.half_num.id]
   body   = [js_return.num_div_2.content]
+}
+
+resource "js_function_param" "half_num" {
+  name = "num"
 }
 
 resource "js_return" "num_div_2" {
@@ -44,7 +48,7 @@ resource "js_return" "num_div_2" {
 }
 
 resource "js_operation" "num_div_2" {
-  left     = js_function_param.num.id
+  left     = js_function_param.half_num.id
   operator = "/"
   right    = 2
 }
