@@ -1,4 +1,55 @@
 #
+# function isEven(num) { return num % 2 === 0 }
+#
+
+resource "js_function" "is_even" {
+  name   = "isEven"
+  params = [js_function_param.num.id]
+  body   = [js_return.num_mod_2_eq_0.content]
+}
+
+resource "js_function_param" "num" {
+  name = "num"
+}
+
+# return num % 2 === 0
+resource "js_return" "num_mod_2_eq_0" {
+  value = js_operation.num_mod_2_eq_0.content
+}
+
+resource "js_operation" "num_mod_2_eq_0" {
+  left     = js_operation.num_mod_2.content
+  operator = "==="
+  right    = 0
+}
+
+resource "js_operation" "num_mod_2" {
+  left     = js_function_param.num.id
+  operator = "%"
+  right    = 2
+}
+
+#
+# function half(num) { return num / 2 }
+#
+
+resource "js_function" "half" {
+  name   = "half"
+  params = [js_function_param.num.id]
+  body   = [js_return.num_div_2.content]
+}
+
+resource "js_return" "num_div_2" {
+  value = js_operation.num_div_2.content
+}
+
+resource "js_operation" "num_div_2" {
+  left     = js_function_param.num.id
+  operator = "/"
+  right    = 2
+}
+
+#
 # const lines = input.split("\n")
 #
 
@@ -63,57 +114,6 @@ resource "js_let" "count" {
 }
 
 #
-# function isEven(num) { return num % 2 === 0 }
-#
-
-resource "js_function" "is_even" {
-  name   = "isEven"
-  params = [js_function_param.num.id]
-  body   = [js_return.num_mod_2_eq_0.content]
-}
-
-resource "js_function_param" "num" {
-  name = "num"
-}
-
-# return num % 2 === 0
-resource "js_return" "num_mod_2_eq_0" {
-  value = js_operation.num_mod_2_eq_0.content
-}
-
-resource "js_operation" "num_mod_2_eq_0" {
-  left     = js_operation.num_mod_2.content
-  operator = "==="
-  right    = 0
-}
-
-resource "js_operation" "num_mod_2" {
-  left     = js_function_param.num.id
-  operator = "%"
-  right    = 2
-}
-
-#
-# function half(num) { return num / 2 }
-#
-
-resource "js_function" "half" {
-  name   = "half"
-  params = [js_function_param.num.id]
-  body   = [js_return.num_div_2.content]
-}
-
-resource "js_return" "num_div_2" {
-  value = js_operation.num_div_2.content
-}
-
-resource "js_operation" "num_div_2" {
-  left     = js_function_param.num.id
-  operator = "/"
-  right    = 2
-}
-
-#
 # while (nums.every(isEven)) {
 #   nums = nums.map(half);
 #   count++;
@@ -168,12 +168,12 @@ resource "js_function" "main" {
   name   = "main"
   params = [js_function_param.input.id]
   body = [
+    js_function.is_even.content,
+    js_function.half.content,
     js_const.lines.content,
     js_const.aa.content,
     js_let.nums.content,
     js_let.count.content,
-    js_function.is_even.content,
-    js_function.half.content,
     js_while.count.content,
     js_function_call.log_count.content,
   ]
