@@ -1,6 +1,11 @@
 #
-# input.split("\n")[1].split(" ").map(Number)
+# const lines = input.split("\n")
 #
+
+resource "js_const" "lines" {
+  name  = "lines"
+  value = js_function_call.input_split.content
+}
 
 resource "js_function_call" "input_split" {
   caller   = js_function_param.input.id
@@ -8,34 +13,44 @@ resource "js_function_call" "input_split" {
   args     = ["\n"]
 }
 
-data "js_index" "input_split1" {
-  ref   = js_function_call.input_split.content
+# lines[1]
+data "js_index" "lines1" {
+  ref   = js_const.lines.id
   value = 1
 }
 
-resource "js_function_call" "input_split1_split" {
-  caller   = data.js_index.input_split1.id
+#
+# const aa = lines[1].split(" ")
+#
+
+resource "js_const" "aa" {
+  name  = "aa"
+  value = js_function_call.lines1_split.content
+}
+
+resource "js_function_call" "lines1_split" {
+  caller   = data.js_index.lines1.id
   function = "split"
   args     = [" "]
 }
 
-resource "js_function_call" "input_split1_split_map_number" {
-  caller   = js_function_call.input_split1_split.content
+#
+# let nums = aa.map(Number)
+#
+
+resource "js_let" "nums" {
+  name  = "nums"
+  value = js_function_call.aa_map_number.content
+}
+
+resource "js_function_call" "aa_map_number" {
+  caller   = js_const.aa.id
   function = "map"
   args     = [data.js_raw.number.content]
 }
 
 data "js_raw" "number" {
   value = "Number"
-}
-
-#
-# const nums
-#
-
-resource "js_let" "nums" {
-  name  = "nums"
-  value = js_function_call.input_split1_split_map_number.content
 }
 
 #
@@ -48,26 +63,11 @@ resource "js_let" "count" {
 }
 
 #
-# num % 2 === 0
+# function isEven(num) { return num % 2 === 0 }
 #
 
-resource "js_operation" "num_mod_2" {
-  left     = js_function_param.num.id
-  operator = "%"
-  right    = 2
-}
-
-resource "js_operation" "num_mod_2_eq_0" {
-  left     = js_operation.num_mod_2.content
-  operator = "==="
-  right    = 0
-}
-
-#
-# every even
-#
-
-resource "js_function" "every_even" {
+resource "js_function" "is_even" {
+  name   = "isEven"
   params = [js_function_param.num.id]
   body   = [js_return.num_mod_2_eq_0.content]
 }
@@ -76,73 +76,82 @@ resource "js_function_param" "num" {
   name = "num"
 }
 
+# return num % 2 === 0
 resource "js_return" "num_mod_2_eq_0" {
   value = js_operation.num_mod_2_eq_0.content
 }
 
-resource "js_function_call" "nums_every" {
-  caller   = js_let.nums.id
-  function = "every"
-  args     = [js_function.every_even.content]
+resource "js_operation" "num_mod_2_eq_0" {
+  left     = js_operation.num_mod_2.content
+  operator = "==="
+  right    = 0
+}
+
+resource "js_operation" "num_mod_2" {
+  left     = js_function_param.num.id
+  operator = "%"
+  right    = 2
 }
 
 #
-# nums half
+# function half(num) { return num / 2 }
 #
 
-resource "js_function_call" "nums_map" {
-  caller   = js_let.nums.id
-  function = "map"
-  args = [
-    js_function.nums_half.content,
-  ]
-}
-
-resource "js_function" "nums_half" {
+resource "js_function" "half" {
+  name   = "half"
   params = [js_function_param.num.id]
-  body   = [js_return.num_half.content]
+  body   = [js_return.num_div_2.content]
 }
 
-resource "js_operation" "nums_half" {
+resource "js_return" "num_div_2" {
+  value = js_operation.num_div_2.content
+}
+
+resource "js_operation" "num_div_2" {
   left     = js_function_param.num.id
   operator = "/"
   right    = 2
 }
 
-resource "js_return" "num_half" {
-  value = js_operation.nums_half.content
-}
-
-resource "js_operation" "nums_half_assign" {
-  left     = js_let.nums.id
-  operator = "="
-  right    = js_function_call.nums_map.content
-}
-
 #
-# increment
-#
-
-resource "js_operation" "count_increment" {
-  left     = js_let.count.id
-  operator = "+="
-  right    = 1
-}
-
-#
-# count
+# while (nums.every(isEven)) {
+#   nums = nums.map(half);
+#   count++;
+# }
 #
 
 resource "js_while" "count" {
   condition = js_function_call.nums_every.content
   body = [
-    js_operation.nums_half_assign.content,
-    js_operation.count_increment.content,
+    js_operation.half_nums.content,
+    js_increment.count.content,
   ]
 }
 
+resource "js_function_call" "nums_every" {
+  caller   = js_let.nums.id
+  function = "every"
+  args     = [js_function.is_even.id]
+}
+
+resource "js_operation" "half_nums" {
+  left     = js_let.nums.id
+  operator = "="
+  right    = js_function_call.half_nums.content
+}
+
+resource "js_function_call" "half_nums" {
+  caller   = js_let.nums.id
+  function = "map"
+  args     = [js_function.half.id]
+}
+
+resource "js_increment" "count" {
+  ref = js_let.count.id
+}
+
 #
-# print
+# console.log(count)
 #
 
 resource "js_function_call" "log_count" {
@@ -159,8 +168,12 @@ resource "js_function" "main" {
   name   = "main"
   params = [js_function_param.input.id]
   body = [
+    js_const.lines.content,
+    js_const.aa.content,
     js_let.nums.content,
     js_let.count.content,
+    js_function.is_even.content,
+    js_function.half.content,
     js_while.count.content,
     js_function_call.log_count.content,
   ]
@@ -171,7 +184,7 @@ resource "js_function_param" "input" {
 }
 
 #
-# call main
+# main(require("fs").readFileSync("/dev/stdin", "utf8"))
 #
 
 resource "js_function_call" "main" {
@@ -190,16 +203,16 @@ resource "js_function_call" "read_stdin" {
   args     = ["/dev/stdin", "utf8"]
 }
 
+#
+# write to file
+#
+
 resource "js_program" "main" {
   contents = [
     js_function.main.content,
     js_function_call.main.content,
   ]
 }
-
-#
-# write to file
-#
 
 resource "local_file" "main" {
   filename = "index.js"
