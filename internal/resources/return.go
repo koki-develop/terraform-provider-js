@@ -2,7 +2,7 @@ package resources
 
 import (
 	"context"
-	"fmt"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -33,7 +33,7 @@ func (r *resourceReturn) Schema(_ context.Context, _ resource.SchemaRequest, res
 		Attributes: map[string]schema.Attribute{
 			"value": schema.DynamicAttribute{
 				Description: "The value of the return.",
-				Required:    true,
+				Optional:    true,
 			},
 
 			"content": schema.StringAttribute{
@@ -73,7 +73,14 @@ func (r *resourceReturn) handleRequest(ctx context.Context, g util.ModelGetter, 
 		s,
 		diags,
 		func(m *resourceReturnModel) bool {
-			m.Content = util.Raw(types.StringValue(fmt.Sprintf("return %s", util.StringifyValue(m.Value))))
+			c := new(strings.Builder)
+			c.WriteString("return")
+			if !m.Value.IsNull() {
+				c.WriteString(" ")
+				c.WriteString(util.StringifyValue(m.Value))
+			}
+
+			m.Content = util.Raw(types.StringValue(c.String()))
 			return true
 		},
 	)
