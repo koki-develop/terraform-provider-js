@@ -44,8 +44,12 @@ func Test_StringifyValue(t *testing.T) {
 
 		// list
 		{
-			v:    types.ListValueMust(types.StringType, []attr.Value{types.StringValue("foo"), types.StringValue("bar")}),
-			want: `["foo","bar"]`,
+			v: types.ListValueMust(types.StringType, []attr.Value{
+				types.StringValue("@js/raw:\"baz\""),
+				types.StringValue("foo"),
+				types.StringValue("bar"),
+			}),
+			want: `["baz","foo","bar"]`,
 		},
 		{
 			v:    types.ListValueMust(types.NumberType, []attr.Value{types.NumberValue(big.NewFloat(1)), types.NumberValue(big.NewFloat(2))}),
@@ -57,18 +61,20 @@ func Test_StringifyValue(t *testing.T) {
 			v: types.TupleValueMust(
 				[]attr.Type{
 					types.StringType,
+					types.StringType,
 					types.NumberType,
 					types.BoolType,
 					types.TupleType{ElemTypes: []attr.Type{types.NumberType, types.NumberType}},
 				},
 				[]attr.Value{
+					types.StringValue("@js/raw:\"bar\""),
 					types.StringValue("foo"),
 					types.NumberValue(big.NewFloat(1)),
 					types.BoolValue(true),
 					types.TupleValueMust([]attr.Type{types.NumberType, types.NumberType}, []attr.Value{types.NumberValue(big.NewFloat(1)), types.NumberValue(big.NewFloat(2))}),
 				},
 			),
-			want: `["foo",1,true,[1,2]]`,
+			want: `["bar","foo",1,true,[1,2]]`,
 		},
 
 		// object
@@ -76,6 +82,7 @@ func Test_StringifyValue(t *testing.T) {
 			json: true,
 			v: types.ObjectValueMust(
 				map[string]attr.Type{
+					"raw":    types.StringType,
 					"string": types.StringType,
 					"number": types.NumberType,
 					"bool":   types.BoolType,
@@ -87,6 +94,7 @@ func Test_StringifyValue(t *testing.T) {
 					},
 				},
 				map[string]attr.Value{
+					"raw":    types.StringValue("@js/raw:\"bar\""),
 					"string": types.StringValue("foo"),
 					"number": types.NumberValue(big.NewFloat(1)),
 					"bool":   types.BoolValue(true),
@@ -101,7 +109,7 @@ func Test_StringifyValue(t *testing.T) {
 					),
 				},
 			),
-			want: `{"string":"foo","number":1,"bool":true,"tuple":[1,2],"object":{"string":"foo"}}`,
+			want: `{"raw":"bar","string":"foo","number":1,"bool":true,"tuple":[1,2],"object":{"string":"foo"}}`,
 		},
 		{v: types.ObjectNull(map[string]attr.Type{}), want: "null"},
 
@@ -111,11 +119,12 @@ func Test_StringifyValue(t *testing.T) {
 			v: types.MapValueMust(
 				types.StringType,
 				map[string]attr.Value{
+					"raw": types.StringValue("@js/raw:\"baz\""),
 					"foo": types.StringValue("bar"),
 					"baz": types.StringValue("qux"),
 				},
 			),
-			want: `{"foo":"bar","baz":"qux"}`,
+			want: `{"raw":"baz","foo":"bar","baz":"qux"}`,
 		},
 		{v: types.MapNull(types.StringType), want: "null"},
 

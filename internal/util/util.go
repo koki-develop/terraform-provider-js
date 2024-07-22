@@ -2,6 +2,7 @@ package util
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -42,6 +43,43 @@ func StringifyValue(v attr.Value) string {
 		if hasRawPrefix(v) {
 			return RawString(v)
 		}
+	case basetypes.ListValue, basetypes.TupleValue, basetypes.SetValue:
+		var elms []attr.Value
+		if v, ok := v.(basetypes.ListValue); ok {
+			elms = v.Elements()
+		}
+		if v, ok := v.(basetypes.TupleValue); ok {
+			elms = v.Elements()
+		}
+		if v, ok := v.(basetypes.SetValue); ok {
+			elms = v.Elements()
+		}
+		return "[" + strings.Join(StringifyValues(elms), ",") + "]"
+	case basetypes.ObjectValue, basetypes.MapValue:
+		var elms map[string]attr.Value
+		if v, ok := v.(basetypes.ObjectValue); ok {
+			elms = v.Attributes()
+		}
+		if v, ok := v.(basetypes.MapValue); ok {
+			elms = v.Elements()
+		}
+
+		c := new(strings.Builder)
+		c.WriteString("{")
+		first := true
+		for k, v := range elms {
+			if first {
+				first = false
+			} else {
+				c.WriteString(",")
+			}
+			c.WriteString(fmt.Sprintf("%q", k))
+			c.WriteString(":")
+			c.WriteString(StringifyValue(v))
+		}
+
+		c.WriteString("}")
+		return c.String()
 	case basetypes.DynamicValue:
 		return StringifyValue(v.UnderlyingValue())
 	}
