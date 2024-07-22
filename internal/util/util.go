@@ -3,6 +3,7 @@ package util
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -67,7 +68,8 @@ func StringifyValue(v attr.Value) string {
 		c := new(strings.Builder)
 		c.WriteString("{")
 		first := true
-		for k, v := range elms {
+		for _, k := range SortedKeys(elms) {
+			v := elms[k]
 			if first {
 				first = false
 			} else {
@@ -134,4 +136,16 @@ func HandleRequest[T any](ctx context.Context, model T, g ModelGetter, s ModelSe
 	if diags.HasError() {
 		return
 	}
+}
+
+func SortedKeys(m map[string]attr.Value) []string {
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+
+	sort.SliceStable(keys, func(i, j int) bool {
+		return keys[i] < keys[j]
+	})
+	return keys
 }
