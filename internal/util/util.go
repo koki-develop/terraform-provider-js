@@ -15,6 +15,8 @@ import (
 const prefix = "@js/"
 const RawPrefix = prefix + "raw:"
 
+// Raw returns the value with the raw prefix.
+// e.g. "foo" -> "@js/raw:foo"
 func Raw(v basetypes.StringValue) basetypes.StringValue {
 	if v.IsNull() || v.IsUnknown() {
 		return v
@@ -26,6 +28,8 @@ func Raw(v basetypes.StringValue) basetypes.StringValue {
 	return types.StringValue(RawPrefix + v.ValueString())
 }
 
+// RawString returns the string value without the raw prefix.
+// e.g. "@js/raw:foo" -> "foo"
 func RawString(v basetypes.StringValue) string {
 	return strings.TrimPrefix(v.ValueString(), RawPrefix)
 }
