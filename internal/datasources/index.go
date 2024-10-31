@@ -39,13 +39,16 @@ func (d *dataIndex) Schema(_ context.Context, _ datasource.SchemaRequest, resp *
 				Description: "The index or property name within the referenced object.",
 			},
 
-			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: "The id of the indexed value.",
-			},
 			"content": schema.StringAttribute{
 				Computed:    true,
 				Description: "The content of the indexed value.",
+			},
+
+			// TODO: remove
+			"id": schema.StringAttribute{
+				Computed:           true,
+				DeprecationMessage: "Use the `content` attribute instead.",
+				Description:        "The id of the indexed value.",
 			},
 		},
 	}
@@ -55,8 +58,10 @@ type dataIndexModel struct {
 	Ref   types.String  `tfsdk:"ref"`
 	Value types.Dynamic `tfsdk:"value"`
 
-	ID      types.String `tfsdk:"id"`
 	Content types.String `tfsdk:"content"`
+
+	// TODO: remove
+	ID types.String `tfsdk:"id"`
 }
 
 func (d *dataIndex) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -72,8 +77,10 @@ func (d *dataIndex) Read(ctx context.Context, req datasource.ReadRequest, resp *
 			c.WriteRune('[')
 			c.WriteString(util.StringifyValue(m.Value))
 			c.WriteRune(']')
-			m.ID = util.Raw(types.StringValue(c.String()))
-			m.Content = m.ID
+			m.Content = util.Raw(types.StringValue(c.String()))
+
+			// TODO: remove
+			m.ID = m.Content
 
 			return true
 		},
