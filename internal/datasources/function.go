@@ -1,33 +1,33 @@
-package resources
+package datasources
 
 import (
 	"context"
 	"strings"
 
+	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
-	"github.com/hashicorp/terraform-plugin-framework/resource"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/koki-develop/terraform-provider-js/internal/util"
 )
 
 var (
-	_ resource.Resource = &resourceFunction{}
+	_ datasource.DataSource = &dataFunction{}
 )
 
-func NewResourceFunction() func() resource.Resource {
-	return func() resource.Resource {
-		return &resourceFunction{}
+func NewDataFunction() func() datasource.DataSource {
+	return func() datasource.DataSource {
+		return &dataFunction{}
 	}
 }
 
-type resourceFunction struct{}
+type dataFunction struct{}
 
-func (r *resourceFunction) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (d *dataFunction) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_function"
 }
 
-func (r *resourceFunction) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (d *dataFunction) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "The `js_function` resource defines a function.",
 		Attributes: map[string]schema.Attribute{
@@ -72,22 +72,11 @@ type resourceFunctionModel struct {
 	Content types.String `tfsdk:"content"`
 }
 
-func (r *resourceFunction) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	r.handleRequest(ctx, &req.Plan, &resp.State, &resp.Diagnostics)
+func (d *dataFunction) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	d.handleRequest(ctx, &req.Config, &resp.State, &resp.Diagnostics)
 }
 
-func (r *resourceFunction) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	r.handleRequest(ctx, &req.State, &resp.State, &resp.Diagnostics)
-}
-
-func (r *resourceFunction) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	r.handleRequest(ctx, &req.Plan, &resp.State, &resp.Diagnostics)
-}
-
-func (r *resourceFunction) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-}
-
-func (r *resourceFunction) handleRequest(ctx context.Context, g util.ModelGetter, s util.ModelSetter, diags *diag.Diagnostics) {
+func (d *dataFunction) handleRequest(ctx context.Context, g util.ModelGetter, s util.ModelSetter, diags *diag.Diagnostics) {
 	util.HandleRequest(
 		ctx,
 		&resourceFunctionModel{},
