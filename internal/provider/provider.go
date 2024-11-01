@@ -59,6 +59,7 @@ func (p *jsProvider) Resources(_ context.Context) []func() resource.Resource {
 		resources.NewResourceFunctionCall(),
 		resources.NewResourceFunctionParam(),
 		resources.NewResourceIf(),
+		resources.NewResourceImport(),
 		resources.NewResourceIncrement(),
 		resources.NewResourceLet(),
 		resources.NewResourceNew(),
