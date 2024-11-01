@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/koki-develop/terraform-provider-js/internal/datasources"
-	"github.com/koki-develop/terraform-provider-js/internal/resources"
 )
 
 var (
@@ -63,11 +62,10 @@ func (p *jsProvider) DataSources(_ context.Context) []func() datasource.DataSour
 		datasources.NewDataReturn(),
 		datasources.NewDataThrow(),
 		datasources.NewDataVar(),
+		datasources.NewDataWhile(),
 	}
 }
 
 func (p *jsProvider) Resources(_ context.Context) []func() resource.Resource {
-	return []func() resource.Resource{
-		resources.NewResourceWhile(),
-	}
+	return []func() resource.Resource{}
 }
