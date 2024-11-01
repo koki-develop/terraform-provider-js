@@ -2,19 +2,19 @@
 # const lines = input.trim().split("\n")
 #
 
-resource "js_const" "lines" {
+data "js_const" "lines" {
   name  = "lines"
-  value = js_function_call.input_trim_split.content
+  value = data.js_function_call.input_trim_split.content
 }
 
-resource "js_function_call" "input_trim_split" {
-  caller   = js_function_call.input_trim.content
+data "js_function_call" "input_trim_split" {
+  caller   = data.js_function_call.input_trim.content
   function = "split"
   args     = ["\n"]
 }
 
-resource "js_function_call" "input_trim" {
-  caller   = js_function_param.input.id
+data "js_function_call" "input_trim" {
+  caller   = data.js_function_param.input.id
   function = "trim"
 }
 
@@ -22,18 +22,18 @@ resource "js_function_call" "input_trim" {
 # const a = Number(lines[0])
 #
 
-resource "js_const" "a" {
+data "js_const" "a" {
   name  = "a"
-  value = js_function_call.number_a.content
+  value = data.js_function_call.number_a.content
 }
 
-resource "js_function_call" "number_a" {
+data "js_function_call" "number_a" {
   function = "Number"
-  args     = [data.js_index.lines0.id]
+  args     = [data.js_index.lines0.content]
 }
 
 data "js_index" "lines0" {
-  ref   = js_const.lines.id
+  ref   = data.js_const.lines.id
   value = 0
 }
 
@@ -41,19 +41,19 @@ data "js_index" "lines0" {
 # const bc = lines[1].split(" ")
 #
 
-resource "js_const" "bc" {
+data "js_const" "bc" {
   name  = "bc"
-  value = js_function_call.lines1_split.content
+  value = data.js_function_call.lines1_split.content
 }
 
-resource "js_function_call" "lines1_split" {
-  caller   = data.js_index.lines1.id
+data "js_function_call" "lines1_split" {
+  caller   = data.js_index.lines1.content
   function = "split"
   args     = [" "]
 }
 
 data "js_index" "lines1" {
-  ref   = js_const.lines.id
+  ref   = data.js_const.lines.id
   value = 1
 }
 
@@ -61,18 +61,18 @@ data "js_index" "lines1" {
 # const b = Number(bc[0])
 #
 
-resource "js_const" "b" {
+data "js_const" "b" {
   name  = "b"
-  value = js_function_call.number_bc0.content
+  value = data.js_function_call.number_bc0.content
 }
 
-resource "js_function_call" "number_bc0" {
+data "js_function_call" "number_bc0" {
   function = "Number"
-  args     = [data.js_index.bc0.id]
+  args     = [data.js_index.bc0.content]
 }
 
 data "js_index" "bc0" {
-  ref   = js_const.bc.id
+  ref   = data.js_const.bc.id
   value = 0
 }
 
@@ -80,18 +80,18 @@ data "js_index" "bc0" {
 # const c = Number(bc[1])
 #
 
-resource "js_const" "c" {
+data "js_const" "c" {
   name  = "c"
-  value = js_function_call.number_bc1.content
+  value = data.js_function_call.number_bc1.content
 }
 
-resource "js_function_call" "number_bc1" {
+data "js_function_call" "number_bc1" {
   function = "Number"
-  args     = [data.js_index.bc1.id]
+  args     = [data.js_index.bc1.content]
 }
 
 data "js_index" "bc1" {
-  ref   = js_const.bc.id
+  ref   = data.js_const.bc.id
   value = 1
 }
 
@@ -99,13 +99,13 @@ data "js_index" "bc1" {
 # const s = lines[2]
 #
 
-resource "js_const" "s" {
+data "js_const" "s" {
   name  = "s"
-  value = data.js_index.lines2.id
+  value = data.js_index.lines2.content
 }
 
 data "js_index" "lines2" {
-  ref   = js_const.lines.id
+  ref   = data.js_const.lines.id
   value = 2
 }
 
@@ -113,43 +113,43 @@ data "js_index" "lines2" {
 # console.log(a + b + c, s)
 #
 
-resource "js_function_call" "log" {
+data "js_function_call" "log" {
   caller   = "console"
   function = "log"
-  args     = [js_operation.a_plus_b_plus_c.content, js_const.s.id]
+  args     = [data.js_operation.a_plus_b_plus_c.content, data.js_const.s.id]
 }
 
-resource "js_operation" "a_plus_b_plus_c" {
-  left     = js_operation.a_plus_b.content
+data "js_operation" "a_plus_b_plus_c" {
+  left     = data.js_operation.a_plus_b.content
   operator = "+"
-  right    = js_const.c.id
+  right    = data.js_const.c.id
 }
 
-resource "js_operation" "a_plus_b" {
-  left     = js_const.a.id
+data "js_operation" "a_plus_b" {
+  left     = data.js_const.a.id
   operator = "+"
-  right    = js_const.b.id
+  right    = data.js_const.b.id
 }
 
 #
 # main
 #
 
-resource "js_function" "main" {
+data "js_function" "main" {
   name   = "main"
-  params = [js_function_param.input.id]
+  params = [data.js_function_param.input.id]
   body = [
-    js_const.lines.content,
-    js_const.a.content,
-    js_const.bc.content,
-    js_const.b.content,
-    js_const.c.content,
-    js_const.s.content,
-    js_function_call.log.content,
+    data.js_const.lines.content,
+    data.js_const.a.content,
+    data.js_const.bc.content,
+    data.js_const.b.content,
+    data.js_const.c.content,
+    data.js_const.s.content,
+    data.js_function_call.log.content,
   ]
 }
 
-resource "js_function_param" "input" {
+data "js_function_param" "input" {
   name = "input"
 }
 
@@ -157,18 +157,18 @@ resource "js_function_param" "input" {
 # main(require("fs").readFileSync("/dev/stdin", "utf8"))
 #
 
-resource "js_function_call" "main" {
-  function = js_function.main.id
-  args     = [js_function_call.read_stdin.content]
+data "js_function_call" "main" {
+  function = data.js_function.main.id
+  args     = [data.js_function_call.read_stdin.content]
 }
 
-resource "js_function_call" "require_fs" {
+data "js_function_call" "require_fs" {
   function = "require"
   args     = ["fs"]
 }
 
-resource "js_function_call" "read_stdin" {
-  caller   = js_function_call.require_fs.content
+data "js_function_call" "read_stdin" {
+  caller   = data.js_function_call.require_fs.content
   function = "readFileSync"
   args     = ["/dev/stdin", "utf8"]
 }
@@ -177,14 +177,14 @@ resource "js_function_call" "read_stdin" {
 # write to file
 #
 
-resource "js_program" "main" {
+data "js_program" "main" {
   contents = [
-    js_function.main.content,
-    js_function_call.main.content,
+    data.js_function.main.content,
+    data.js_function_call.main.content,
   ]
 }
 
 resource "local_file" "main" {
   filename = "index.js"
-  content  = js_program.main.content
+  content  = data.js_program.main.content
 }

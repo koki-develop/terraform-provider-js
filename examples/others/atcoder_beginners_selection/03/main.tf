@@ -2,29 +2,29 @@
 # function isEven(num) { return num % 2 === 0 }
 #
 
-resource "js_function" "is_even" {
+data "js_function" "is_even" {
   name   = "isEven"
-  params = [js_function_param.is_even_num.id]
-  body   = [js_return.num_mod_2_eq_0.content]
+  params = [data.js_function_param.is_even_num.id]
+  body   = [data.js_return.num_mod_2_eq_0.content]
 }
 
-resource "js_function_param" "is_even_num" {
+data "js_function_param" "is_even_num" {
   name = "num"
 }
 
 # return num % 2 === 0
-resource "js_return" "num_mod_2_eq_0" {
-  value = js_operation.num_mod_2_eq_0.content
+data "js_return" "num_mod_2_eq_0" {
+  value = data.js_operation.num_mod_2_eq_0.content
 }
 
-resource "js_operation" "num_mod_2_eq_0" {
-  left     = js_operation.num_mod_2.content
+data "js_operation" "num_mod_2_eq_0" {
+  left     = data.js_operation.num_mod_2.content
   operator = "==="
   right    = 0
 }
 
-resource "js_operation" "num_mod_2" {
-  left     = js_function_param.is_even_num.id
+data "js_operation" "num_mod_2" {
+  left     = data.js_function_param.is_even_num.id
   operator = "%"
   right    = 2
 }
@@ -33,22 +33,22 @@ resource "js_operation" "num_mod_2" {
 # function half(num) { return num / 2 }
 #
 
-resource "js_function" "half" {
+data "js_function" "half" {
   name   = "half"
-  params = [js_function_param.half_num.id]
-  body   = [js_return.num_div_2.content]
+  params = [data.js_function_param.half_num.id]
+  body   = [data.js_return.num_div_2.content]
 }
 
-resource "js_function_param" "half_num" {
+data "js_function_param" "half_num" {
   name = "num"
 }
 
-resource "js_return" "num_div_2" {
-  value = js_operation.num_div_2.content
+data "js_return" "num_div_2" {
+  value = data.js_operation.num_div_2.content
 }
 
-resource "js_operation" "num_div_2" {
-  left     = js_function_param.half_num.id
+data "js_operation" "num_div_2" {
+  left     = data.js_function_param.half_num.id
   operator = "/"
   right    = 2
 }
@@ -57,25 +57,25 @@ resource "js_operation" "num_div_2" {
 # const lines = input.trim().split("\n")
 #
 
-resource "js_const" "lines" {
+data "js_const" "lines" {
   name  = "lines"
-  value = js_function_call.input_trim_split.content
+  value = data.js_function_call.input_trim_split.content
 }
 
-resource "js_function_call" "input_trim_split" {
-  caller   = js_function_call.input_trim.content
+data "js_function_call" "input_trim_split" {
+  caller   = data.js_function_call.input_trim.content
   function = "split"
   args     = ["\n"]
 }
 
-resource "js_function_call" "input_trim" {
-  caller   = js_function_param.input.id
+data "js_function_call" "input_trim" {
+  caller   = data.js_function_param.input.id
   function = "trim"
 }
 
 # lines[1]
 data "js_index" "lines1" {
-  ref   = js_const.lines.id
+  ref   = data.js_const.lines.id
   value = 1
 }
 
@@ -83,13 +83,13 @@ data "js_index" "lines1" {
 # const aa = lines[1].split(" ")
 #
 
-resource "js_const" "aa" {
+data "js_const" "aa" {
   name  = "aa"
-  value = js_function_call.lines1_split.content
+  value = data.js_function_call.lines1_split.content
 }
 
-resource "js_function_call" "lines1_split" {
-  caller   = data.js_index.lines1.id
+data "js_function_call" "lines1_split" {
+  caller   = data.js_index.lines1.content
   function = "split"
   args     = [" "]
 }
@@ -98,13 +98,13 @@ resource "js_function_call" "lines1_split" {
 # let nums = aa.map(Number)
 #
 
-resource "js_let" "nums" {
+data "js_let" "nums" {
   name  = "nums"
-  value = js_function_call.aa_map_number.content
+  value = data.js_function_call.aa_map_number.content
 }
 
-resource "js_function_call" "aa_map_number" {
-  caller   = js_const.aa.id
+data "js_function_call" "aa_map_number" {
+  caller   = data.js_const.aa.id
   function = "map"
   args     = [data.js_raw.number.content]
 }
@@ -117,7 +117,7 @@ data "js_raw" "number" {
 # let count
 #
 
-resource "js_let" "count" {
+data "js_let" "count" {
   name  = "count"
   value = 0
 }
@@ -129,66 +129,66 @@ resource "js_let" "count" {
 # }
 #
 
-resource "js_while" "count" {
-  condition = js_function_call.nums_every.content
+data "js_while" "count" {
+  condition = data.js_function_call.nums_every.content
   body = [
-    js_operation.half_nums.content,
-    js_increment.count.content,
+    data.js_operation.half_nums.content,
+    data.js_increment.count.content,
   ]
 }
 
-resource "js_function_call" "nums_every" {
-  caller   = js_let.nums.id
+data "js_function_call" "nums_every" {
+  caller   = data.js_let.nums.id
   function = "every"
-  args     = [js_function.is_even.id]
+  args     = [data.js_function.is_even.id]
 }
 
-resource "js_operation" "half_nums" {
-  left     = js_let.nums.id
+data "js_operation" "half_nums" {
+  left     = data.js_let.nums.id
   operator = "="
-  right    = js_function_call.half_nums.content
+  right    = data.js_function_call.half_nums.content
 }
 
-resource "js_function_call" "half_nums" {
-  caller   = js_let.nums.id
+data "js_function_call" "half_nums" {
+  caller   = data.js_let.nums.id
   function = "map"
-  args     = [js_function.half.id]
+  args     = [data.js_function.half.id]
 }
 
-resource "js_increment" "count" {
-  ref = js_let.count.id
+data "js_increment" "count" {
+  ref = data.js_let.count.id
 }
 
 #
 # console.log(count)
 #
 
-resource "js_function_call" "log_count" {
+data "js_function_call" "log_count" {
   caller   = "console"
   function = "log"
-  args     = [js_let.count.id]
+  args     = [data.js_let.count.id]
 }
 
 #
 # main
 #
 
-resource "js_function" "main" {
+data "js_function" "main" {
   name   = "main"
-  params = [js_function_param.input.id]
+  params = [data.js_function_param.input.id]
   body = [
-    js_function.is_even.content,
-    js_function.half.content,
-    js_const.lines.content,
-    js_const.aa.content,
-    js_let.nums.content,
-    js_let.count.content,
-    js_while.count.content,
-    js_function_call.log_count.content,
+    data.js_function.is_even.content,
+    data.js_function.half.content,
+    data.js_const.lines.content,
+    data.js_const.aa.content,
+    data.js_let.nums.content,
+    data.js_let.count.content,
+    data.js_while.count.content,
+    data.js_function_call.log_count.content,
   ]
 }
 
-resource "js_function_param" "input" {
+data "js_function_param" "input" {
   name = "input"
 }
 
@@ -196,18 +196,18 @@ resource "js_function_param" "input" {
 # main(require("fs").readFileSync("/dev/stdin", "utf8"))
 #
 
-resource "js_function_call" "main" {
-  function = js_function.main.id
-  args     = [js_function_call.read_stdin.content]
+data "js_function_call" "main" {
+  function = data.js_function.main.id
+  args     = [data.js_function_call.read_stdin.content]
 }
 
-resource "js_function_call" "require_fs" {
+data "js_function_call" "require_fs" {
   function = "require"
   args     = ["fs"]
 }
 
-resource "js_function_call" "read_stdin" {
-  caller   = js_function_call.require_fs.content
+data "js_function_call" "read_stdin" {
+  caller   = data.js_function_call.require_fs.content
   function = "readFileSync"
   args     = ["/dev/stdin", "utf8"]
 }
@@ -216,14 +216,14 @@ resource "js_function_call" "read_stdin" {
 # write to file
 #
 
-resource "js_program" "main" {
+data "js_program" "main" {
   contents = [
-    js_function.main.content,
-    js_function_call.main.content,
+    data.js_function.main.content,
+    data.js_function_call.main.content,
   ]
 }
 
 resource "local_file" "main" {
   filename = "index.js"
-  content  = js_program.main.content
+  content  = data.js_program.main.content
 }

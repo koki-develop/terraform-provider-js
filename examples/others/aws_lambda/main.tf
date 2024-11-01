@@ -30,33 +30,33 @@ data "archive_file" "source_code" {
   type                    = "zip"
   output_path             = "index.zip"
   source_content_filename = "index.js"
-  source_content          = js_program.main.content
+  source_content          = data.js_program.main.content
 }
 
-resource "js_program" "main" {
-  contents = [js_operation.exports_handler.content]
+data "js_program" "main" {
+  contents = [data.js_operation.exports_handler.content]
 }
 
-resource "js_function" "handler" {
+data "js_function" "handler" {
   async  = true
-  params = [js_function_param.event.id]
+  params = [data.js_function_param.event.id]
   body = [
-    js_function_call.log_event.content,
-    js_return.handler.content,
+    data.js_function_call.log_event.content,
+    data.js_return.handler.content,
   ]
 }
 
-resource "js_function_param" "event" {
+data "js_function_param" "event" {
   name = "event"
 }
 
-resource "js_function_call" "log_event" {
+data "js_function_call" "log_event" {
   caller   = "console"
   function = "log"
-  args     = ["event:", js_function_param.event.id]
+  args     = ["event:", data.js_function_param.event.id]
 }
 
-resource "js_return" "handler" {
+data "js_return" "handler" {
   value = {
     message = "Hello JS.tf!"
   }
@@ -66,8 +66,8 @@ data "js_raw" "exports_handler" {
   value = "exports.handler"
 }
 
-resource "js_operation" "exports_handler" {
+data "js_operation" "exports_handler" {
   left     = data.js_raw.exports_handler.content
   operator = "="
-  right    = js_function.handler.content
+  right    = data.js_function.handler.content
 }
