@@ -48,6 +48,8 @@ func (p *jsProvider) DataSources(_ context.Context) []func() datasource.DataSour
 		datasources.NewDataDecrement(),
 		datasources.NewDataExport(),
 		datasources.NewDataFor(),
+		datasources.NewDataFunctionCall(),
+		datasources.NewDataFunctionParam(),
 		datasources.NewDataIndex(),
 		datasources.NewDataRaw(),
 	}
@@ -56,8 +58,6 @@ func (p *jsProvider) DataSources(_ context.Context) []func() datasource.DataSour
 func (p *jsProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		resources.NewResourceFunction(),
-		resources.NewResourceFunctionCall(),
-		resources.NewResourceFunctionParam(),
 		resources.NewResourceIf(),
 		resources.NewResourceImport(),
 		resources.NewResourceIncrement(),
