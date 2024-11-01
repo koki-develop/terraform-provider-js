@@ -1,4 +1,4 @@
-package resources
+package datasources
 
 import (
 	"context"
@@ -6,33 +6,33 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
+	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
-	"github.com/hashicorp/terraform-plugin-framework/resource"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/koki-develop/terraform-provider-js/internal/util"
 )
 
 var (
-	_ resource.Resource = &resourceFunctionCall{}
+	_ datasource.DataSource = &dataFunctionCall{}
 )
 
-func NewResourceFunctionCall() func() resource.Resource {
-	return func() resource.Resource {
-		return &resourceFunctionCall{}
+func NewDataFunctionCall() func() datasource.DataSource {
+	return func() datasource.DataSource {
+		return &dataFunctionCall{}
 	}
 }
 
-type resourceFunctionCall struct{}
+type dataFunctionCall struct{}
 
-func (r *resourceFunctionCall) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+func (d *dataFunctionCall) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_function_call"
 }
 
-func (r *resourceFunctionCall) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (d *dataFunctionCall) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_function_call` resource calls a function.",
+		MarkdownDescription: "The `js_function_call` data source calls a function.",
 		Attributes: map[string]schema.Attribute{
 			"caller": schema.StringAttribute{
 				Description: "The caller of the function.",
@@ -55,7 +55,7 @@ func (r *resourceFunctionCall) Schema(_ context.Context, _ resource.SchemaReques
 	}
 }
 
-type resourceFunctionCallModel struct {
+type dataFunctionCallModel struct {
 	Caller   types.String  `tfsdk:"caller"`
 	Function types.String  `tfsdk:"function"`
 	Args     types.Dynamic `tfsdk:"args"`
@@ -63,29 +63,18 @@ type resourceFunctionCallModel struct {
 	Content types.String `tfsdk:"content"`
 }
 
-func (r *resourceFunctionCall) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	r.handleRequest(ctx, &req.Plan, &resp.State, &resp.Diagnostics)
+func (d *dataFunctionCall) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	d.handleRequest(ctx, &req.Config, &resp.State, &resp.Diagnostics)
 }
 
-func (r *resourceFunctionCall) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	r.handleRequest(ctx, &req.State, &resp.State, &resp.Diagnostics)
-}
-
-func (r *resourceFunctionCall) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	r.handleRequest(ctx, &req.Plan, &resp.State, &resp.Diagnostics)
-}
-
-func (r *resourceFunctionCall) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-}
-
-func (r *resourceFunctionCall) handleRequest(ctx context.Context, g util.ModelGetter, s util.ModelSetter, diags *diag.Diagnostics) {
+func (d *dataFunctionCall) handleRequest(ctx context.Context, g util.ModelGetter, s util.ModelSetter, diags *diag.Diagnostics) {
 	util.HandleRequest(
 		ctx,
-		&resourceFunctionCallModel{},
+		&dataFunctionCallModel{},
 		g,
 		s,
 		diags,
-		func(m *resourceFunctionCallModel) bool {
+		func(m *dataFunctionCallModel) bool {
 			c := new(strings.Builder)
 
 			if !m.Caller.IsNull() {
