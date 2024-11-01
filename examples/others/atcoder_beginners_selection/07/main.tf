@@ -43,12 +43,8 @@ data "js_const" "set" {
 }
 
 data "js_new" "set" {
-  value = data.js_function_call.set.content
-}
-
-data "js_function_call" "set" {
-  function = "Set"
-  args     = [data.js_const.dd.id]
+  constructor = "Set"
+  args        = [data.js_const.dd.id]
 }
 
 #

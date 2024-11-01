@@ -2,11 +2,13 @@ package datasources
 
 import (
 	"context"
-	"fmt"
+	"strings"
 
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/koki-develop/terraform-provider-js/internal/util"
 )
 
@@ -30,9 +32,13 @@ func (d *dataNew) Schema(_ context.Context, _ datasource.SchemaRequest, resp *da
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "The `js_new` data source creates a new operation.",
 		Attributes: map[string]schema.Attribute{
-			"value": schema.StringAttribute{
-				Description: "The value of the operation.",
+			"constructor": schema.StringAttribute{
+				Description: "The constructor of the operation.",
 				Required:    true,
+			},
+			"args": schema.DynamicAttribute{
+				Description: "The arguments of the operation.",
+				Optional:    true,
 			},
 
 			"content": schema.StringAttribute{
@@ -44,8 +50,9 @@ func (d *dataNew) Schema(_ context.Context, _ datasource.SchemaRequest, resp *da
 }
 
 type dataNewModel struct {
-	Value   types.String `tfsdk:"value"`
-	Content types.String `tfsdk:"content"`
+	Constructor types.String  `tfsdk:"constructor"`
+	Args        types.Dynamic `tfsdk:"args"`
+	Content     types.String  `tfsdk:"content"`
 }
 
 func (d *dataNew) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -56,7 +63,34 @@ func (d *dataNew) Read(ctx context.Context, req datasource.ReadRequest, resp *da
 		&resp.State,
 		&resp.Diagnostics,
 		func(m *dataNewModel) bool {
-			m.Content = util.Raw(types.StringValue(fmt.Sprintf("new %s", util.StringifyValue(m.Value))))
+			c := new(strings.Builder)
+
+			c.WriteString("new ")
+			c.WriteString(util.RawString(m.Constructor))
+
+			c.WriteString("(")
+
+			if !m.Args.IsNull() {
+				var elms []attr.Value
+				switch v := m.Args.UnderlyingValue().(type) {
+				case basetypes.ListValue:
+					elms = v.Elements()
+				case basetypes.TupleValue:
+					elms = v.Elements()
+				case basetypes.SetValue:
+					elms = v.Elements()
+				default:
+					resp.Diagnostics.AddError("Invalid type of args", "args must be a list, tuple or set")
+					return false
+				}
+
+				args := util.StringifyValues(elms)
+				c.WriteString(strings.Join(args, ","))
+			}
+
+			c.WriteString(")")
+
+			m.Content = util.Raw(types.StringValue(c.String()))
 			return true
 		},
 	)
