@@ -13,18 +13,18 @@ The `js_index` data source allows you to reference a JavaScript object and acces
 ## Example Usage
 
 ```terraform
-resource "js_const" "arr" {
+data "js_const" "arr" {
   name  = "arr"
   value = [1, 2, 3]
 }
 
 data "js_index" "arr_1" {
-  ref   = js_const.arr.id
+  ref   = data.js_const.arr.id
   value = 1
 }
 # => arr[1]
 
-resource "js_const" "obj" {
+data "js_const" "obj" {
   name = "obj"
   value = {
     foo = "bar"
@@ -32,7 +32,7 @@ resource "js_const" "obj" {
 }
 
 data "js_index" "obj_foo" {
-  ref   = js_const.obj.id
+  ref   = data.js_const.obj.id
   value = "foo"
 }
 # => obj["foo"]
@@ -49,4 +49,4 @@ data "js_index" "obj_foo" {
 ### Read-Only
 
 - `content` (String) The content of the indexed value.
-- `id` (String) The id of the indexed value.
+- `id` (String, Deprecated) The id of the indexed value.
