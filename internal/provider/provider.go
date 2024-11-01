@@ -56,13 +56,13 @@ func (p *jsProvider) DataSources(_ context.Context) []func() datasource.DataSour
 		datasources.NewDataIncrement(),
 		datasources.NewDataIndex(),
 		datasources.NewDataLet(),
+		datasources.NewDataNew(),
 		datasources.NewDataRaw(),
 	}
 }
 
 func (p *jsProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		resources.NewResourceNew(),
 		resources.NewResourceOperation(),
 		resources.NewResourceProgram(p.version),
 		resources.NewResourceReturn(),
