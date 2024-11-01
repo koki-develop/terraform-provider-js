@@ -13,13 +13,9 @@ The `js_new` data source creates a new operation.
 ## Example Usage
 
 ```terraform
-data "js_function_call" "error" {
-  function = "Error"
-  args     = ["something went wrong"]
-}
-
 data "js_new" "error" {
-  value = data.js_function_call.error.content
+  constructor = "Error"
+  args        = ["something went wrong"]
 }
 # => new Error("something went wrong")
 ```
@@ -29,7 +25,11 @@ data "js_new" "error" {
 
 ### Required
 
-- `value` (String) The value of the operation.
+- `constructor` (String) The constructor of the operation.
+
+### Optional
+
+- `args` (Dynamic) The arguments of the operation.
 
 ### Read-Only
 
