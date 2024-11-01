@@ -1,4 +1,4 @@
-package resources
+package datasources
 
 import (
 	"context"
