@@ -43,6 +43,7 @@ func (p *jsProvider) Configure(_ context.Context, _ provider.ConfigureRequest, _
 
 func (p *jsProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
+		datasources.NewDataAwait(),
 		datasources.NewDataIndex(),
 		datasources.NewDataRaw(),
 	}
@@ -50,7 +51,6 @@ func (p *jsProvider) DataSources(_ context.Context) []func() datasource.DataSour
 
 func (p *jsProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		resources.NewResourceAwait(),
 		resources.NewResourceConst(),
 		resources.NewResourceDecrement(),
 		resources.NewResourceExport(),

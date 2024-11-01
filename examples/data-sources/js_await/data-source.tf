@@ -3,7 +3,7 @@ resource "js_function_call" "fetch" {
   args     = ["https://example.com"]
 }
 
-resource "js_await" "fetch" {
+data "js_await" "fetch" {
   value = js_function_call.fetch.content
 }
 # => await fetch("https://example.com")
