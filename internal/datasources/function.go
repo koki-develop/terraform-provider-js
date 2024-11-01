@@ -29,7 +29,7 @@ func (d *dataFunction) Metadata(_ context.Context, req datasource.MetadataReques
 
 func (d *dataFunction) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_function` resource defines a function.",
+		MarkdownDescription: "The `js_function` data source defines a function.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
 				Description: "The name of the function.",
@@ -62,7 +62,7 @@ func (d *dataFunction) Schema(_ context.Context, _ datasource.SchemaRequest, res
 	}
 }
 
-type resourceFunctionModel struct {
+type dataFunctionModel struct {
 	Name   types.String `tfsdk:"name"`
 	Params types.List   `tfsdk:"params"`
 	Body   types.List   `tfsdk:"body"`
@@ -79,11 +79,11 @@ func (d *dataFunction) Read(ctx context.Context, req datasource.ReadRequest, res
 func (d *dataFunction) handleRequest(ctx context.Context, g util.ModelGetter, s util.ModelSetter, diags *diag.Diagnostics) {
 	util.HandleRequest(
 		ctx,
-		&resourceFunctionModel{},
+		&dataFunctionModel{},
 		g,
 		s,
 		diags,
-		func(m *resourceFunctionModel) bool {
+		func(m *dataFunctionModel) bool {
 			c := new(strings.Builder)
 			if !m.Async.IsNull() && m.Async.ValueBool() {
 				c.WriteString("async ")

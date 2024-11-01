@@ -28,7 +28,7 @@ func (d *dataFor) Metadata(_ context.Context, req datasource.MetadataRequest, re
 
 func (d *dataFor) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_for` resource creates a for loop.",
+		MarkdownDescription: "The `js_for` data source creates a for loop.",
 		Attributes: map[string]schema.Attribute{
 			"init": schema.StringAttribute{
 				Description: "The initialization expression.",
@@ -56,7 +56,7 @@ func (d *dataFor) Schema(_ context.Context, _ datasource.SchemaRequest, resp *da
 	}
 }
 
-type resourceForModel struct {
+type dataForModel struct {
 	Init      types.String `tfsdk:"init"`
 	Condition types.String `tfsdk:"condition"`
 	Update    types.String `tfsdk:"update"`
@@ -68,11 +68,11 @@ type resourceForModel struct {
 func (d *dataFor) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	util.HandleRequest(
 		ctx,
-		&resourceForModel{},
+		&dataForModel{},
 		&req.Config,
 		&resp.State,
 		&resp.Diagnostics,
-		func(m *resourceForModel) bool {
+		func(m *dataForModel) bool {
 			c := new(strings.Builder)
 			c.WriteString("for(")
 			if !m.Init.IsNull() {

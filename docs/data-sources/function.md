@@ -3,12 +3,12 @@
 page_title: "js_function Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_function resource defines a function.
+  The js_function data source defines a function.
 ---
 
 # js_function (Data Source)
 
-The `js_function` resource defines a function.
+The `js_function` data source defines a function.
 
 ## Example Usage
 

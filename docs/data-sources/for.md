@@ -3,12 +3,12 @@
 page_title: "js_for Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_for resource creates a for loop.
+  The js_for data source creates a for loop.
 ---
 
 # js_for (Data Source)
 
-The `js_for` resource creates a for loop.
+The `js_for` data source creates a for loop.
 
 ## Example Usage
 
