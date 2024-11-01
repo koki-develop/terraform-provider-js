@@ -44,7 +44,6 @@ jobs:
       matrix:
         examples:
           - others/atcoder_beginners_selection
-          - resources
           - data-sources
     steps:
       - uses: actions/checkout@v4
