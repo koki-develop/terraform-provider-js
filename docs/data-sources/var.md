@@ -3,12 +3,12 @@
 page_title: "js_var Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_var data source defines a variable.
+  
 ---
 
 # js_var (Data Source)
 
-The `js_var` data source defines a variable.
+
 
 ## Example Usage
 
@@ -52,13 +52,13 @@ data "js_var" "obj" {
 
 ### Required
 
-- `name` (String) The name of the variable.
+- `name` (String) Name of variable to declare.
 
 ### Optional
 
-- `value` (Dynamic) The value of the variable.
+- `value` (Dynamic) Initial value of variable.
 
 ### Read-Only
 
-- `content` (String) The content of the variable.
-- `id` (String) The id of the variable.
+- `content` (String)
+- `id` (String) The ID of this resource.

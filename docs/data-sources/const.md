@@ -3,12 +3,12 @@
 page_title: "js_const Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_const data source defines a constant value.
+  
 ---
 
 # js_const (Data Source)
 
-The `js_const` data source defines a constant value.
+
 
 ## Example Usage
 
@@ -52,10 +52,10 @@ data "js_const" "obj" {
 
 ### Required
 
-- `name` (String) The name of the constant.
-- `value` (Dynamic) The value of the constant.
+- `name` (String) Name of variable to declare.
+- `value` (Dynamic) Initial value of the variable.
 
 ### Read-Only
 
-- `content` (String) The content of the constant.
-- `id` (String) The id of the constant.
+- `content` (String)
+- `id` (String) The ID of this resource.

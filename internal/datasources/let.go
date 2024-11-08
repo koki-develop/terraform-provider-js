@@ -28,24 +28,21 @@ func (d *dataLet) Metadata(_ context.Context, req datasource.MetadataRequest, re
 
 func (d *dataLet) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_let` data source defines a let statement.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: "The name of the let statement.",
+				Description: "Name of variable to declare.",
 				Required:    true,
 			},
 			"value": schema.DynamicAttribute{
-				Description: "The value of the let statement.",
+				Description: "Initial value of the variable.",
 				Optional:    true,
 			},
 
 			"id": schema.StringAttribute{
-				Description: "The id of the let statement.",
-				Computed:    true,
+				Computed: true,
 			},
 			"content": schema.StringAttribute{
-				Description: "The content of the let statement.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

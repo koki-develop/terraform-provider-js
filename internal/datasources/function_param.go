@@ -27,16 +27,14 @@ func (d *dataFunctionParam) Metadata(_ context.Context, req datasource.MetadataR
 
 func (d *dataFunctionParam) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_function_param` data source defines a function parameter.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: "The name of the function parameter.",
+				Description: "Name of parameter.",
 				Required:    true,
 			},
 
 			"id": schema.StringAttribute{
-				Description: "The id of the function parameter.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

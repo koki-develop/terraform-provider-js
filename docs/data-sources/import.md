@@ -3,12 +3,12 @@
 page_title: "js_import Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_import data source defines an import.
+  
 ---
 
 # js_import (Data Source)
 
-The `js_import` data source defines an import.
+
 
 ## Example Usage
 
@@ -32,8 +32,8 @@ data "js_import" "default" {
 
 ### Required
 
-- `as` (String) The name of the import.
-- `from` (String) The path of the import.
+- `as` (String) Name of the module object that will be used as a kind of namespace when referring to the imports.
+- `from` (String) The module to import from.
 
 ### Optional
 
@@ -41,5 +41,5 @@ data "js_import" "default" {
 
 ### Read-Only
 
-- `content` (String) The content of the import.
-- `id` (String) The ID of the import.
+- `content` (String)
+- `id` (String) The ID of this resource.

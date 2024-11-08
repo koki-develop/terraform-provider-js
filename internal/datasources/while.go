@@ -28,20 +28,18 @@ func (d *dataWhile) Metadata(_ context.Context, req datasource.MetadataRequest, 
 
 func (d *dataWhile) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_while` data source creates a while loop.",
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
-				Description: "The condition expression.",
+				Description: "An expression evaluated before each pass through the loop.",
 				Required:    true,
 			},
 			"body": schema.ListAttribute{
-				Description: "The body of the while loop.",
+				Description: "Statements that are executed as long as the condition evaluates to true.",
 				ElementType: types.StringType,
 				Optional:    true,
 			},
 			"content": schema.StringAttribute{
-				Description: "The content of the while loop.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

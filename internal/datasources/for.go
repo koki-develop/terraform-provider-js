@@ -28,29 +28,27 @@ func (d *dataFor) Metadata(_ context.Context, req datasource.MetadataRequest, re
 
 func (d *dataFor) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_for` data source creates a for loop.",
 		Attributes: map[string]schema.Attribute{
 			"init": schema.StringAttribute{
-				Description: "The initialization expression.",
+				Description: "An expression or variable declaration evaluated once before the loop begins.",
 				Optional:    true,
 			},
 			"condition": schema.StringAttribute{
-				Description: "The condition expression.",
+				Description: "An expression to be evaluated before each loop iteration.",
 				Optional:    true,
 			},
 			"update": schema.StringAttribute{
-				Description: "The update expression.",
+				Description: "An expression to be evaluated at the end of each loop iteration.",
 				Optional:    true,
 			},
 			"body": schema.ListAttribute{
-				Description: "The body of the for loop.",
+				Description: "Statements that is executed as long as the condition evaluates to true.",
 				ElementType: types.StringType,
 				Optional:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Description: "The content of the for loop.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

@@ -3,12 +3,12 @@
 page_title: "js_function_param Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_function_param data source defines a function parameter.
+  
 ---
 
 # js_function_param (Data Source)
 
-The `js_function_param` data source defines a function parameter.
+
 
 
 
@@ -17,8 +17,8 @@ The `js_function_param` data source defines a function parameter.
 
 ### Required
 
-- `name` (String) The name of the function parameter.
+- `name` (String) Name of parameter.
 
 ### Read-Only
 
-- `id` (String) The id of the function parameter.
+- `id` (String) The ID of this resource.

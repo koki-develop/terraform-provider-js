@@ -3,12 +3,12 @@
 page_title: "js_program Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_program data source creates a program.
+  
 ---
 
 # js_program (Data Source)
 
-The `js_program` data source creates a program.
+
 
 ## Example Usage
 
@@ -39,8 +39,8 @@ data "js_program" "main" {
 
 ### Required
 
-- `contents` (List of String) The contents of the program.
+- `contents` (List of String) Statements that are executed in the program.
 
 ### Read-Only
 
-- `content` (String) The content of the program.
+- `content` (String)

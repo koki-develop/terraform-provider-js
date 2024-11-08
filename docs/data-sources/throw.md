@@ -29,7 +29,7 @@ data "js_throw" "error" {
 
 ### Required
 
-- `value` (String)
+- `value` (String) Expression to throw.
 
 ### Read-Only
 

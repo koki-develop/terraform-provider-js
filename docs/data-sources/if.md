@@ -3,12 +3,12 @@
 page_title: "js_if Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_if data source creates an if statement.
+  
 ---
 
 # js_if (Data Source)
 
-The `js_if` data source creates an if statement.
+
 
 ## Example Usage
 
@@ -46,13 +46,13 @@ data "js_if" "main" {
 
 ### Required
 
-- `condition` (String) The condition expression.
+- `condition` (String) An expression that is considered to be either truthy or falsy.
 
 ### Optional
 
-- `else` (List of String) The body of the else statement.
-- `then` (List of String) The body of the if statement.
+- `else` (List of String) Statements that are executed if condition is falsy.
+- `then` (List of String) Statements that are executed if condition is truthy.
 
 ### Read-Only
 
-- `content` (String) The content of the if statement.
+- `content` (String)

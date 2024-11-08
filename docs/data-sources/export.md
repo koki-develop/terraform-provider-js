@@ -3,12 +3,12 @@
 page_title: "js_export Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_export data source defines an export.
+  
 ---
 
 # js_export (Data Source)
 
-The `js_export` data source defines an export.
+
 
 ## Example Usage
 
@@ -29,7 +29,7 @@ data "js_export" "message" {
 
 ### Required
 
-- `value` (Dynamic) The value of the export.
+- `value` (Dynamic) Value to be exported
 
 ### Read-Only
 

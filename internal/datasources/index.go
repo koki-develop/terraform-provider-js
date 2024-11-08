@@ -28,27 +28,21 @@ func (d *dataIndex) Metadata(_ context.Context, req datasource.MetadataRequest, 
 
 func (d *dataIndex) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_index` data source allows you to reference a JavaScript object and access its properties or array elements.",
 		Attributes: map[string]schema.Attribute{
 			"ref": schema.StringAttribute{
 				Required:    true,
-				Description: "The referenced JavaScript object.",
+				Description: "Referenced JavaScript object.",
 			},
 			"value": schema.DynamicAttribute{
 				Required:    true,
-				Description: "The index or property name within the referenced object.",
+				Description: "Index or property name within referenced object.",
 			},
 
-			"content": schema.StringAttribute{
-				Computed:    true,
-				Description: "The content of the indexed value.",
-			},
-
-			// TODO: remove
 			"id": schema.StringAttribute{
-				Computed:           true,
-				DeprecationMessage: "Use the `content` attribute instead.",
-				Description:        "The id of the indexed value.",
+				Computed: true,
+			},
+			"content": schema.StringAttribute{
+				Computed: true,
 			},
 		},
 	}
@@ -77,9 +71,8 @@ func (d *dataIndex) Read(ctx context.Context, req datasource.ReadRequest, resp *
 			c.WriteRune('[')
 			c.WriteString(util.StringifyValue(m.Value))
 			c.WriteRune(']')
-			m.Content = util.Raw(types.StringValue(c.String()))
 
-			// TODO: remove
+			m.Content = util.Raw(types.StringValue(c.String()))
 			m.ID = m.Content
 
 			return true

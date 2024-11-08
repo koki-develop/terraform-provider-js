@@ -25,14 +25,13 @@ func (d *dataImport) Metadata(_ context.Context, req datasource.MetadataRequest,
 
 func (d *dataImport) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_import` data source defines an import.",
 		Attributes: map[string]schema.Attribute{
 			"from": schema.StringAttribute{
-				Description: "The path of the import.",
+				Description: "The module to import from.",
 				Required:    true,
 			},
 			"as": schema.StringAttribute{
-				Description: "The name of the import.",
+				Description: "Name of the module object that will be used as a kind of namespace when referring to the imports.",
 				Required:    true,
 			},
 			"default": schema.BoolAttribute{
@@ -41,12 +40,10 @@ func (d *dataImport) Schema(_ context.Context, _ datasource.SchemaRequest, resp 
 			},
 
 			"id": schema.StringAttribute{
-				Description: "The ID of the import.",
-				Computed:    true,
+				Computed: true,
 			},
 			"content": schema.StringAttribute{
-				Description: "The content of the import.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

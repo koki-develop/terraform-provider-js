@@ -28,24 +28,21 @@ func (d *dataConst) Metadata(_ context.Context, req datasource.MetadataRequest, 
 
 func (d *dataConst) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_const` data source defines a constant value.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: "The name of the constant.",
+				Description: "Name of variable to declare.",
 				Required:    true,
 			},
 			"value": schema.DynamicAttribute{
-				Description: "The value of the constant.",
+				Description: "Initial value of the variable.",
 				Required:    true,
 			},
 
 			"id": schema.StringAttribute{
-				Description: "The id of the constant.",
-				Computed:    true,
+				Computed: true,
 			},
 			"content": schema.StringAttribute{
-				Description: "The content of the constant.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

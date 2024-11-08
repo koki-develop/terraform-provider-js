@@ -3,12 +3,12 @@
 page_title: "js_for Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_for data source creates a for loop.
+  
 ---
 
 # js_for (Data Source)
 
-The `js_for` data source creates a for loop.
+
 
 ## Example Usage
 
@@ -50,11 +50,11 @@ data "js_for" "main" {
 
 ### Optional
 
-- `body` (List of String) The body of the for loop.
-- `condition` (String) The condition expression.
-- `init` (String) The initialization expression.
-- `update` (String) The update expression.
+- `body` (List of String) Statements that is executed as long as the condition evaluates to true.
+- `condition` (String) An expression to be evaluated before each loop iteration.
+- `init` (String) An expression or variable declaration evaluated once before the loop begins.
+- `update` (String) An expression to be evaluated at the end of each loop iteration.
 
 ### Read-Only
 
-- `content` (String) The content of the for loop.
+- `content` (String)

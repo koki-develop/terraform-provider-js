@@ -3,12 +3,12 @@
 page_title: "js_function Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_function data source defines a function.
+  
 ---
 
 # js_function (Data Source)
 
-The `js_function` data source defines a function.
+
 
 ## Example Usage
 
@@ -61,12 +61,12 @@ data "js_function" "async" {
 
 ### Optional
 
-- `async` (Boolean) Whether the function is async.
-- `body` (List of String) The body of the function.
-- `name` (String) The name of the function.
-- `params` (List of String) The parameters of the function.
+- `async` (Boolean) Whether function is async.
+- `body` (List of String) Body of function.
+- `name` (String) Name of function.
+- `params` (List of String) Parameters of function.
 
 ### Read-Only
 
-- `content` (String) The content of the function.
-- `id` (String) The id of the function.
+- `content` (String)
+- `id` (String) The ID of this resource.

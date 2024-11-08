@@ -3,12 +3,12 @@
 page_title: "js_return Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_return data source creates a return.
+  
 ---
 
 # js_return (Data Source)
 
-The `js_return` data source creates a return.
+
 
 ## Example Usage
 
@@ -31,8 +31,8 @@ data "js_function" "hello" {
 
 ### Optional
 
-- `value` (Dynamic) The value of the return.
+- `value` (Dynamic) Expression whose value is to be returned.
 
 ### Read-Only
 
-- `content` (String) The content of the return.
+- `content` (String)

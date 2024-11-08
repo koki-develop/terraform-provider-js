@@ -28,7 +28,6 @@ func (d *dataConditionalOperation) Metadata(_ context.Context, req datasource.Me
 
 func (d *dataConditionalOperation) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "The `js_conditional_operation` data source create a conditional operation.",
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.DynamicAttribute{
 				Description: "An expression whose value is used as a condition. ",
@@ -44,8 +43,7 @@ func (d *dataConditionalOperation) Schema(_ context.Context, _ datasource.Schema
 			},
 
 			"content": schema.StringAttribute{
-				Description: "The content of the conditional operation.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

@@ -32,24 +32,22 @@ func (d *dataFunctionCall) Metadata(_ context.Context, req datasource.MetadataRe
 
 func (d *dataFunctionCall) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_function_call` data source calls a function.",
 		Attributes: map[string]schema.Attribute{
 			"caller": schema.StringAttribute{
-				Description: "The caller of the function.",
+				Description: "Function caller.",
 				Optional:    true,
 			},
 			"function": schema.StringAttribute{
-				Description: "The function to call.",
+				Description: "Name of function to call.",
 				Required:    true,
 			},
 			"args": schema.DynamicAttribute{
-				Description: "The arguments of the function.",
+				Description: "Arguments to pass to function.",
 				Optional:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Description: "The content of the function call.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

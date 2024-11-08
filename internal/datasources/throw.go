@@ -30,8 +30,10 @@ func (d *dataThrow) Schema(_ context.Context, _ datasource.SchemaRequest, resp *
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"value": schema.StringAttribute{
-				Required: true,
+				Description: "Expression to throw.",
+				Required:    true,
 			},
+
 			"content": schema.StringAttribute{
 				Computed: true,
 			},

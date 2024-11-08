@@ -30,14 +30,13 @@ func (d *dataIncrement) Metadata(_ context.Context, req datasource.MetadataReque
 
 func (d *dataIncrement) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_increment` data source increments a reference.",
 		Attributes: map[string]schema.Attribute{
 			"ref": schema.StringAttribute{
-				Description: "The reference to increment.",
+				Description: "Reference to increment.",
 				Required:    true,
 			},
 			"type": schema.StringAttribute{
-				Description: "The type of increment to perform. (Valid values: `prefix`, `postfix`)",
+				Description: "Type of increment to perform. (Valid values: `prefix`, `postfix`)",
 				Optional:    true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("prefix", "postfix"),
@@ -45,8 +44,7 @@ func (d *dataIncrement) Schema(_ context.Context, _ datasource.SchemaRequest, re
 			},
 
 			"content": schema.StringAttribute{
-				Description: "The content of the increment.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

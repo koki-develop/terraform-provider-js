@@ -30,20 +30,18 @@ func (d *dataNew) Metadata(_ context.Context, req datasource.MetadataRequest, re
 
 func (d *dataNew) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_new` data source creates a new operation.",
 		Attributes: map[string]schema.Attribute{
 			"constructor": schema.StringAttribute{
-				Description: "The constructor of the operation.",
+				Description: "A class or function that specifies the type of the object instance.",
 				Required:    true,
 			},
 			"args": schema.DynamicAttribute{
-				Description: "The arguments of the operation.",
+				Description: "A list of values that the constructor will be called with.",
 				Optional:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Description: "The content of the operation.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

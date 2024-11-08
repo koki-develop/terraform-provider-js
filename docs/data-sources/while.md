@@ -3,12 +3,12 @@
 page_title: "js_while Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_while data source creates a while loop.
+  
 ---
 
 # js_while (Data Source)
 
-The `js_while` data source creates a while loop.
+
 
 ## Example Usage
 
@@ -49,12 +49,12 @@ data "js_while" "main" {
 
 ### Required
 
-- `condition` (String) The condition expression.
+- `condition` (String) An expression evaluated before each pass through the loop.
 
 ### Optional
 
-- `body` (List of String) The body of the while loop.
+- `body` (List of String) Statements that are executed as long as the condition evaluates to true.
 
 ### Read-Only
 
-- `content` (String) The content of the while loop.
+- `content` (String)

@@ -3,12 +3,12 @@
 page_title: "js_increment Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_increment data source increments a reference.
+  
 ---
 
 # js_increment (Data Source)
 
-The `js_increment` data source increments a reference.
+
 
 ## Example Usage
 
@@ -41,12 +41,12 @@ data "js_increment" "i_prefix" {
 
 ### Required
 
-- `ref` (String) The reference to increment.
+- `ref` (String) Reference to increment.
 
 ### Optional
 
-- `type` (String) The type of increment to perform. (Valid values: `prefix`, `postfix`)
+- `type` (String) Type of increment to perform. (Valid values: `prefix`, `postfix`)
 
 ### Read-Only
 
-- `content` (String) The content of the increment.
+- `content` (String)

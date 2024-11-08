@@ -31,16 +31,15 @@ func (d *dataProgram) Metadata(_ context.Context, req datasource.MetadataRequest
 
 func (d *dataProgram) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_program` data source creates a program.",
 		Attributes: map[string]schema.Attribute{
 			"contents": schema.ListAttribute{
-				Description: "The contents of the program.",
+				Description: "Statements that are executed in the program.",
 				ElementType: types.StringType,
 				Required:    true,
 			},
+
 			"content": schema.StringAttribute{
-				Description: "The content of the program.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

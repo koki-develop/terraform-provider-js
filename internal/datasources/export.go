@@ -28,10 +28,9 @@ func (d *dataExport) Metadata(_ context.Context, req datasource.MetadataRequest,
 
 func (d *dataExport) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_export` data source defines an export.",
 		Attributes: map[string]schema.Attribute{
 			"value": schema.DynamicAttribute{
-				Description: "The value of the export.",
+				Description: "Value to be exported",
 				Required:    true,
 			},
 

@@ -29,34 +29,31 @@ func (d *dataFunction) Metadata(_ context.Context, req datasource.MetadataReques
 
 func (d *dataFunction) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_function` data source defines a function.",
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
-				Description: "The name of the function.",
+				Description: "Name of function.",
 				Optional:    true,
 			},
 			"params": schema.ListAttribute{
-				Description: "The parameters of the function.",
+				Description: "Parameters of function.",
 				ElementType: types.StringType,
 				Optional:    true,
 			},
 			"body": schema.ListAttribute{
-				Description: "The body of the function.",
+				Description: "Body of function.",
 				ElementType: types.StringType,
 				Optional:    true,
 			},
 			"async": schema.BoolAttribute{
-				Description: "Whether the function is async.",
+				Description: "Whether function is async.",
 				Optional:    true,
 			},
 
 			"id": schema.StringAttribute{
-				Description: "The id of the function.",
-				Computed:    true,
+				Computed: true,
 			},
 			"content": schema.StringAttribute{
-				Description: "The content of the function.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

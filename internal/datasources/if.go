@@ -28,26 +28,24 @@ func (d *dataIf) Metadata(_ context.Context, req datasource.MetadataRequest, res
 
 func (d *dataIf) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_if` data source creates an if statement.",
 		Attributes: map[string]schema.Attribute{
 			"condition": schema.StringAttribute{
-				Description: "The condition expression.",
+				Description: "An expression that is considered to be either truthy or falsy.",
 				Required:    true,
 			},
 			"then": schema.ListAttribute{
-				Description: "The body of the if statement.",
+				Description: "Statements that are executed if condition is truthy.",
 				ElementType: types.StringType,
 				Optional:    true,
 			},
 			"else": schema.ListAttribute{
-				Description: "The body of the else statement.",
+				Description: "Statements that are executed if condition is falsy.",
 				ElementType: types.StringType,
 				Optional:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Description: "The content of the if statement.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

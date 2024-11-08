@@ -3,12 +3,12 @@
 page_title: "js_decrement Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_decrement data source decrements a value.
+  
 ---
 
 # js_decrement (Data Source)
 
-The `js_decrement` data source decrements a value.
+
 
 ## Example Usage
 
@@ -41,11 +41,11 @@ data "js_decrement" "i_prefix" {
 
 ### Required
 
-- `ref` (String) The reference to decrement.
+- `ref` (String) Reference to decrement.
 
 ### Optional
 
-- `type` (String) The type of decrement to perform. (Valid values: `prefix`, `postfix`)
+- `type` (String) Type of decrement to perform. (Valid values: `prefix`, `postfix`)
 
 ### Read-Only
 

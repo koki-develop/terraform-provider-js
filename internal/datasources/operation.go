@@ -28,24 +28,22 @@ func (d *dataOperation) Metadata(_ context.Context, req datasource.MetadataReque
 
 func (d *dataOperation) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "The `js_operation` data source create an operation.",
 		Attributes: map[string]schema.Attribute{
 			"operator": schema.StringAttribute{
-				Description: "The operator of the operation.",
+				Description: "Operator to use in operation.",
 				Required:    true,
 			},
 			"left": schema.DynamicAttribute{
-				Description: "The left operand of the operation.",
+				Description: "Left operand.",
 				Required:    true,
 			},
 			"right": schema.DynamicAttribute{
-				Description: "The right operand of the operation.",
+				Description: "Right operand.",
 				Required:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Description: "The content of the operation.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

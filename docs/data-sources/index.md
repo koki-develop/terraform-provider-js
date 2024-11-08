@@ -3,12 +3,12 @@
 page_title: "js_index Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_index data source allows you to reference a JavaScript object and access its properties or array elements.
+  
 ---
 
 # js_index (Data Source)
 
-The `js_index` data source allows you to reference a JavaScript object and access its properties or array elements.
+
 
 ## Example Usage
 
@@ -43,10 +43,10 @@ data "js_index" "obj_foo" {
 
 ### Required
 
-- `ref` (String) The referenced JavaScript object.
-- `value` (Dynamic) The index or property name within the referenced object.
+- `ref` (String) Referenced JavaScript object.
+- `value` (Dynamic) Index or property name within referenced object.
 
 ### Read-Only
 
-- `content` (String) The content of the indexed value.
-- `id` (String, Deprecated) The id of the indexed value.
+- `content` (String)
+- `id` (String) The ID of this resource.

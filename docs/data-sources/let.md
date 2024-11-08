@@ -3,12 +3,12 @@
 page_title: "js_let Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_let data source defines a let statement.
+  
 ---
 
 # js_let (Data Source)
 
-The `js_let` data source defines a let statement.
+
 
 ## Example Usage
 
@@ -52,13 +52,13 @@ data "js_let" "obj" {
 
 ### Required
 
-- `name` (String) The name of the let statement.
+- `name` (String) Name of variable to declare.
 
 ### Optional
 
-- `value` (Dynamic) The value of the let statement.
+- `value` (Dynamic) Initial value of the variable.
 
 ### Read-Only
 
-- `content` (String) The content of the let statement.
-- `id` (String) The id of the let statement.
+- `content` (String)
+- `id` (String) The ID of this resource.

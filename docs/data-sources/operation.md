@@ -3,12 +3,12 @@
 page_title: "js_operation Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_operation data source create an operation.
+  
 ---
 
 # js_operation (Data Source)
 
-The `js_operation` data source create an operation.
+
 
 ## Example Usage
 
@@ -106,10 +106,10 @@ data "js_operation" "assign_a_to_b" {
 
 ### Required
 
-- `left` (Dynamic) The left operand of the operation.
-- `operator` (String) The operator of the operation.
-- `right` (Dynamic) The right operand of the operation.
+- `left` (Dynamic) Left operand.
+- `operator` (String) Operator to use in operation.
+- `right` (Dynamic) Right operand.
 
 ### Read-Only
 
-- `content` (String) The content of the operation.
+- `content` (String)

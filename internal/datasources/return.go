@@ -28,15 +28,14 @@ func (d *dataReturn) Metadata(_ context.Context, req datasource.MetadataRequest,
 
 func (d *dataReturn) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_return` data source creates a return.",
 		Attributes: map[string]schema.Attribute{
 			"value": schema.DynamicAttribute{
-				Description: "The value of the return.",
+				Description: "Expression whose value is to be returned.",
 				Optional:    true,
 			},
+
 			"content": schema.StringAttribute{
-				Description: "The content of the return.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}

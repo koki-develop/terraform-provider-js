@@ -3,12 +3,12 @@
 page_title: "js_new Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_new data source creates a new operation.
+  
 ---
 
 # js_new (Data Source)
 
-The `js_new` data source creates a new operation.
+
 
 ## Example Usage
 
@@ -25,12 +25,12 @@ data "js_new" "error" {
 
 ### Required
 
-- `constructor` (String) The constructor of the operation.
+- `constructor` (String) A class or function that specifies the type of the object instance.
 
 ### Optional
 
-- `args` (Dynamic) The arguments of the operation.
+- `args` (Dynamic) A list of values that the constructor will be called with.
 
 ### Read-Only
 
-- `content` (String) The content of the operation.
+- `content` (String)

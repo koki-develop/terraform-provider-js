@@ -3,12 +3,12 @@
 page_title: "js_await Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_await data source defines an await.
+  
 ---
 
 # js_await (Data Source)
 
-The `js_await` data source defines an await.
+
 
 ## Example Usage
 
@@ -29,8 +29,8 @@ data "js_await" "fetch" {
 
 ### Required
 
-- `value` (Dynamic) The value of the await.
+- `value` (Dynamic) A Promise, a thenable object, or any value to wait for.
 
 ### Read-Only
 
-- `content` (String) The content of the await.
+- `content` (String)

@@ -3,12 +3,12 @@
 page_title: "js_function_call Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_function_call data source calls a function.
+  
 ---
 
 # js_function_call (Data Source)
 
-The `js_function_call` data source calls a function.
+
 
 ## Example Usage
 
@@ -31,13 +31,13 @@ data "js_function_call" "console_log" {
 
 ### Required
 
-- `function` (String) The function to call.
+- `function` (String) Name of function to call.
 
 ### Optional
 
-- `args` (Dynamic) The arguments of the function.
-- `caller` (String) The caller of the function.
+- `args` (Dynamic) Arguments to pass to function.
+- `caller` (String) Function caller.
 
 ### Read-Only
 
-- `content` (String) The content of the function call.
+- `content` (String)

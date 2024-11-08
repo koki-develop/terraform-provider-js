@@ -30,14 +30,13 @@ func (d *dataDecrement) Metadata(_ context.Context, req datasource.MetadataReque
 
 func (d *dataDecrement) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_decrement` data source decrements a value.",
 		Attributes: map[string]schema.Attribute{
 			"ref": schema.StringAttribute{
-				Description: "The reference to decrement.",
+				Description: "Reference to decrement.",
 				Required:    true,
 			},
 			"type": schema.StringAttribute{
-				Description: "The type of decrement to perform. (Valid values: `prefix`, `postfix`)",
+				Description: "Type of decrement to perform. (Valid values: `prefix`, `postfix`)",
 				Optional:    true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("prefix", "postfix"),

@@ -3,12 +3,12 @@
 page_title: "js_raw Data Source - terraform-provider-js"
 subcategory: ""
 description: |-
-  The js_raw data source allows you to write raw JavaScript code.
+  
 ---
 
 # js_raw (Data Source)
 
-The `js_raw` data source allows you to write raw JavaScript code.
+
 
 ## Example Usage
 
@@ -23,8 +23,8 @@ data "js_raw" "example" {
 
 ### Required
 
-- `value` (String) The raw JavaScript code.
+- `value` (String) Raw JavaScript code.
 
 ### Read-Only
 
-- `content` (String) The content of the raw JavaScript code.
+- `content` (String)

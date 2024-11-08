@@ -28,16 +28,14 @@ func (d *dataSourceAwait) Metadata(_ context.Context, req datasource.MetadataReq
 
 func (d *dataSourceAwait) Schema(_ context.Context, _ datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "The `js_await` data source defines an await.",
 		Attributes: map[string]schema.Attribute{
 			"value": schema.DynamicAttribute{
-				Description: "The value of the await.",
+				Description: "A Promise, a thenable object, or any value to wait for.",
 				Required:    true,
 			},
 
 			"content": schema.StringAttribute{
-				Description: "The content of the await.",
-				Computed:    true,
+				Computed: true,
 			},
 		},
 	}
