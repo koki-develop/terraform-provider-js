@@ -68,9 +68,11 @@ func (d *dataOperation) Read(ctx context.Context, req datasource.ReadRequest, re
 		&resp.Diagnostics,
 		func(m *dataOperationModel) bool {
 			c := new(strings.Builder)
+			c.WriteString("(")
 			c.WriteString(util.StringifyValue(m.Left))
 			c.WriteString(util.RawString(m.Operator))
 			c.WriteString(util.StringifyValue(m.Right))
+			c.WriteString(")")
 
 			m.Content = util.Raw(types.StringValue(c.String()))
 			return true
