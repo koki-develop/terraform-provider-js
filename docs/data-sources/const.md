@@ -57,5 +57,6 @@ data "js_const" "obj" {
 
 ### Read-Only
 
-- `content` (String)
+- `expression` (String)
 - `id` (String) The ID of this resource.
+- `statement` (String)

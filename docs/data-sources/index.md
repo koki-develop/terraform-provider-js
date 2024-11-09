@@ -48,5 +48,6 @@ data "js_index" "obj_foo" {
 
 ### Read-Only
 
-- `content` (String)
+- `expression` (String)
 - `id` (String) The ID of this resource.
+- `statement` (String)

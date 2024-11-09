@@ -49,4 +49,5 @@ data "js_increment" "i_prefix" {
 
 ### Read-Only
 
-- `content` (String)
+- `expression` (String)
+- `statement` (String)

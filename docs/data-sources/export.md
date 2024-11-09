@@ -33,4 +33,4 @@ data "js_export" "message" {
 
 ### Read-Only
 
-- `content` (String) The content of the export.
+- `statement` (String)

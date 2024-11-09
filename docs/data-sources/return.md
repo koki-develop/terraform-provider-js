@@ -19,7 +19,7 @@ data "js_return" "hello" {
 
 data "js_function" "hello" {
   name = "hello"
-  body = [data.js_return.hello.content]
+  body = [data.js_return.hello.statement]
 }
 # => function hello() {
 #      return "hello world"
@@ -35,4 +35,4 @@ data "js_function" "hello" {
 
 ### Read-Only
 
-- `content` (String)
+- `statement` (String)

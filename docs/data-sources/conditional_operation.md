@@ -31,4 +31,5 @@ data "js_conditional_operation" "main" {
 
 ### Read-Only
 
-- `content` (String)
+- `expression` (String)
+- `statement` (String)

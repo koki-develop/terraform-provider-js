@@ -19,7 +19,7 @@ data "js_function_call" "fetch" {
 }
 
 data "js_await" "fetch" {
-  value = data.js_function_call.fetch.content
+  value = data.js_function_call.fetch.expression
 }
 # => await fetch("https://example.com")
 ```
@@ -33,4 +33,5 @@ data "js_await" "fetch" {
 
 ### Read-Only
 
-- `content` (String)
+- `expression` (String)
+- `statement` (String)

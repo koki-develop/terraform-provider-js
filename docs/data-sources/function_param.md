@@ -21,4 +21,5 @@ description: |-
 
 ### Read-Only
 
+- `expression` (String)
 - `id` (String) The ID of this resource.

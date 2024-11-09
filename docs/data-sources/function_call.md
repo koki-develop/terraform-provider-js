@@ -40,4 +40,5 @@ data "js_function_call" "console_log" {
 
 ### Read-Only
 
-- `content` (String)
+- `expression` (String)
+- `statement` (String)

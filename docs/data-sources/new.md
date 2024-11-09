@@ -33,4 +33,5 @@ data "js_new" "error" {
 
 ### Read-Only
 
-- `content` (String)
+- `expression` (String)
+- `statement` (String)

@@ -35,8 +35,8 @@ data "js_increment" "i" {
 }
 
 data "js_while" "main" {
-  condition = data.js_operation.i_lt_10.content
-  body      = [data.js_function_call.log_i.content, data.js_increment.i.content]
+  condition = data.js_operation.i_lt_10.expression
+  body      = [data.js_function_call.log_i.statement, data.js_increment.i.statement]
 }
 # => while (i < 10) {
 #      console.log(i);
@@ -57,4 +57,4 @@ data "js_while" "main" {
 
 ### Read-Only
 
-- `content` (String)
+- `statement` (String)

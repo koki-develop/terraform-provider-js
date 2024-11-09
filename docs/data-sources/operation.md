@@ -112,4 +112,5 @@ data "js_operation" "assign_a_to_b" {
 
 ### Read-Only
 
-- `content` (String)
+- `expression` (String)
+- `statement` (String)

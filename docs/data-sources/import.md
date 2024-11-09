@@ -41,5 +41,5 @@ data "js_import" "default" {
 
 ### Read-Only
 
-- `content` (String)
 - `id` (String) The ID of this resource.
+- `statement` (String)
