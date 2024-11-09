@@ -111,9 +111,9 @@ func (d *dataFunction) handleRequest(ctx context.Context, g util.ModelGetter, s 
 			m.ID = util.Raw(m.Name)
 			m.Statement = util.Raw(types.StringValue(c.String()))
 			if m.Name.IsNull() {
-				m.Expression = types.StringNull()
-			} else {
 				m.Expression = m.Statement
+			} else {
+				m.Expression = types.StringNull()
 			}
 
 			return true
