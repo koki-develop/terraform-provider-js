@@ -5,7 +5,7 @@ data "js_function_call" "hello_world" {
 }
 
 data "js_program" "main" {
-  contents = [data.js_function_call.hello_world.content]
+  statements = [data.js_function_call.hello_world.statement]
 }
 
 resource "local_file" "main" {

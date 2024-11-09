@@ -16,8 +16,8 @@ data "js_raw" "true" {
 
 data "js_if" "main" {
   condition = data.js_raw.true.content
-  then      = [data.js_function_call.log_true.content]
-  else      = [data.js_function_call.log_false.content]
+  then      = [data.js_function_call.log_true.statement]
+  else      = [data.js_function_call.log_false.statement]
 }
 # => if (true) {
 #      console.log(true);

@@ -29,20 +29,21 @@ data "aws_iam_policy_document" "assume_role" {
 data "archive_file" "source_code" {
   type                    = "zip"
   output_path             = "index.zip"
-  source_content_filename = "index.js"
+  source_content_filename = "index.mjs"
   source_content          = data.js_program.main.content
 }
 
 data "js_program" "main" {
-  contents = [data.js_operation.exports_handler.content]
+  statements = [data.js_export.handler.statement]
 }
 
 data "js_function" "handler" {
+  name   = "handler"
   async  = true
   params = [data.js_function_param.event.id]
   body = [
-    data.js_function_call.log_event.content,
-    data.js_return.handler.content,
+    data.js_function_call.log_event.statement,
+    data.js_return.handler.statement,
   ]
 }
 
@@ -62,12 +63,6 @@ data "js_return" "handler" {
   }
 }
 
-data "js_raw" "exports_handler" {
-  value = "exports.handler"
-}
-
-data "js_operation" "exports_handler" {
-  left     = data.js_raw.exports_handler.content
-  operator = "="
-  right    = data.js_function.handler.content
+data "js_export" "handler" {
+  value = data.js_function.handler.statement
 }

@@ -20,10 +20,10 @@ data "js_function_call" "log_i" {
 }
 
 data "js_for" "main" {
-  init      = data.js_let.i.content
-  condition = data.js_operation.i_lt_10.content
-  update    = data.js_increment.i.content
-  body      = [data.js_function_call.log_i.content]
+  init      = data.js_let.i.statement
+  condition = data.js_operation.i_lt_10.expression
+  update    = data.js_increment.i.statement
+  body      = [data.js_function_call.log_i.statement]
 }
 # => for (let i = 0; i < 10; i++) {
 #      console.log(i);

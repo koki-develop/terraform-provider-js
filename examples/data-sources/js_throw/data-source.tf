@@ -4,6 +4,6 @@ data "js_new" "error" {
 }
 
 data "js_throw" "error" {
-  value = data.js_new.error.content
+  value = data.js_new.error.expression
 }
 # => throw new Error("something went wrong")

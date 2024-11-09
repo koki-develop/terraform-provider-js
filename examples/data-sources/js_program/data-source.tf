@@ -10,9 +10,9 @@ data "js_function_call" "log_message" {
 }
 
 data "js_program" "main" {
-  contents = [
-    data.js_const.message.content,
-    data.js_function_call.log_message.content,
+  statements = [
+    data.js_const.message.statement,
+    data.js_function_call.log_message.statement,
   ]
 }
 # => const message = "hello world";
