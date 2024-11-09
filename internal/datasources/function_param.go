@@ -36,13 +36,18 @@ func (d *dataFunctionParam) Schema(_ context.Context, _ datasource.SchemaRequest
 			"id": schema.StringAttribute{
 				Computed: true,
 			},
+			"expression": schema.StringAttribute{
+				Computed: true,
+			},
 		},
 	}
 }
 
 type dataFunctionParamModel struct {
 	Name types.String `tfsdk:"name"`
-	ID   types.String `tfsdk:"id"`
+
+	ID         types.String `tfsdk:"id"`
+	Expression types.String `tfsdk:"expression"`
 }
 
 func (d *dataFunctionParam) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -54,6 +59,7 @@ func (d *dataFunctionParam) Read(ctx context.Context, req datasource.ReadRequest
 		&resp.Diagnostics,
 		func(m *dataFunctionParamModel) bool {
 			m.ID = util.Raw(m.Name)
+			m.Expression = m.ID
 			return true
 		},
 	)

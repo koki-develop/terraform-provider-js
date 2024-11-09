@@ -41,7 +41,10 @@ func (d *dataIndex) Schema(_ context.Context, _ datasource.SchemaRequest, resp *
 			"id": schema.StringAttribute{
 				Computed: true,
 			},
-			"content": schema.StringAttribute{
+			"expression": schema.StringAttribute{
+				Computed: true,
+			},
+			"statement": schema.StringAttribute{
 				Computed: true,
 			},
 		},
@@ -52,10 +55,9 @@ type dataIndexModel struct {
 	Ref   types.String  `tfsdk:"ref"`
 	Value types.Dynamic `tfsdk:"value"`
 
-	Content types.String `tfsdk:"content"`
-
-	// TODO: remove
-	ID types.String `tfsdk:"id"`
+	ID         types.String `tfsdk:"id"`
+	Expression types.String `tfsdk:"expression"`
+	Statement  types.String `tfsdk:"statement"`
 }
 
 func (d *dataIndex) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -72,8 +74,9 @@ func (d *dataIndex) Read(ctx context.Context, req datasource.ReadRequest, resp *
 			c.WriteString(util.StringifyValue(m.Value))
 			c.WriteRune(']')
 
-			m.Content = util.Raw(types.StringValue(c.String()))
-			m.ID = m.Content
+			m.ID = util.Raw(types.StringValue(c.String()))
+			m.Expression = m.ID
+			m.Statement = m.ID
 
 			return true
 		},

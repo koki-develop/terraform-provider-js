@@ -46,7 +46,10 @@ func (d *dataFunctionCall) Schema(_ context.Context, _ datasource.SchemaRequest,
 				Optional:    true,
 			},
 
-			"content": schema.StringAttribute{
+			"expression": schema.StringAttribute{
+				Computed: true,
+			},
+			"statement": schema.StringAttribute{
 				Computed: true,
 			},
 		},
@@ -58,7 +61,8 @@ type dataFunctionCallModel struct {
 	Function types.String  `tfsdk:"function"`
 	Args     types.Dynamic `tfsdk:"args"`
 
-	Content types.String `tfsdk:"content"`
+	Expression types.String `tfsdk:"expression"`
+	Statement  types.String `tfsdk:"statement"`
 }
 
 func (d *dataFunctionCall) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -102,7 +106,8 @@ func (d *dataFunctionCall) handleRequest(ctx context.Context, g util.ModelGetter
 
 			c.WriteString(")")
 
-			m.Content = util.Raw(types.StringValue(c.String()))
+			m.Expression = util.Raw(types.StringValue(c.String()))
+			m.Statement = m.Expression
 			return true
 		},
 	)

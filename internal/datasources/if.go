@@ -44,7 +44,7 @@ func (d *dataIf) Schema(_ context.Context, _ datasource.SchemaRequest, resp *dat
 				Optional:    true,
 			},
 
-			"content": schema.StringAttribute{
+			"statement": schema.StringAttribute{
 				Computed: true,
 			},
 		},
@@ -56,7 +56,7 @@ type dataIfModel struct {
 	Then      types.List   `tfsdk:"then"`
 	Else      types.List   `tfsdk:"else"`
 
-	Content types.String `tfsdk:"content"`
+	Statement types.String `tfsdk:"statement"`
 }
 
 func (d *dataIf) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -81,7 +81,7 @@ func (d *dataIf) Read(ctx context.Context, req datasource.ReadRequest, resp *dat
 				c.WriteString("}")
 			}
 
-			m.Content = util.Raw(types.StringValue(c.String()))
+			m.Statement = util.Raw(types.StringValue(c.String()))
 			return true
 		},
 	)

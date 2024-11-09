@@ -43,7 +43,10 @@ func (d *dataIncrement) Schema(_ context.Context, _ datasource.SchemaRequest, re
 				},
 			},
 
-			"content": schema.StringAttribute{
+			"expression": schema.StringAttribute{
+				Computed: true,
+			},
+			"statement": schema.StringAttribute{
 				Computed: true,
 			},
 		},
@@ -54,7 +57,8 @@ type dataIncrementModel struct {
 	Ref  types.String `tfsdk:"ref"`
 	Type types.String `tfsdk:"type"`
 
-	Content types.String `tfsdk:"content"`
+	Expression types.String `tfsdk:"expression"`
+	Statement  types.String `tfsdk:"statement"`
 }
 
 func (d *dataIncrement) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -76,7 +80,8 @@ func (d *dataIncrement) Read(ctx context.Context, req datasource.ReadRequest, re
 				c.WriteString("++")
 			}
 
-			m.Content = util.Raw(types.StringValue(c.String()))
+			m.Expression = util.Raw(types.StringValue(c.String()))
+			m.Statement = m.Expression
 			return true
 		},
 	)

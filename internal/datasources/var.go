@@ -41,7 +41,10 @@ func (d *dataVar) Schema(_ context.Context, _ datasource.SchemaRequest, resp *da
 			"id": schema.StringAttribute{
 				Computed: true,
 			},
-			"content": schema.StringAttribute{
+			"expression": schema.StringAttribute{
+				Computed: true,
+			},
+			"statement": schema.StringAttribute{
 				Computed: true,
 			},
 		},
@@ -52,8 +55,9 @@ type dataVarModel struct {
 	Name  types.String  `tfsdk:"name"`
 	Value types.Dynamic `tfsdk:"value"`
 
-	ID      types.String `tfsdk:"id"`
-	Content types.String `tfsdk:"content"`
+	ID         types.String `tfsdk:"id"`
+	Expression types.String `tfsdk:"expression"`
+	Statement  types.String `tfsdk:"statement"`
 }
 
 func (d *dataVar) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -65,7 +69,7 @@ func (d *dataVar) Read(ctx context.Context, req datasource.ReadRequest, resp *da
 		&resp.Diagnostics,
 		func(m *dataVarModel) bool {
 			m.ID = util.Raw(m.Name)
-
+			m.Expression = m.ID
 			c := new(strings.Builder)
 			c.WriteString("var ")
 			c.WriteString(util.RawString(m.Name))
@@ -74,7 +78,7 @@ func (d *dataVar) Read(ctx context.Context, req datasource.ReadRequest, resp *da
 				c.WriteString(util.StringifyValue(m.Value))
 			}
 
-			m.Content = util.Raw(types.StringValue(c.String()))
+			m.Statement = util.Raw(types.StringValue(c.String()))
 			return true
 		},
 	)

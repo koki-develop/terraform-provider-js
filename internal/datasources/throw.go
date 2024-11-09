@@ -34,7 +34,7 @@ func (d *dataThrow) Schema(_ context.Context, _ datasource.SchemaRequest, resp *
 				Required:    true,
 			},
 
-			"content": schema.StringAttribute{
+			"statement": schema.StringAttribute{
 				Computed: true,
 			},
 		},
@@ -42,8 +42,9 @@ func (d *dataThrow) Schema(_ context.Context, _ datasource.SchemaRequest, resp *
 }
 
 type dataThrowModel struct {
-	Value   types.String `tfsdk:"value"`
-	Content types.String `tfsdk:"content"`
+	Value types.String `tfsdk:"value"`
+
+	Statement types.String `tfsdk:"statement"`
 }
 
 func (d *dataThrow) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -54,7 +55,7 @@ func (d *dataThrow) Read(ctx context.Context, req datasource.ReadRequest, resp *
 		&resp.State,
 		&resp.Diagnostics,
 		func(m *dataThrowModel) bool {
-			m.Content = util.Raw(types.StringValue(fmt.Sprintf("throw %s", util.StringifyValue(m.Value))))
+			m.Statement = util.Raw(types.StringValue(fmt.Sprintf("throw %s", util.StringifyValue(m.Value))))
 			return true
 		},
 	)

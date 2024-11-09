@@ -42,7 +42,10 @@ func (d *dataConditionalOperation) Schema(_ context.Context, _ datasource.Schema
 				Required:    true,
 			},
 
-			"content": schema.StringAttribute{
+			"expression": schema.StringAttribute{
+				Computed: true,
+			},
+			"statement": schema.StringAttribute{
 				Computed: true,
 			},
 		},
@@ -54,7 +57,8 @@ type dataConditionalOperationModel struct {
 	IfTrue    types.Dynamic `tfsdk:"if_true"`
 	IfFalse   types.Dynamic `tfsdk:"if_false"`
 
-	Content types.String `tfsdk:"content"`
+	Expression types.String `tfsdk:"expression"`
+	Statement  types.String `tfsdk:"statement"`
 }
 
 func (d *dataConditionalOperation) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -74,7 +78,8 @@ func (d *dataConditionalOperation) Read(ctx context.Context, req datasource.Read
 			c.WriteString(util.StringifyValue(m.IfFalse))
 			c.WriteString(")")
 
-			m.Content = util.Raw(types.StringValue(c.String()))
+			m.Expression = util.Raw(types.StringValue(c.String()))
+			m.Statement = m.Expression
 			return true
 		},
 	)

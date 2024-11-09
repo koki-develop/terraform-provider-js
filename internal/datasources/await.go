@@ -34,7 +34,10 @@ func (d *dataSourceAwait) Schema(_ context.Context, _ datasource.SchemaRequest, 
 				Required:    true,
 			},
 
-			"content": schema.StringAttribute{
+			"expression": schema.StringAttribute{
+				Computed: true,
+			},
+			"statement": schema.StringAttribute{
 				Computed: true,
 			},
 		},
@@ -44,7 +47,8 @@ func (d *dataSourceAwait) Schema(_ context.Context, _ datasource.SchemaRequest, 
 type dataSourceAwaitModel struct {
 	Value types.Dynamic `tfsdk:"value"`
 
-	Content types.String `tfsdk:"content"`
+	Expression types.String `tfsdk:"expression"`
+	Statement  types.String `tfsdk:"statement"`
 }
 
 func (d *dataSourceAwait) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -59,7 +63,8 @@ func (d *dataSourceAwait) Read(ctx context.Context, req datasource.ReadRequest, 
 			c.WriteString("await ")
 			c.WriteString(util.StringifyValue(m.Value))
 
-			m.Content = util.Raw(types.StringValue(c.String()))
+			m.Expression = util.Raw(types.StringValue(c.String()))
+			m.Statement = m.Expression
 			return true
 		},
 	)

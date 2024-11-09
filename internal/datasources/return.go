@@ -34,7 +34,7 @@ func (d *dataReturn) Schema(_ context.Context, _ datasource.SchemaRequest, resp 
 				Optional:    true,
 			},
 
-			"content": schema.StringAttribute{
+			"statement": schema.StringAttribute{
 				Computed: true,
 			},
 		},
@@ -42,8 +42,9 @@ func (d *dataReturn) Schema(_ context.Context, _ datasource.SchemaRequest, resp 
 }
 
 type dataReturnModel struct {
-	Value   types.Dynamic `tfsdk:"value"`
-	Content types.String  `tfsdk:"content"`
+	Value types.Dynamic `tfsdk:"value"`
+
+	Statement types.String `tfsdk:"statement"`
 }
 
 func (d *dataReturn) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -61,7 +62,7 @@ func (d *dataReturn) Read(ctx context.Context, req datasource.ReadRequest, resp 
 				c.WriteString(util.StringifyValue(m.Value))
 			}
 
-			m.Content = util.Raw(types.StringValue(c.String()))
+			m.Statement = util.Raw(types.StringValue(c.String()))
 			return true
 		},
 	)

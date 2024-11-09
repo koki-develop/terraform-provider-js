@@ -42,7 +42,10 @@ func (d *dataOperation) Schema(_ context.Context, _ datasource.SchemaRequest, re
 				Required:    true,
 			},
 
-			"content": schema.StringAttribute{
+			"expression": schema.StringAttribute{
+				Computed: true,
+			},
+			"statement": schema.StringAttribute{
 				Computed: true,
 			},
 		},
@@ -54,7 +57,8 @@ type dataOperationModel struct {
 	Left     types.Dynamic `tfsdk:"left"`
 	Right    types.Dynamic `tfsdk:"right"`
 
-	Content types.String `tfsdk:"content"`
+	Expression types.String `tfsdk:"expression"`
+	Statement  types.String `tfsdk:"statement"`
 }
 
 func (d *dataOperation) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -72,7 +76,8 @@ func (d *dataOperation) Read(ctx context.Context, req datasource.ReadRequest, re
 			c.WriteString(util.StringifyValue(m.Right))
 			c.WriteString(")")
 
-			m.Content = util.Raw(types.StringValue(c.String()))
+			m.Expression = util.Raw(types.StringValue(c.String()))
+			m.Statement = m.Expression
 			return true
 		},
 	)

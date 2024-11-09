@@ -41,7 +41,10 @@ func (d *dataConst) Schema(_ context.Context, _ datasource.SchemaRequest, resp *
 			"id": schema.StringAttribute{
 				Computed: true,
 			},
-			"content": schema.StringAttribute{
+			"expression": schema.StringAttribute{
+				Computed: true,
+			},
+			"statement": schema.StringAttribute{
 				Computed: true,
 			},
 		},
@@ -52,8 +55,9 @@ type dataConstModel struct {
 	Name  types.String  `tfsdk:"name"`
 	Value types.Dynamic `tfsdk:"value"`
 
-	ID      types.String `tfsdk:"id"`
-	Content types.String `tfsdk:"content"`
+	ID         types.String `tfsdk:"id"`
+	Expression types.String `tfsdk:"expression"`
+	Statement  types.String `tfsdk:"statement"`
 }
 
 func (d *dataConst) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -65,7 +69,8 @@ func (d *dataConst) Read(ctx context.Context, req datasource.ReadRequest, resp *
 		&resp.Diagnostics,
 		func(m *dataConstModel) bool {
 			m.ID = util.Raw(m.Name)
-			m.Content = util.Raw(types.StringValue(fmt.Sprintf("const %s=%s", util.RawString(m.Name), util.StringifyValue(m.Value))))
+			m.Expression = m.ID
+			m.Statement = util.Raw(types.StringValue(fmt.Sprintf("const %s=%s", util.RawString(m.Name), util.StringifyValue(m.Value))))
 			return true
 		},
 	)

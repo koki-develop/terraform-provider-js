@@ -40,7 +40,10 @@ func (d *dataNew) Schema(_ context.Context, _ datasource.SchemaRequest, resp *da
 				Optional:    true,
 			},
 
-			"content": schema.StringAttribute{
+			"expression": schema.StringAttribute{
+				Computed: true,
+			},
+			"statement": schema.StringAttribute{
 				Computed: true,
 			},
 		},
@@ -50,7 +53,9 @@ func (d *dataNew) Schema(_ context.Context, _ datasource.SchemaRequest, resp *da
 type dataNewModel struct {
 	Constructor types.String  `tfsdk:"constructor"`
 	Args        types.Dynamic `tfsdk:"args"`
-	Content     types.String  `tfsdk:"content"`
+
+	Expression types.String `tfsdk:"expression"`
+	Statement  types.String `tfsdk:"statement"`
 }
 
 func (d *dataNew) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -88,7 +93,8 @@ func (d *dataNew) Read(ctx context.Context, req datasource.ReadRequest, resp *da
 
 			c.WriteString(")")
 
-			m.Content = util.Raw(types.StringValue(c.String()))
+			m.Expression = util.Raw(types.StringValue(c.String()))
+			m.Statement = m.Expression
 			return true
 		},
 	)

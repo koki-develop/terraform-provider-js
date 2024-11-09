@@ -52,7 +52,10 @@ func (d *dataFunction) Schema(_ context.Context, _ datasource.SchemaRequest, res
 			"id": schema.StringAttribute{
 				Computed: true,
 			},
-			"content": schema.StringAttribute{
+			"expression": schema.StringAttribute{
+				Computed: true,
+			},
+			"statement": schema.StringAttribute{
 				Computed: true,
 			},
 		},
@@ -65,8 +68,9 @@ type dataFunctionModel struct {
 	Body   types.List   `tfsdk:"body"`
 	Async  types.Bool   `tfsdk:"async"`
 
-	ID      types.String `tfsdk:"id"`
-	Content types.String `tfsdk:"content"`
+	ID         types.String `tfsdk:"id"`
+	Expression types.String `tfsdk:"expression"`
+	Statement  types.String `tfsdk:"statement"`
 }
 
 func (d *dataFunction) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -105,7 +109,12 @@ func (d *dataFunction) handleRequest(ctx context.Context, g util.ModelGetter, s 
 			c.WriteString("}")
 
 			m.ID = util.Raw(m.Name)
-			m.Content = util.Raw(types.StringValue(c.String()))
+			m.Statement = util.Raw(types.StringValue(c.String()))
+			if m.Name.IsNull() {
+				m.Expression = types.StringNull()
+			} else {
+				m.Expression = m.Statement
+			}
 
 			return true
 		},
