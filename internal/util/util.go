@@ -108,7 +108,7 @@ func StringifyStatements(vs []attr.Value) string {
 	for i, v := range vs {
 		if i > 0 {
 			ch := c.String()[c.Len()-1:]
-			if ch != "}" && ch != ";" {
+			if ch != ";" {
 				c.WriteString(";")
 			}
 		}
