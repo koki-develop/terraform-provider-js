@@ -79,11 +79,13 @@ func (d *dataFunctionCall) handleRequest(ctx context.Context, g util.ModelGetter
 		func(m *dataFunctionCallModel) bool {
 			c := new(strings.Builder)
 
+			c.WriteString("(")
 			if !m.Caller.IsNull() {
 				c.WriteString(fmt.Sprintf("%s.", util.RawString(m.Caller)))
 			}
-
 			c.WriteString(util.RawString(m.Function))
+			c.WriteString(")")
+
 			c.WriteString("(")
 
 			if !m.Args.IsNull() {
